@@ -43,7 +43,6 @@ import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.CampoLivreFactory;
 import org.jrimum.bopepo.campolivre.NotSupportedBancoException;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
-import org.jrimum.bopepo.view.BoletoCampo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.utilix.Exceptions;
 import org.jrimum.utilix.Objects;
@@ -485,9 +484,9 @@ public class Boleto {
 	 * @param conteudo
 	 *            Texto a ser adicionado ao campo no template
 	 */
-	public void sobrescrevaCampo(BoletoCampo campo, String conteudo){
-		addTextosExtras(campo.name(), conteudo);
-	}
+	//public void sobrescrevaCampo(BoletoCampo campo, String conteudo){
+	//	addTextosExtras(campo.name(), conteudo);
+	//}
 	
 	
 	/**

@@ -47,7 +47,6 @@ import javax.imageio.ImageIO;
 import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedBancoException;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
-import org.jrimum.bopepo.view.BoletoCampo;
 import org.jrimum.domkee.financeiro.banco.febraban.Agencia;
 import org.jrimum.domkee.financeiro.banco.febraban.Carteira;
 import org.jrimum.domkee.financeiro.banco.febraban.Cedente;
@@ -226,7 +225,7 @@ public class TestBoleto{
 		boleto.addTextosExtras(campoCendente, conteudoOriginal);
 		assertEquals(boleto.getTextosExtras().get(campoCendente), conteudoOriginal);
 		
-		boleto.sobrescrevaCampo(BoletoCampo.txtFcCedente, conteudoSobrescrito);
+		//TODO boleto.sobrescrevaCampo(BoletoCampo.txtFcCedente, conteudoSobrescrito);
 
 		assertEquals(boleto.getTextosExtras().get(campoCendente), conteudoSobrescrito);
 	}
