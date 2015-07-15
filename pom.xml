@@ -176,22 +176,22 @@
 		<dependency>
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-domkee</artifactId>
-			<version>0.2.3-SNAPSHOT</version>
+			<version>0.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-texgit</artifactId>
-			<version>0.2.3-SNAPSHOT</version>
+			<version>0.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-utilix</artifactId>
-			<version>0.2.3-SNAPSHOT</version>
+			<version>0.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-vallia</artifactId>
-			<version>0.2.3-SNAPSHOT</version>
+			<version>0.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
