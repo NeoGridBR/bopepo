@@ -49,8 +49,7 @@ class CLBancoCitiBankNN11 extends AbstractCLBancoDoBrasil {
 	private static final long serialVersionUID = -7675528811239346517L;
 	private static final Integer FIELDS_LENGTH = Integer.valueOf(7);
 
-	// TODO OBTER DADOS ATRAVÉS DE OBJETOS DO BOPEPO
-	CLBancoCitiBankNN11(Titulo titulo) {
+	CLBancoCitiBankNN11(final Titulo titulo) {
 		super(FIELDS_LENGTH);
 		final ContaBancaria conta = titulo.getContaBancaria();
 		// Produto

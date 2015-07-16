@@ -384,13 +384,11 @@ public enum BancosSuportados{
 	 */
 	private BancosSuportados(String codigoDeCompensacaoBACEN, String cnpj,
 			String instituicao, String segmento) {
-		
 		this.codigoDeCompensacaoBACEN = codigoDeCompensacaoBACEN;
 		this.cNPJ = cnpj;
 		this.instituicao = instituicao;
 		this.segmento = segmento;
 	}
-	
 	
 	/**
 	 * <p>

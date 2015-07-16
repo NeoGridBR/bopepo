@@ -78,12 +78,12 @@ import org.jrimum.utilix.Objects;
  * @version 0.2
  */
 class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomicaFederal {
-	
+
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 5585190685525441426L;
-	
+
 	/**
 	 * 
 	 */
@@ -98,12 +98,12 @@ class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomica
 	 * @param titulo - Título com as informações para geração do campo livre
 	 */
 	CLCaixaEconomicaFederalSICOBNossoNumero10(Titulo titulo) {
-		
+
 		super(FIELDS_LENGTH);
-		
+
 		Objects.checkNotNull(titulo.getParametrosBancarios(), "Parâmetros bancários necessários [titulo.getParametrosBancarios()==null]!");
 		checkPadraoNossoNumero(titulo.getNossoNumero());
-		
+
 		// TODO: Testar checkPadraoNossoNumeroPorCodigoDaCarteira;
 		/*
 		Integer codigoDaCarteira = titulo.getContaBancaria().getCarteira().getCodigo(); 
@@ -111,26 +111,23 @@ class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomica
 			checkPadraoNossoNumeroPorCodigoDaCarteira(titulo.getNossoNumero(), codigoDaCarteira);
 		}
 		*/
-		
+
 		this.add(new FixedField<String>(titulo.getNossoNumero(), 10));
-	
+
 		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-		
+
 		if(titulo.getParametrosBancarios().contemComNome(CODIGO_OPERACAO)){
-			
 			Integer cnpv = titulo.getParametrosBancarios().getValor(CODIGO_OPERACAO);
-		
+
 			Objects.checkNotNull(titulo.getParametrosBancarios(), "Parâmetro bancário código operação inválido [CodigoOperacao==null]!");
-				
+
 			this.add(new FixedField<Integer>(cnpv, 3, Fillers.ZERO_LEFT));
-			
+
 			this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 8, Fillers.ZERO_LEFT));
-			
-		}else{
-			
+		} else {
 			throw new CampoLivreException("Parâmetro bancário código operação (\"CodigoOperacao\") não encontrado!");
 		}
-		
+
 	}
 	
 	/**
@@ -160,48 +157,6 @@ class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomica
 			Exceptions.throwIllegalArgumentException(format("Para a cobrança SICOB o nosso número [%s] deve começar com 3 que é o identificador da \"carteira siples\" [3NNNNNNNNN] ou 9 que é o identificador da \"carteira rápida\" [9NNNNNNNNN] ou 80, 81 e 82 para \"carteira sem registro\" [82NNNNNNNN]!", nn));
 		}
 	}
-	
-	/**
-	 * <p>
-	 * Verifica se o nosso número informado tem o padrão esperado de acordo com
-	 * o código da carteira informada.
-	 * </p>
-	 * <p>
-	 * Obs: Como não há uma garantia documental de que todo nosso número que
-	 * começa com "3" pertencerá <u>somente</u> a carteira 11, então o mais
-	 * coerente é não amarrar o início do nosso número a determinada carteira,
-	 * mas sim o contrário, ou seja, amarrar que toda carteira 11 tem de ter o
-	 * nosso número iniciando com 3". O mesmo raciocíno serve para as outras
-	 * carteiras.
-	 * </p>
-	 * 
-	 * @param nossoNumero
-	 *            - Nosso Número
-	 * @param codigoDaCarteira
-	 *            - Código da carteira
-	 */
-	private void checkPadraoNossoNumeroPorCodigoDaCarteira(String nossoNumero, Integer codigoDaCarteira){
-		switch (codigoDaCarteira) {
-		case 11:
-			if(!nossoNumero.startsWith("3")){
-				Exceptions.throwIllegalArgumentException(format("Para a cobrança SICOB, carteira 11 (cobrança simples), o nosso número [%s] deve começar com 3!", nossoNumero));
-			}
-			break;
-
-		case 12:
-			if(!nossoNumero.startsWith("9")){
-				Exceptions.throwIllegalArgumentException(format("Para a cobrança SICOB, carteira 12 (cobrança rápida), o nosso número [%s] deve começar com 9!", nossoNumero));
-			}
-			break;
-					
-		case 14:
-			if(!nossoNumero.startsWith("80") && !nossoNumero.startsWith("81") && !nossoNumero.startsWith("82")){
-				Exceptions.throwIllegalArgumentException(format("Para a cobrança SICOB, carteira 14 (cobrança sem registro), o nosso número [%s] deve começar com 80, 81 ou 82!", nossoNumero));
-			}
-			break;
-		}
-	}
-	
 	
 	@Override
 	protected void addFields(Titulo titulo) {
