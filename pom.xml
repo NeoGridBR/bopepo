@@ -247,14 +247,15 @@
     </repositories>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>org.jrimum.snapshots</id>
-            <url>http://jrimum.org/maven/content/repositories/org.jrimum.snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>org.jrimum.releases</id>
-            <url>http://jrimum.org/maven/content/repositories/org.jrimum.releases/</url>
+            <id>internal.repo</id>
+            <url>http://archiva.neogrid.com/archiva/repository/internal</url>
         </repository>
+        <snapshotRepository>
+            <id>snapshots.repo</id>
+            <url>http://archiva.neogrid.com/archiva/repository/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>
