@@ -56,18 +56,25 @@ class CLBancoCitiBankNN11 extends AbstractCLBancoDoBrasil {
 		final Integer codigoProduto = titulo.getParametrosBancarios().getValor(CODIGO_PRODUTO);
 		add(new FixedField<Integer>(codigoProduto, 1));
 		// Portifólio
-		add(new FixedField<Integer>(conta.getCarteira().getCodigo(), 3, Fillers.ZERO_LEFT));
-		final String numeroConta = conta.getNumeroDaConta().getCodigoDaConta().toString();
+		final Integer portfolio = conta.getCarteira().getCodigo();
+		add(new FixedField<Integer>(portfolio, 3, Fillers.ZERO_LEFT));
+
+		final String numeroConta = StringUtils.leftPad(conta.getNumeroDaConta().getCodigoDaConta().toString(), 9, '0');
 		// Base
-		add(new FixedField<String>(StringUtils.substring(numeroConta, 0, 6), 6));
+		final String base = StringUtils.substring(numeroConta, 1, 7);
+		add(new FixedField<String>(base, 6));
 		// Sequencia
-		add(new FixedField<String>(StringUtils.substring(numeroConta, 6, 8), 2));
+		final String sequencia = StringUtils.right(numeroConta, 2);
+		add(new FixedField<String>(sequencia, 2));
 		// Dígito
-		add(new FixedField<String>(conta.getNumeroDaConta().getDigitoDaConta(), 1));
+		final String digitoConta = conta.getNumeroDaConta().getDigitoDaConta();
+		add(new FixedField<String>(digitoConta, 1));
 		// Nosso Número
-		add(new FixedField<String>(titulo.getNossoNumero(), 11, Fillers.ZERO_LEFT));
+		final String nossoNumero = titulo.getNossoNumero();
+		add(new FixedField<String>(nossoNumero, 11, Fillers.ZERO_LEFT));
 		// Nosso Número
-		add(new FixedField<String>(titulo.getDigitoDoNossoNumero(), 1));
+		final String digitoNossoNumero = titulo.getDigitoDoNossoNumero();
+		add(new FixedField<String>(digitoNossoNumero, 1));
 	}
 
 	protected void addFields(Titulo titulo) {

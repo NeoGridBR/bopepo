@@ -46,16 +46,15 @@ abstract class AbstractCLBancoCitibank extends AbstractCampoLivre {
 
 	/**
 	 * <p>
-	 * Cria um campo livre com um determinado nÃºmero de campos
+	 * Cria um campo livre com um determinado número de campos
 	 * </p>
 	 * 
 	 * @see AbstractCampoLivre
 	 * 
 	 * @param fieldsLength
-	 *            - NÃºmero de campos
+	 *            - Número de campos
 	 */
 	protected AbstractCLBancoCitibank(Integer fieldsLength) {
-
 		super(fieldsLength);
 	}
 
@@ -77,7 +76,7 @@ abstract class AbstractCLBancoCitibank extends AbstractCampoLivre {
      case 11: 
          return new CLBancoCitiBankNN11(titulo);
      }
-     throw new NotSupportedCampoLivreException("Campo livre diponivel somente para titulos com nosso nmero composto por 10 posicoes(convenio com 7), 11 posicoes ou 17 posicoes(convenio com 6).");
+     throw new NotSupportedCampoLivreException("Campo livre disponível somente para títulos com nosso número composto por 10 posições(convênio com 7), 11 posições ou 17 posições(convênio com 6).");
  }
 
 
