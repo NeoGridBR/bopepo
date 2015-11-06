@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.neogrid</groupId>
 	<artifactId>jrimum-bopepo</artifactId>
 	<packaging>jar</packaging>
 	<name>Projeto Bopepo</name>
-	<version>0.2.4-SNAPSHOT</version>
+	<version>0.2.3</version>
 	<description>Projeto open source de componentes de software para o domínio de negócios do Brasil.</description>
 	<url>http://www.jrimum.org/bopepo</url>
 
@@ -118,16 +118,6 @@
 		<dependency>
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-texgit</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jrimum</groupId>
-			<artifactId>jrimum-utilix</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jrimum</groupId>
-			<artifactId>jrimum-vallia</artifactId>
 			<version>0.2.3</version>
 		</dependency>
 		<dependency>
