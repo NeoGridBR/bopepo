@@ -45,12 +45,15 @@ import org.jrimum.texgit.type.component.FixedField;
  * @version 0.2
  */
 
-class CLBancoCitiBankNN11 extends AbstractCLBancoDoBrasil {
+class CLBancoCitibankNN11 extends AbstractCLBancoCitibank {
 	private static final long serialVersionUID = -7675528811239346517L;
 	private static final Integer FIELDS_LENGTH = Integer.valueOf(7);
 
-	CLBancoCitiBankNN11(final Titulo titulo) {
+	protected CLBancoCitibankNN11() {
 		super(FIELDS_LENGTH);
+	}
+
+	protected void addFields(final Titulo titulo) {
 		final ContaBancaria conta = titulo.getContaBancaria();
 		// Produto
 		final Integer codigoProduto = titulo.getParametrosBancarios().getValor(CODIGO_PRODUTO);
@@ -77,12 +80,10 @@ class CLBancoCitiBankNN11 extends AbstractCLBancoDoBrasil {
 		add(new FixedField<String>(digitoNossoNumero, 1));
 	}
 
-	protected void addFields(Titulo titulo) {
-		throw new UnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	protected void checkValues(Titulo titulo) {
-		throw new UnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	protected void checkValues(final Titulo titulo) {
+		checkNumeroDaContaNotNull(titulo);
+		checkCodigoDoNumeroDaConta(titulo);
+		checkNossoNumero(titulo);
 	}
 
 }

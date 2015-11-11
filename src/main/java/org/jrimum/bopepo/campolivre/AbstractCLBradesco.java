@@ -27,7 +27,6 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
@@ -64,13 +63,11 @@ abstract class AbstractCLBradesco extends AbstractCampoLivre {
 	 * 
 	 * @since 0.2
 	 */
-	protected AbstractCLBradesco(Integer fieldsLength) {
-		
+	protected AbstractCLBradesco(final Integer fieldsLength) {
 		super(fieldsLength);
 	}
 
-	protected static CampoLivre create(Titulo titulo){
-		
+	protected static CampoLivre create(final Titulo titulo){
 		return new CLBradesco().build(titulo);
 	}
 }

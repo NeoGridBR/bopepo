@@ -54,7 +54,7 @@ abstract class AbstractCLBancoCitibank extends AbstractCampoLivre {
 	 * @param fieldsLength
 	 *            - Número de campos
 	 */
-	protected AbstractCLBancoCitibank(Integer fieldsLength) {
+	protected AbstractCLBancoCitibank(final Integer fieldsLength) {
 		super(fieldsLength);
 	}
 
@@ -63,21 +63,14 @@ abstract class AbstractCLBancoCitibank extends AbstractCampoLivre {
 	 * @return um CampoLivre
 	 * 
 	 */
-	 protected static CampoLivre create(Titulo titulo)
-     throws NotSupportedCampoLivreException	{
-	     checkNossoNumero(titulo);
-	     checkNumeroDaContaNotNull(titulo);
-	     checkCodigoDoNumeroDaConta(titulo);
-	     checkNossoNumero(titulo);
-	     checkNumeroDaContaNotNull(titulo);
-	     checkCodigoDoNumeroDaConta(titulo);
-	     switch(titulo.getNossoNumero().length())
-	     {
-     case 11: 
-         return new CLBancoCitiBankNN11(titulo);
-     }
-     throw new NotSupportedCampoLivreException("Campo livre disponível somente para títulos com nosso número composto por 10 posições(convênio com 7), 11 posições ou 17 posições(convênio com 6).");
- }
+	protected static CampoLivre create(final Titulo titulo) throws NotSupportedCampoLivreException	{
+		checkNossoNumero(titulo);
 
+		switch(titulo.getNossoNumero().length()) {
+		case 11: 
+			return new CLBancoCitibankNN11().build(titulo);
+		}
+		throw new NotSupportedCampoLivreException("Campo livre disponível somente para títulos com nosso número composto por 10 posições(convênio com 7), 11 posições ou 17 posições(convênio com 6).");
+	}
 
 }

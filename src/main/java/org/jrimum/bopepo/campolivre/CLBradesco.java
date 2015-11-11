@@ -27,9 +27,9 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
@@ -138,7 +138,7 @@ class CLBradesco extends AbstractCLBradesco {
 	private static final Integer CONSTANT_LENGTH = Integer.valueOf(1);
 	
 	/**
-	 * Valor do campo Constante =  0. 
+	 * Valor do campo Constante = 0. 
 	 */
 	private static final Integer CONSTANT_VALUE = Integer.valueOf(0);
 
@@ -153,7 +153,6 @@ class CLBradesco extends AbstractCLBradesco {
 	 * @since 0.2
 	 */
 	protected CLBradesco() {
-		
 		super(FIELDS_LENGTH);
 	}
 	
@@ -163,8 +162,7 @@ class CLBradesco extends AbstractCLBradesco {
 	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
 	 */
 	@Override
-	protected void checkValues(Titulo titulo){
-		
+	protected void checkValues(final Titulo titulo){
 		checkAgenciaNotNull(titulo);
 		checkCodigoDaAgencia(titulo);
 		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 9999);
@@ -177,19 +175,19 @@ class CLBradesco extends AbstractCLBradesco {
 		checkCodigoDoNumeroDaConta(titulo);
 		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 9999999);
 	}
-	
+
 	/**
-	 *  {@inheritDoc}
+	 * {@inheritDoc}
 	 *  
 	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
 	 */
 	@Override
-	protected void addFields(Titulo titulo) {
-		
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
+	protected void addFields(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+		this.add(new FixedField<Integer>(contaBancaria.getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
+		this.add(new FixedField<Integer>(contaBancaria.getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
 		this.add(new FixedField<String>(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
+		this.add(new FixedField<Integer>(contaBancaria.getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
 		this.add(CONSTANT_FIELD);
 	}
 }

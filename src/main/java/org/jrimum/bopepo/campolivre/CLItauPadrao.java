@@ -36,7 +36,6 @@ import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * 
@@ -126,33 +125,19 @@ class CLItauPadrao extends AbstractCLItau {
 	private static final Integer FIELDS_LENGTH = 7;
 
 	/**
+	 *  Carteiras "exceção".
+	 */
+	private static final Integer[] CARTEIRAS_ESCRITURAIS = {104, 105, 112, 113, 114, 147, 166, 212};
+	private static final Integer[] CARTEIRAS_MODALIDADE_DIRETA = {126, 131, 146, 150, 168};
+
+	/**
 	 * <p>
 	 *   Dado um título, cria o campo livre padrão do Banco Itaú.
 	 * </p>
 	 * @param titulo título com as informações para geração do campo livre
 	 */
-	public CLItauPadrao(Titulo titulo) {
+	protected CLItauPadrao() {
 		super(FIELDS_LENGTH);
-		
-		ContaBancaria conta = titulo.getContaBancaria();
-		
-		this.add(new FixedField<Integer>(conta.getCarteira().getCodigo(), 3, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), 8, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<Integer>(calculeDigitoDaPosicao31(
-									conta.getAgencia().getCodigo(), 
-									conta.getNumeroDaConta().getCodigoDaConta(), 
-									conta.getCarteira().getCodigo(), 
-									titulo.getNossoNumero()), 1));
-		
-		this.add(new FixedField<Integer>(conta.getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 5, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<Integer>(calculeDigitoDaPosicao41(
-									conta.getAgencia().getCodigo(), 
-									conta.getNumeroDaConta().getCodigoDaConta()), 1));
-		
-		this.add(new FixedField<String>("000", 3));
 	}
 	
 	/**
@@ -213,29 +198,24 @@ class CLItauPadrao extends AbstractCLItau {
 	 * 
 	 * @since 0.2
 	 */
-	private Integer calculeDigitoDaPosicao31(Integer codigoDaAgencia,
-			Integer codigoDaConta, Integer codigoDaCarteira, String nossoNumero) {
+	private Integer calculeDigitoDaPosicao31(final Integer codigoDaAgencia,
+			final Integer codigoDaConta, final Integer codigoDaCarteira, final String nossoNumero) {
 
-		// Carteiras "exceção".
-		Integer[] carteirasEscriturais = {104, 105, 112, 113, 114, 147, 166, 212};
-		Integer[] carteirasModalidadeDireta = {126, 131, 146, 150, 168};
-		
-		StringBuilder campo = new StringBuilder();
+		final StringBuilder campo = new StringBuilder();
 		campo.append(Fillers.ZERO_LEFT.fill(codigoDaCarteira.intValue(), 3));
 		campo.append(Fillers.ZERO_LEFT.fill(nossoNumero, 8));
-		
+
 		/*
 		 * Se a carteira em questão não estiver nas lista de exceções então
 		 * acrescenta-se a agência e a conta para compor a base para o cálculo 
 		 * do DAC.
 		 */
-		if (Arrays.binarySearch(carteirasModalidadeDireta, codigoDaCarteira) < 0
-		    && Arrays.binarySearch(carteirasEscriturais, codigoDaCarteira) < 0) {
-			
+		if (Arrays.binarySearch(CARTEIRAS_MODALIDADE_DIRETA, codigoDaCarteira) < 0
+		    && Arrays.binarySearch(CARTEIRAS_ESCRITURAIS, codigoDaCarteira) < 0) {
 			campo.insert(0, Fillers.ZERO_LEFT.fill(codigoDaConta.intValue(), 5));
 			campo.insert(0, Fillers.ZERO_LEFT.fill(codigoDaAgencia.intValue(), 4));
 		}
-		
+
 		return calculeDigitoVerificador(campo.toString());
 	}
 	
@@ -272,26 +252,45 @@ class CLItauPadrao extends AbstractCLItau {
 	 * 
 	 * @since 0.2
 	 */
-	private Integer calculeDigitoDaPosicao41(Integer codigoDaAgencia,
-			Integer codigoDaConta) {
-
-		StringBuilder campo = new StringBuilder();
+	private Integer calculeDigitoDaPosicao41(final Integer codigoDaAgencia, final Integer codigoDaConta) {
+		final StringBuilder campo = new StringBuilder();
 		campo.append(Fillers.ZERO_LEFT.fill(codigoDaAgencia.intValue(), 4));
 		campo.append(Fillers.ZERO_LEFT.fill(codigoDaConta.intValue(), 5));
-		
 		return calculeDigitoVerificador(campo.toString());
 	}
 	
 	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	protected void addFields(final Titulo titulo) {
+		final ContaBancaria conta = titulo.getContaBancaria();
+
+		final Integer codigoDaCarteira = conta.getCarteira().getCodigo();
+		this.add(new FixedField<Integer>(codigoDaCarteira, 3, Fillers.ZERO_LEFT));
+
+		final String nossoNumero = titulo.getNossoNumero();
+		this.add(new FixedField<String>(nossoNumero, 8, Fillers.ZERO_LEFT));
+
+		final Integer numeroDaAgencia = conta.getAgencia().getCodigo();
+		final Integer numeroDaConta = conta.getNumeroDaConta().getCodigoDaConta();
+
+		final Integer digitoDaPosicao31 = calculeDigitoDaPosicao31(
+				numeroDaAgencia, 
+				numeroDaConta, 
+				codigoDaCarteira, 
+				nossoNumero);
+		this.add(new FixedField<Integer>(digitoDaPosicao31, 1));
+
+		this.add(new FixedField<Integer>(numeroDaAgencia, 4, Fillers.ZERO_LEFT));
+		this.add(new FixedField<Integer>(numeroDaConta, 5, Fillers.ZERO_LEFT));
+
+		final Integer digitoDaPosicao41 = calculeDigitoDaPosicao41(numeroDaAgencia, numeroDaConta);
+		this.add(new FixedField<Integer>(digitoDaPosicao41, 1));
+
+		this.add(new FixedField<String>("000", 3));
 	}
 
 	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	protected void checkValues(final Titulo titulo) {
 	}
+
 }
 

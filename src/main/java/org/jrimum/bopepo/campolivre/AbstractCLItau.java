@@ -66,8 +66,7 @@ abstract class AbstractCLItau extends AbstractCampoLivre {
 	 */
 	private static final Set<Integer> CARTEIRAS_ESPECIAIS = new HashSet<Integer>(8);
 	
-	static{
-		
+	static {
 		CARTEIRAS_ESPECIAIS.add(106);
 		CARTEIRAS_ESPECIAIS.add(107);
 		CARTEIRAS_ESPECIAIS.add(122);
@@ -85,29 +84,23 @@ abstract class AbstractCLItau extends AbstractCampoLivre {
 	 * 
 	 * @param fieldsLength - Número de campos
 	 */
-	protected AbstractCLItau(Integer fieldsLength) {
-		
+	protected AbstractCLItau(final Integer fieldsLength) {
 		super(fieldsLength);
 	}
-	
-	protected static CampoLivre create(Titulo titulo){
-		
+
+	protected static CampoLivre create(final Titulo titulo) {
 		checkCarteiraNotNull(titulo);
 		checkCodigoDaCarteira(titulo);
-		
 		/*
 		 * Se a carteira for especial, a forma de construir o campo livre será diferente.
 		 */
 		if(CARTEIRAS_ESPECIAIS.contains(titulo.getContaBancaria().getCarteira().getCodigo())) {
-			
-			return new CLItauComCarteirasEspeciais(titulo);
-			
-		}else {
-			
-			return new CLItauPadrao(titulo);
+			return new CLItauComCarteirasEspeciais().build(titulo);
+		} else {
+			return new CLItauPadrao().build(titulo);
 		}
 	}
-	
+
 	/**
 	 * <p>
 	 * Método auxiliar para calcular o dígito verificador dos campos 31 e 41.
@@ -124,14 +117,11 @@ abstract class AbstractCLItau extends AbstractCampoLivre {
 	 * @since 
 	 */
 	protected Integer calculeDigitoVerificador(String campo) {
-				
 		int restoDivisao = Modulo.calculeMod10(campo, 1, 2);
 		int digito = MOD10 - restoDivisao;
-		
 		if(digito > 9) {
 			digito = 0;
 		}
-		
 		return new Integer(digito);
 	}
 

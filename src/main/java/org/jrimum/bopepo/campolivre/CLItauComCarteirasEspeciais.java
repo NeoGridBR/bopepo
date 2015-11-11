@@ -34,7 +34,6 @@ import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * Campo livre padrão do Banco Itaú
@@ -125,24 +124,8 @@ class CLItauComCarteirasEspeciais extends AbstractCLItau {
 	 * @param titulo
 	 *            título com as informações para geração do campo livre
 	 */
-	public CLItauComCarteirasEspeciais(Titulo titulo) {
+	public CLItauComCarteirasEspeciais() {
 		super(FIELDS_LENGTH);
-		
-		ContaBancaria conta = titulo.getContaBancaria();
-		
-		this.add(new FixedField<Integer>(conta.getCarteira().getCodigo(), 3, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), 8, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNumeroDoDocumento(), 7, Fillers.ZERO_LEFT));
-		
-		//Aqui é o código do cedente, simbolizado pelo código da conta bancária.
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 5, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<Integer>(calculeDigitoDoCampoLivreEspecial(
-											conta.getCarteira().getCodigo(), 
-											titulo.getNossoNumero(),
-											titulo.getNumeroDoDocumento(),
-											conta.getNumeroDaConta().getCodigoDaConta()), 1));
-		this.add(new FixedField<Integer>(0, 1));
 	}
 	
 	/**
@@ -158,28 +141,42 @@ class CLItauComCarteirasEspeciais extends AbstractCLItau {
 	 * 
 	 * @since 0.2
 	 */
-	private Integer calculeDigitoDoCampoLivreEspecial(Integer codigoDaCarteira,
-			String nossoNumero, String numeroDoDocumento, Integer codigoDaConta) {
+	private Integer calculeDigitoDoCampoLivreEspecial(final Integer codigoDaCarteira,
+			final String nossoNumero, final String numeroDoDocumento, final Integer codigoDaConta) {
 
-		StringBuilder campo = new StringBuilder();
-		
+		final StringBuilder campo = new StringBuilder();
 		campo.append(Fillers.ZERO_LEFT.fill(codigoDaCarteira.intValue(), 3));
 		campo.append(Fillers.ZERO_LEFT.fill(nossoNumero, 8));
 		campo.append(Fillers.ZERO_LEFT.fill(numeroDoDocumento, 7));
 		campo.append(Fillers.ZERO_LEFT.fill(codigoDaConta, 5));
-		
+
 		return calculeDigitoVerificador(campo.toString());
 	}
 
 	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	protected void addFields(final Titulo titulo) {
+		final ContaBancaria conta = titulo.getContaBancaria();
+
+		final Integer codigoDaCarteira = conta.getCarteira().getCodigo();
+		this.add(new FixedField<Integer>(codigoDaCarteira, 3, Fillers.ZERO_LEFT));
+
+		final String nossoNumero = titulo.getNossoNumero();
+		this.add(new FixedField<String>(nossoNumero, 8, Fillers.ZERO_LEFT));
+
+		final String numeroDoDocumento = titulo.getNumeroDoDocumento();
+		this.add(new FixedField<String>(numeroDoDocumento, 7, Fillers.ZERO_LEFT));
+
+		final Integer numeroDaConta = conta.getNumeroDaConta().getCodigoDaConta();
+		//Aqui é o código do cedente, simbolizado pelo código da conta bancária.
+		this.add(new FixedField<Integer>(numeroDaConta, 5, Fillers.ZERO_LEFT));
+
+		final Integer digitoDoCampoLivreEspecial = calculeDigitoDoCampoLivreEspecial(codigoDaCarteira, nossoNumero, numeroDoDocumento, numeroDaConta);
+		this.add(new FixedField<Integer>(digitoDoCampoLivreEspecial, 1));
+
+		this.add(new FixedField<Integer>(0, 1));
 	}
 
 	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	protected void checkValues(final Titulo titulo) {
 	}
 }
