@@ -29,13 +29,12 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import static org.jrimum.bopepo.parametro.ParametroCitibank.CODIGO_PRODUTO;
-
 import org.apache.commons.lang.StringUtils;
+import org.jrimum.bopepo.banco.CampoLivre;
+import org.jrimum.bopepo.banco.TituloValidator;
+import org.jrimum.bopepo.parametro.ParametroCitibank;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * Interface comum para todos os campos livres do CITIBANK
@@ -45,45 +44,34 @@ import org.jrimum.texgit.type.component.FixedField;
  * @version 0.2
  */
 
-class CLBancoCitibankNN11 extends AbstractCLBancoCitibank {
-	private static final long serialVersionUID = -7675528811239346517L;
-	private static final Integer FIELDS_LENGTH = Integer.valueOf(7);
+public class CLBancoCitibankNN11 {
 
-	protected CLBancoCitibankNN11() {
-		super(FIELDS_LENGTH);
-	}
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkContaBancariaCodigo(titulo);
+		TituloValidator.checkNossoNumero(titulo);
 
-	protected void addFields(final Titulo titulo) {
-		final ContaBancaria conta = titulo.getContaBancaria();
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+		final CampoLivre campoLivre = new CampoLivre(7);
+
 		// Produto
-		final Integer codigoProduto = titulo.getParametrosBancarios().getValor(CODIGO_PRODUTO);
-		add(new FixedField<Integer>(codigoProduto, 1));
+		final Integer codigoProduto = titulo.getParametrosBancarios().getValor(ParametroCitibank.CODIGO_PRODUTO);
+		campoLivre.addInteger(codigoProduto, 1);
 		// Portifólio
-		final Integer portfolio = conta.getCarteira().getCodigo();
-		add(new FixedField<Integer>(portfolio, 3, Fillers.ZERO_LEFT));
+		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
 
-		final String numeroConta = StringUtils.leftPad(conta.getNumeroDaConta().getCodigoDaConta().toString(), 9, '0');
+		final String numeroConta = StringUtils.leftPad(contaBancaria.getNumeroDaConta().getCodigoDaConta().toString(), 9, '0');
 		// Base
-		final String base = StringUtils.substring(numeroConta, 1, 7);
-		add(new FixedField<String>(base, 6));
+		campoLivre.addString(StringUtils.substring(numeroConta, 1, 7), 6);
 		// Sequencia
-		final String sequencia = StringUtils.right(numeroConta, 2);
-		add(new FixedField<String>(sequencia, 2));
+		campoLivre.addString(StringUtils.right(numeroConta, 2), 2);
 		// Dígito
-		final String digitoConta = conta.getNumeroDaConta().getDigitoDaConta();
-		add(new FixedField<String>(digitoConta, 1));
+		campoLivre.addString(contaBancaria.getNumeroDaConta().getDigitoDaConta(), 1);
 		// Nosso Número
-		final String nossoNumero = titulo.getNossoNumero();
-		add(new FixedField<String>(nossoNumero, 11, Fillers.ZERO_LEFT));
-		// Nosso Número
-		final String digitoNossoNumero = titulo.getDigitoDoNossoNumero();
-		add(new FixedField<String>(digitoNossoNumero, 1));
-	}
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 11);
+		// Dígito Nosso Número
+		campoLivre.addString(titulo.getDigitoDoNossoNumero(), 1);
 
-	protected void checkValues(final Titulo titulo) {
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkNossoNumero(titulo);
+		return campoLivre;
 	}
 
 }

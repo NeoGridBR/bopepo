@@ -1,5 +1,6 @@
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.vallia.digitoverificador.Modulo;
 
@@ -23,9 +24,7 @@ abstract class AbstractCLUnibanco extends AbstractCampoLivre {
 	}
 
 	protected static CampoLivre create(Titulo titulo) throws NotSupportedCampoLivreException {
-
-		checkCarteiraNotNull(titulo);
-		checkRegistroDaCarteiraNotNull(titulo);
+		TituloValidator.checkCarteiraRegistroNotNull(titulo);
 
 		switch(titulo.getContaBancaria().getCarteira().getTipoCobranca()){
 		case SEM_REGISTRO:

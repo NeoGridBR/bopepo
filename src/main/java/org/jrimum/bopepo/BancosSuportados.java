@@ -32,6 +32,7 @@ package org.jrimum.bopepo;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jrimum.bopepo.banco.Segmento;
 import org.jrimum.domkee.comum.pessoa.id.cprf.CNPJ;
 import org.jrimum.domkee.financeiro.banco.febraban.Banco;
 import org.jrimum.domkee.financeiro.banco.febraban.CodigoDeCompensacaoBACEN;
@@ -123,7 +124,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DO_BRASIL("001", "00000000000191", "BANCO DO BRASIL S.A.", "Banco do Brasil - Banco Múltiplo"),
+	BANCO_DO_BRASIL("001", "00000000000191", "BANCO DO BRASIL S.A.", Segmento.BANCO_DO_BRASIL_BANCO_MULTIPLO),
 		
 	/**
 	 * Tipo enumerado que representa o <strong>Banco do Nordeste do Brasil</strong>, código
@@ -131,7 +132,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2-Helio
 	 */	
-	BANCO_DO_NORDESTE_DO_BRASIL("004","07237373000120", "BANCO DO NORDESTE DO BRASIL S.A.","Banco Múltiplo"),		
+	BANCO_DO_NORDESTE_DO_BRASIL("004","07237373000120", "BANCO DO NORDESTE DO BRASIL S.A.", Segmento.BANCO_MULTIPLO),		
 	
 	/**
 	 * Tipo enumerado que representa o Banestes, <strong>Banco do Estado do Espírito Santo</strong>,
@@ -141,7 +142,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DO_ESTADO_DO_ESPIRITO_SANTO("021", "28127603000178", "BANCO DO ESTADO DO ESPIRITO SANTO S.A.", "Banco Múltiplo"),
+	BANCO_DO_ESTADO_DO_ESPIRITO_SANTO("021", "28127603000178", "BANCO DO ESTADO DO ESPIRITO SANTO S.A.", Segmento.BANCO_MULTIPLO),
 			
 	/**
 	 * Tipo enumerado que representa o Santander <strong>Banco Santander
@@ -150,7 +151,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_SANTANDER("033", "90400888000142", "BANCO SANTANDER (BRASIL) S. A.", "Banco Mútiplo"),
+	BANCO_SANTANDER("033", "90400888000142", "BANCO SANTANDER (BRASIL) S. A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o Banrisul, Banco <strong>do Estado do Rio Grande do Sul</strong>,
@@ -159,7 +160,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL("041", "92702067000196", "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.", "Banco Múltiplo"),
+	BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL("041", "92702067000196", "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.", Segmento.BANCO_MULTIPLO),
 			
 	/**
 	 * Tipo enumerado que representa o Banco <strong>BRB - Banco de Brasília</strong>,
@@ -168,7 +169,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DE_BRASILIA("070","00000208000100","BRB- Banco de Brasília S.A.","Banco Múltiplo"),
+	BANCO_DE_BRASILIA("070","00000208000100","BRB- Banco de Brasília S.A.", Segmento.BANCO_MULTIPLO),
 	
 	/**
 	 * Tipo enumerado que representa o BANISA, Banco <strong>Intermedium</strong>,
@@ -177,7 +178,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_INTEMEDIUM("077", "00416968000101", "BANCO INTERMEDIUM S.A.", "Banco Múltiplo"),
+	BANCO_INTEMEDIUM("077", "00416968000101", "BANCO INTERMEDIUM S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o CECRED, <strong>Cooperativa Central de Crédito Urbano</strong>,
@@ -186,7 +187,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	CECRED("085", "05.463.212/0001-29", "COOPERATIVA CENTRAL DE CRÉDITO URBANO - CECRED", "Cooperativa de Crédito"),
+	CECRED("085", "05.463.212/0001-29", "COOPERATIVA CENTRAL DE CRÉDITO URBANO - CECRED", Segmento.COOPERATIVA_DE_CREDITO),
 	
 	/**
 	 * Tipo enumerado que representa o Banco <strong>Caixa Econômica Federal</strong>,
@@ -195,7 +196,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	CAIXA_ECONOMICA_FEDERAL("104", "00360305000104", "CAIXA ECONOMICA FEDERAL", "Caixa Econômica Federal"),
+	CAIXA_ECONOMICA_FEDERAL("104", "00360305000104", "CAIXA ECONOMICA FEDERAL", Segmento.CAIXA_ECONOMICA_FEDERAL),
 
 	/**
 	 * Tipo enumerado que representa o Banco <strong>Bradesco</strong>, código
@@ -204,7 +205,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_BRADESCO("237", "60746948000112", "BANCO BRADESCO S.A.", "Banco Múltiplo"),
+	BANCO_BRADESCO("237", "60746948000112", "BANCO BRADESCO S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Itaú</strong>, código de
@@ -213,7 +214,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_ITAU("341", "60701190000104", "BANCO ITAÚ S.A.", "Banco Múltiplo"),
+	BANCO_ITAU("341", "60701190000104", "BANCO ITAÚ S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Banco ABN AMRO Real</strong>
@@ -226,7 +227,7 @@ public enum BancosSuportados{
 	 * </p>
 	 * @since 0.2
 	 */
-	BANCO_ABN_AMRO_REAL("356", "33066408000115", "BANCO ABN AMRO REAL S.A.", "Banco Múltiplo"),
+	BANCO_ABN_AMRO_REAL("356", "33066408000115", "BANCO ABN AMRO REAL S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Mercantil do Brasil</strong>
@@ -234,7 +235,7 @@ public enum BancosSuportados{
 	 * código de compensação <strong><tt>389</tt></strong>.
 	 * @since 0.2
 	 */
-	MERCANTIL_DO_BRASIL("389", "17184037000110", "BANCO MERCANTIL DO BRASIL S.A.", "Banco Múltiplo"),
+	MERCANTIL_DO_BRASIL("389", "17184037000110", "BANCO MERCANTIL DO BRASIL S.A.", Segmento.BANCO_MULTIPLO),
 			
 	/**
 	 * Tipo enumerado que representa o <strong>HSBC</strong>, código de
@@ -243,7 +244,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	HSBC("399", "01701201000189", "HSBC BANK BRASIL S.A.", "Banco Múltiplo"),
+	HSBC("399", "01701201000189", "HSBC BANK BRASIL S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Unibanco</strong>, código de
@@ -252,7 +253,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	UNIBANCO("409", "33700394000140", "UNIBANCO-UNIAO DE BANCOS BRASILEIROS S.A.", "Banco Múltiplo"),
+	UNIBANCO("409", "33700394000140", "UNIBANCO-UNIAO DE BANCOS BRASILEIROS S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Unibanco</strong>, código de
@@ -261,7 +262,16 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_SAFRA("422", "58160789000128", "BANCO SAFRA S.A.", "Banco Múltiplo"),
+	BANCO_SAFRA("422", "58160789000128", "BANCO SAFRA S.A.", Segmento.BANCO_MULTIPLO),
+	
+	/**
+	 * Tipo enumerado que representa o <strong>Sofisa</strong>, código de
+	 * compensação <strong><tt>637</tt></strong> <a
+	 * href="http://www.sofisa.com.br/">site</a>.
+	 * 
+	 * @since 0.2.5
+	 */
+	BANCO_SOFISA("637", "60889128000180", "Banco Sofisa S.A.", Segmento.BANCO_MULTIPLO),
 	
 	/**
 	 * Tipo enumerado que representa o <strong>Citibank</strong>, código de
@@ -270,7 +280,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	CITIBANK("745", "33479023000180", "BANCO CITIBANK S.A.", "Banco Múltiplo"),
+	CITIBANK("745", "33479023000180", "BANCO CITIBANK S.A.", Segmento.BANCO_MULTIPLO),
 	
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Sicredi</strong>, código de
@@ -279,7 +289,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_SICREDI("748", "01181521000155", "BANCO COOPERATIVO SICREDI S.A.", "Banco Mútiplo Cooperativo"),
+	BANCO_SICREDI("748", "01181521000155", "BANCO COOPERATIVO SICREDI S.A.", Segmento.BANCO_MULTIPLO_COOPERATIVO),
 	
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Rural</strong>, código de
@@ -288,7 +298,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_RURAL("453", "58160789000128", "BANCO RURAL S.A.", "Banco Múltiplo"),
+	BANCO_RURAL("453", "58160789000128", "BANCO RURAL S.A.", Segmento.BANCO_MULTIPLO),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Bancoob</strong>, código de
@@ -297,7 +307,7 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCOOB("756", "02038232000164", "BANCO COOPERATIVO DO BRASIL S.A. - BANCOOB", "Banco Comercial Cooperativo");
+	BANCOOB("756", "02038232000164", "BANCO COOPERATIVO DO BRASIL S.A. - BANCOOB", Segmento.BANCO_MULTIPLO_COOPERATIVO);
 	
 	/**
 	 * Singleton <code>Map</code> para pesquisa por bancos suportados no
@@ -310,58 +320,30 @@ public enum BancosSuportados{
 
 	static {
 
-		suportados.put(BANCO_DO_BRASIL.codigoDeCompensacaoBACEN, BANCO_DO_BRASIL);
-		suportados.put(BANCO_DO_NORDESTE_DO_BRASIL.codigoDeCompensacaoBACEN, BANCO_DO_NORDESTE_DO_BRASIL);
-		suportados.put(CAIXA_ECONOMICA_FEDERAL.codigoDeCompensacaoBACEN, CAIXA_ECONOMICA_FEDERAL);
-		suportados.put(BANCO_BRADESCO.codigoDeCompensacaoBACEN, BANCO_BRADESCO);
-		suportados.put(BANCO_ABN_AMRO_REAL.codigoDeCompensacaoBACEN, BANCO_ABN_AMRO_REAL);
-		suportados.put(UNIBANCO.codigoDeCompensacaoBACEN, UNIBANCO);
-		suportados.put(HSBC.codigoDeCompensacaoBACEN, HSBC);
-		suportados.put(BANCO_ITAU.codigoDeCompensacaoBACEN, BANCO_ITAU);
-		suportados.put(BANCO_SAFRA.codigoDeCompensacaoBACEN, BANCO_SAFRA);
-		suportados.put(BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL.codigoDeCompensacaoBACEN, BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL);
-		suportados.put(MERCANTIL_DO_BRASIL.codigoDeCompensacaoBACEN, MERCANTIL_DO_BRASIL);
-		suportados.put(BANCO_DO_ESTADO_DO_ESPIRITO_SANTO.codigoDeCompensacaoBACEN, BANCO_DO_ESTADO_DO_ESPIRITO_SANTO);
-		suportados.put(BANCO_RURAL.codigoDeCompensacaoBACEN, BANCO_RURAL);
-		suportados.put(BANCO_SANTANDER.codigoDeCompensacaoBACEN, BANCO_SANTANDER);
-		suportados.put(BANCO_INTEMEDIUM.codigoDeCompensacaoBACEN, BANCO_INTEMEDIUM);
-		suportados.put(BANCO_SICREDI.codigoDeCompensacaoBACEN, BANCO_SICREDI);
-		suportados.put(BANCOOB.codigoDeCompensacaoBACEN, BANCOOB);
-		suportados.put(CITIBANK.codigoDeCompensacaoBACEN, CITIBANK);
-		suportados.put(BANCO_DE_BRASILIA.codigoDeCompensacaoBACEN, BANCO_DE_BRASILIA);
-		suportados.put(CECRED.codigoDeCompensacaoBACEN, CECRED);
+		suportados.put(BANCO_DO_BRASIL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_BRASIL);
+		suportados.put(BANCO_DO_NORDESTE_DO_BRASIL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_NORDESTE_DO_BRASIL);
+		suportados.put(CAIXA_ECONOMICA_FEDERAL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CAIXA_ECONOMICA_FEDERAL);
+		suportados.put(BANCO_BRADESCO.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_BRADESCO);
+		suportados.put(BANCO_ABN_AMRO_REAL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_ABN_AMRO_REAL);
+		suportados.put(UNIBANCO.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), UNIBANCO);
+		suportados.put(HSBC.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), HSBC);
+		suportados.put(BANCO_ITAU.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_ITAU);
+		suportados.put(BANCO_SAFRA.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SAFRA);
+		suportados.put(BANCO_SOFISA.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SOFISA);
+		suportados.put(BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL);
+		suportados.put(MERCANTIL_DO_BRASIL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), MERCANTIL_DO_BRASIL);
+		suportados.put(BANCO_DO_ESTADO_DO_ESPIRITO_SANTO.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_ESTADO_DO_ESPIRITO_SANTO);
+		suportados.put(BANCO_RURAL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_RURAL);
+		suportados.put(BANCO_SANTANDER.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SANTANDER);
+		suportados.put(BANCO_INTEMEDIUM.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_INTEMEDIUM);
+		suportados.put(BANCO_SICREDI.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SICREDI);
+		suportados.put(BANCOOB.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCOOB);
+		suportados.put(CITIBANK.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CITIBANK);
+		suportados.put(BANCO_DE_BRASILIA.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DE_BRASILIA);
+		suportados.put(CECRED.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CECRED);
 	}
 
-	/**
-	 * Códigos de instituições bancárias na compensação - COMPE <a
-	 * href="http://www.bcb.gov.br/?CHEQUESCOMPE">BACEN</a>.
-	 * 
-	 * @since 0.2
-	 */
-	private String codigoDeCompensacaoBACEN;
-
-	/**
-	 * CNPJ registrado na <a href="http://www.bcb.gov.br/?CHEQUESCOMPE">BACEN</a>.
-	 * 
-	 * @since 0.2
-	 */
-	private String cNPJ;
-
-	/**
-	 * Nome da instituição registrado na <a
-	 * href="http://www.bcb.gov.br/?CHEQUESCOMPE">BACEN</a>.
-	 * 
-	 * @since 0.2
-	 */
-	private String instituicao;
-
-	/**
-	 * Segmento bancário da instituição registrado na <a
-	 * href="http://www.bcb.gov.br/?CHEQUESCOMPE">BACEN</a>.
-	 * 
-	 * @since 0.2
-	 */
-	private String segmento;
+	private final Banco instituicao;
 
 	/**
 	 * <p>
@@ -382,14 +364,11 @@ public enum BancosSuportados{
 	 * @since 0.2
 	 * 
 	 */
-	private BancosSuportados(String codigoDeCompensacaoBACEN, String cnpj,
-			String instituicao, String segmento) {
-		this.codigoDeCompensacaoBACEN = codigoDeCompensacaoBACEN;
-		this.cNPJ = cnpj;
-		this.instituicao = instituicao;
-		this.segmento = segmento;
+	private BancosSuportados(final String codigoDeCompensacaoBACEN, final String cnpj,
+			final String instituicao, final Segmento segmento) {
+		this.instituicao = new Banco(new CodigoDeCompensacaoBACEN(codigoDeCompensacaoBACEN), instituicao, new CNPJ(cnpj), segmento.getDescricao());
 	}
-	
+
 	/**
 	 * <p>
 	 * Verifica se exite suporte (implementação) de "Campos Livres" para o banco
@@ -428,44 +407,7 @@ public enum BancosSuportados{
 	 * @since 0.2
 	 */
 	public Banco create() {
-		return new Banco(new CodigoDeCompensacaoBACEN(this.codigoDeCompensacaoBACEN), this.instituicao, new CNPJ(
-				this.cNPJ), this.segmento);
-	}
-
-	/**
-	 * @return the codigoDeCompensacaoBACEN
-	 * 
-	 * @since 0.2
-	 */
-	public String getCodigoDeCompensacao() {
-		return codigoDeCompensacaoBACEN;
-	}
-
-	/**
-	 * @return the cNPJ
-	 * 
-	 * @since 0.2
-	 */
-	public String getCNPJ() {
-		return cNPJ;
-	}
-
-	/**
-	 * @return the instituicao
-	 * 
-	 * @since 0.2
-	 */
-	public String getInstituicao() {
 		return instituicao;
-	}
-
-	/**
-	 * @return the segmento
-	 * 
-	 * @since 0.2
-	 */
-	public String getSegmento() {
-		return segmento;
 	}
 
 }

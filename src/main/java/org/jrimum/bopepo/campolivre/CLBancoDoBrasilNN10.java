@@ -27,15 +27,11 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
-
 
 /**
  * 
@@ -44,38 +40,39 @@ import org.jrimum.utilix.Exceptions;
  * 
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
  * collapse" bordercolor="#111111" width="60%" id="campolivre">
- * <tr> <thead>
- * <th >Posição </th>
+ * <tr>
+ * <thead>
+ * <th >Posição</th>
  * <th >Tamanho</th>
  * <th >Picture</th>
  * <th>Conteúdo (terminologia padrão)</th>
- * <th>Conteúdo (terminologia do banco)</th>
- * </thead> </tr>
+ * <th>Conteúdo (terminologia do banco)</th> </thead>
+ * </tr>
  * <tr>
  * <td >20-25</td>
  * <td >6</td>
- * <td >9(6) </td>
+ * <td >9(6)</td>
  * <td >ZEROS</td>
  * <td >ZEROS</td>
  * </tr>
  * <tr>
  * <td >26-32</td>
  * <td >7</td>
- * <td >9(7) </td>
+ * <td >9(7)</td>
  * <td >Conta do cedente (sem dígito)</td>
  * <td >Convênio (sem dígito)</td>
  * </tr>
  * <tr>
  * <td >33-42</td>
  * <td >10</td>
- * <td >9(10) </td>
+ * <td >9(10)</td>
  * <td >Nosso Número</td>
  * <td >Nosso Número</td>
  * </tr>
  * <tr>
  * <td >43-44</td>
  * <td >2</td>
- * <td >9(2) </td>
+ * <td >9(2)</td>
  * <td >Carteira</td>
  * <td >Carteira</td>
  * </tr>
@@ -92,50 +89,25 @@ import org.jrimum.utilix.Exceptions;
  * 
  * @version 0.2
  */
-class CLBancoDoBrasilNN10 extends AbstractCLBancoDoBrasil { 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7675528811239346517L;
-
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 4;
+public class CLBancoDoBrasilNN10 {
 
 	/**
 	 * <p>
-	 *   Dado um título, cria um campo livre para o padrão do Banco do Brasil
-	 *   que tenha o nosso número de tamanho 10.  
+	 * Dado um título, cria um campo livre para o padrão do Banco do Brasil que
+	 * tenha o nosso número de tamanho 10.
 	 * </p>
-	 * @param titulo título com as informações para geração do campo livre
+	 * 
+	 * @param titulo
+	 *            título com as informações para geração do campo livre
 	 */
-	CLBancoDoBrasilNN10(Titulo titulo) {
-		super(FIELDS_LENGTH);
-		
-		ContaBancaria conta = titulo.getContaBancaria();
-		
-		String nossoNumero = titulo.getNossoNumero();
-		
-		this.add(new FixedField<String>("", 6, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 7, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<String>(nossoNumero, 10, Fillers.ZERO_LEFT));	
-		
-		this.add(new FixedField<Integer>(conta.getCarteira().getCodigo(), 2, Fillers.ZERO_LEFT));
-		
-	}
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
 
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+		final CampoLivre campoLivre = new CampoLivre(4);
+		campoLivre.addStringZeroLeft("", 6);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 10);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 2);
+		return campoLivre;
 	}
 }

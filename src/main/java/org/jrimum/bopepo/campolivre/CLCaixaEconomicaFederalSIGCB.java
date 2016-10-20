@@ -28,13 +28,12 @@
  */
 
 package org.jrimum.bopepo.campolivre;
+
 import static org.jrimum.vallia.digitoverificador.Modulo.MOD11;
 
+import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 import org.jrimum.vallia.digitoverificador.Modulo;
 
 /**
@@ -42,7 +41,8 @@ import org.jrimum.vallia.digitoverificador.Modulo;
  * O campo livre para o modelo SIGCB segue esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: * collapse" bordercolor="#111111" width="60%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: *
+ * collapse" bordercolor="#111111" width="60%" id="campolivre">
  * <thead>
  * <tr>
  * <td>Posição</td>
@@ -101,30 +101,20 @@ import org.jrimum.vallia.digitoverificador.Modulo;
  * 
  * @version 0.2
  */
-class CLCaixaEconomicaFederalSIGCB extends AbstractCLCaixaEconomicaFederal {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -7642075752245778160L;
-
-	/**
-	 *
-	 */
-	private static final Integer FIELDS_LENGTH = 8;
+public class CLCaixaEconomicaFederalSIGCB {
 
 	/**
 	 * Modalidade de cobrança.
 	 */
 	private static final int COBRANCA_REGISTRADA = 1;
-	
+
 	/**
 	 * Modalidade de cobrança.
 	 */
 	private static final int COBRANCA_NAO_REGISTRADA = 2;
-	
+
 	/**
-	 * Constante que indica emissão de boleto pelo cedente. 
+	 * Constante que indica emissão de boleto pelo cedente.
 	 */
 	private static final int EMISSAO_CEDENTE = 4;
 
@@ -137,38 +127,37 @@ class CLCaixaEconomicaFederalSIGCB extends AbstractCLCaixaEconomicaFederal {
 	 * @param titulo
 	 *            - Título com as informações para geração do campo livre.
 	 */
-	CLCaixaEconomicaFederalSIGCB(Titulo titulo) {
-		
-		super(FIELDS_LENGTH);
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+		final String nossoNumero = titulo.getNossoNumero();
 
-		ContaBancaria conta = titulo.getContaBancaria();
-		String nossoNumero = titulo.getNossoNumero();
+		final CampoLivre campoLivre = new CampoLivre(8);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 6);
 
-		Integer dVCodigoDoCedente = calculeDigitoVerificador(conta.getNumeroDaConta().getCodigoDaConta().toString());
+		final Integer dVCodigoDoCedente = calculeDigitoVerificador(
+				contaBancaria.getNumeroDaConta().getCodigoDaConta().toString());
+		campoLivre.addInteger(dVCodigoDoCedente, 1);
+		campoLivre.addString(nossoNumero.substring(0, 3), 3);
 
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 6, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(dVCodigoDoCedente, 1));
-		this.add(new FixedField<String>(nossoNumero.substring(0, 3), 3));
-		
-		if(conta.getCarteira().isComRegistro()){
-			
-			this.add(new FixedField<Integer>(COBRANCA_REGISTRADA, 1));
-			
-		}else{
-			
-			this.add(new FixedField<Integer>(COBRANCA_NAO_REGISTRADA, 1));
+		if (contaBancaria.getCarteira().isComRegistro()) {
+			campoLivre.addInteger(COBRANCA_REGISTRADA, 1);
+		} else {
+			campoLivre.addInteger(COBRANCA_NAO_REGISTRADA, 1);
 		}
 
-		this.add(new FixedField<String>(nossoNumero.substring(3, 6), 3));
-		this.add(new FixedField<Integer>(EMISSAO_CEDENTE, 1));
-		this.add(new FixedField<String>(nossoNumero.substring(6, 15), 9));
+		campoLivre.addString(nossoNumero.substring(3, 6), 3);
+		campoLivre.addInteger(EMISSAO_CEDENTE, 1);
+		campoLivre.addString(nossoNumero.substring(6, 15), 9);
 
-		this.add(new FixedField<Integer>(calculeDigitoVerificador(gereCampoLivre()), 1));
+		// TODO this.add(new
+		// FixedField<Integer>(calculeDigitoVerificador(gereCampoLivre()), 1));
+		return campoLivre;
 	}
 
 	/**
-	 * Gera o número que serve para calcular o digito verificador do campoLivre, que é todo o campo livre menos o dígito verificador.
-
+	 * Gera o número que serve para calcular o digito verificador do campoLivre,
+	 * que é todo o campo livre menos o dígito verificador.
+	 * 
 	 * <p>
 	 * Os campos utilizados são:
 	 * <ul>
@@ -188,7 +177,7 @@ class CLCaixaEconomicaFederalSIGCB extends AbstractCLCaixaEconomicaFederal {
 	 */
 	private String gereCampoLivre() {
 
-		return writeFields();
+		return null; // TODO writeFields();
 	}
 
 	/**
@@ -199,44 +188,20 @@ class CLCaixaEconomicaFederalSIGCB extends AbstractCLCaixaEconomicaFederal {
 	 * 
 	 * @since 0.2
 	 */
-	private int calculeDigitoVerificador(String numeroParaCalculo) {
-		
+	private static int calculeDigitoVerificador(String numeroParaCalculo) {
 		int soma = Modulo.calculeSomaSequencialMod11(numeroParaCalculo.toString(), 2, 9);
-
 		int dvCampoLivre;
-		
 		if (soma < MOD11) {
-			
 			dvCampoLivre = MOD11 - soma;
-			
 		} else {
-		
 			int restoDiv11 = soma % MOD11;
-			
 			int subResto = MOD11 - restoDiv11;
-			
 			if (subResto > 9) {
-			
 				dvCampoLivre = 0;
-			
 			} else {
-				
 				dvCampoLivre = subResto;
 			}
 		}
-		
 		return dvCampoLivre;
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
 	}
 }

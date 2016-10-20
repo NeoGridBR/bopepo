@@ -27,12 +27,11 @@
  * Criado em: 21/04/2008 - 21:54:06
  * 
  */
-
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.CampoLivre;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * <p>
@@ -92,32 +91,7 @@ import org.jrimum.texgit.type.component.FixedField;
  * 
  * @version 0.2
  */
-class CLBancoSafraCobrancaNaoRegistrada extends AbstractCLBancoSafra {
-
-	/**
-	 * {@code serialVersionUID = -6573340701469029151L}
-	 */
-	private static final long serialVersionUID = -6573340701469029151L;
-	
-	/**
-	 * Tamanho do número de campos = 5.
-	 */
-	protected static final Integer FIELDS_LENGTH = Integer.valueOf(5);
-	
-	/**
-	 * Tamanho do campo Conta = 5. 
-	 */
-	private static final Integer CONTA_LENGTH = Integer.valueOf(5);
-	
-	/**
-	 * Tamanho do campo Dígito da Conta = 1. 
-	 */
-	private static final Integer CONTA_DIGITO_LENGTH = Integer.valueOf(1);
-	
-	/**
-	 * Tamanho do campo Nosso Número = 17. 
-	 */
-	private static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(17);
+public class CLBancoSafraCobrancaNaoRegistrada {
 
 	/**
 	 * Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}
@@ -125,40 +99,20 @@ class CLBancoSafraCobrancaNaoRegistrada extends AbstractCLBancoSafra {
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBancoSafraCobrancaNaoRegistrada() {
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 999999);
+		TituloValidator.checkContaBancariaDigito(titulo);
+		TituloValidator.checkNossoNumeroTamanho(titulo, 17);
 
-		super(FIELDS_LENGTH);
-	}
+		final CampoLivre campoLivre = new CampoLivre(5);
+		campoLivre.addInteger(7, 1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.addString(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
+		// 1 = Bloqueto Emitido pelo Banco. 2 = Eletrônica Emitido pelo Cliente. 4 = Express Emitido pelo Cliente.
+		campoLivre.addInteger(4, 1);
+		return campoLivre;
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void checkValues(Titulo titulo) {
-		
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 999999);
-		checkDigitoDoCodigoDoNumeroDaConta(titulo);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, NN17);
-	}
-
-	/**
-	 *  {@inheritDoc}
-	 *  
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void addFields(Titulo titulo) {
-
-		this.add(SISTEMA_CONSTANT_FIELD);
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), CONTA_DIGITO_LENGTH));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH));		
-		this.add(new FixedField<Integer>(TipoDeCobranca.EXPRESS_BOLETO_EMITIDO_PELO_CLIENTE.codigo(), TIPO_COBRANCA_FIELD_LENGTH));
 	}
 
 }

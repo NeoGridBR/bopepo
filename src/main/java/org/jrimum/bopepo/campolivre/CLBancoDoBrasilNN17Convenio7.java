@@ -1,5 +1,7 @@
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.CampoLivre;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
@@ -9,15 +11,15 @@ import org.jrimum.texgit.type.component.FixedField;
  * O campo livre do Banco do Brasil com o nosso número de 17 dígitos e convênio
  * de 7 posições deve seguir esta forma:
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: * collapse" bordercolor="#111111" width="60%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: *
+ * collapse" bordercolor="#111111" width="60%" id="campolivre">
  * <tr>
  * <thead>
  * <th>Posição</th>
  * <th>Tamanho</th>
  * <th>Picture</th>
  * <th>Conteúdo (terminologia padrão)</th>
- * <th>Conteúdo (terminologia do banco)</th>
- * </thead>
+ * <th>Conteúdo (terminologia do banco)</th> </thead>
  * </tr>
  * <tr>
  * <td>20-25</td>
@@ -43,51 +45,19 @@ import org.jrimum.texgit.type.component.FixedField;
  * </tr>
  * </table>
  * 
- * 
- * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  */
-class CLBancoDoBrasilNN17Convenio7 extends AbstractCLBancoDoBrasil {
-
-	/**
-	 * {@code serialVersionUID = 2347714390743602306L}
-	 */
-	private static final long serialVersionUID = 2347714390743602306L;
-
-	/**
-	 * Número de campos = 3.
-	 */
-	protected static final Integer FIELDS_LENGTH = Integer.valueOf(3);
-
-	/**
-	 * Tamanho do campo Constante = 6.
-	 */
-	protected static final Integer CONSTANT_LENGTH = Integer.valueOf(6);
-
-	/**
-	 * Valor do campo Constante = 0.
-	 */
-	protected static final Integer CONSTANT_VALUE = Integer.valueOf(0);
+public class CLBancoDoBrasilNN17Convenio7 {
 
 	/**
 	 * Constante em forma de campo {@link #CONSTANT_VALUE} e
 	 * {@link #CONSTANT_LENGTH}, valor escrito: "000000".
 	 */
-	private static final FixedField<Integer> CONSTANT_FIELD = new FixedField<Integer>(CONSTANT_VALUE, CONSTANT_LENGTH, Fillers.ZERO_LEFT);
-
-	/**
-	 * Tamanho do campo Nosso Número = 17.
-	 */
-	protected static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(17);
-
-	/**
-	 * Tamanho do campo Carteira = 2.
-	 */
-	protected static final Integer CARTEIRA_LENGTH = Integer.valueOf(2);
+	private static final FixedField<Integer> CONSTANT_FIELD = new FixedField<Integer>(0, 6, Fillers.ZERO_LEFT);
 
 	/**
 	 * <p>
@@ -97,27 +67,15 @@ class CLBancoDoBrasilNN17Convenio7 extends AbstractCLBancoDoBrasil {
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBancoDoBrasilNN17Convenio7() {
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkNossoNumeroTamanho(titulo, 17);
+		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
 
-		super(FIELDS_LENGTH);
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, NN17);
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
-		checkCodigoDaCarteiraMenorOuIgualQue(titulo, 99);
-	}
-
-	@Override
-	protected void addFields(Titulo titulo) {
-
-		this.add(CONSTANT_FIELD);
-		this.add(new FixedField<String>(titulo.getNossoNumero(),NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
+		final CampoLivre campoLivre = new CampoLivre(3);
+		campoLivre.add(CONSTANT_FIELD);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 2);
+		return campoLivre;
 	}
 
 }

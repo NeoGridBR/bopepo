@@ -40,23 +40,23 @@ import org.jrimum.utilix.text.DateFormat;
 public class BoletoBuilder {
 
 	private Boleto boleto;
-	
-	public BoletoBuilder(){
+
+	public BoletoBuilder() {
 		this.boleto = newDefaultValue();
 	}
-	
-	public static Boleto defaultValue(){
+
+	public static Boleto defaultValue() {
 		return newDefaultValue();
 	}
 
-	public static Boleto defaultValueSacadorAvalista(){
+	public static Boleto defaultValueSacadorAvalista() {
 		return newDefaultValueSacadorAvalista();
 	}
-	
-	public Boleto build(){
+
+	public Boleto build() {
 		return this.boleto;
 	}
-	
+
 	private static Boleto newDefaultValue() {
 		Boleto boleto = new Boleto(TituloBuilder.defaultValue());
 		setDefaultValues(boleto);
@@ -68,19 +68,18 @@ public class BoletoBuilder {
 		setDefaultValues(boleto);
 		return boleto;
 	}
-	
-	private static void setDefaultValues(Boleto boleto){
-		
+
+	private static void setDefaultValues(Boleto boleto) {
 		boleto.setLocalPagamento("Pagável preferencialmente na Rede X ou em qualquer Banco até o Vencimento.");
 		boleto.setInstrucaoAoSacado("Senhor sacado, sabemos sim que o valor cobrado não é o esperado, aproveite o DESCONTÃO!");
-		boleto.setInstrucao1("PARA PAGAMENTO 1 até Hoje não cobrar nada!");
-		boleto.setInstrucao2("PARA PAGAMENTO 2 até Amanhã Não cobre!");
-		boleto.setInstrucao3("PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre.");
-		boleto.setInstrucao4("PARA PAGAMENTO 4 até 04/xx/xxxx de 4 dias atrás COBRAR O VALOR DE: R$ 01,00");
-		boleto.setInstrucao5("PARA PAGAMENTO 5 até 05/xx/xxxx COBRAR O VALOR DE: R$ 02,00");
-		boleto.setInstrucao6("PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00");
-		boleto.setInstrucao7("PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!");
-		boleto.setInstrucao8("APÓS o Vencimento, Pagável Somente na Rede X.");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 1 até Hoje não cobrar nada!");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 2 até Amanhã Não cobre!");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre.");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 4 até 04/xx/xxxx de 4 dias atrás COBRAR O VALOR DE: R$ 01,00");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 5 até 05/xx/xxxx COBRAR O VALOR DE: R$ 02,00");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00");
+		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!");
+		boleto.addInstrucaoAoCaixa("APÓS o Vencimento, Pagável Somente na Rede X.");
 		boleto.setDataDeProcessamento(DateFormat.DDMMYYYY_B.parse("14/01/2020"));
 	}
 

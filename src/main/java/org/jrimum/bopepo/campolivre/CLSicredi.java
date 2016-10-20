@@ -34,6 +34,7 @@ import static java.lang.String.format;
 import static java.math.BigDecimal.ZERO;
 import static org.jrimum.bopepo.parametro.ParametroBancoSicredi.POSTO_DA_AGENCIA;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
@@ -180,22 +181,14 @@ class CLSicredi extends AbstractCLSicredi {
 	 */
 	@Override
 	protected void checkValues(Titulo titulo){
-		
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
+		TituloValidator.checkCarteiraCodigo(titulo);
 		checkCarteiraSimples(titulo);
-		checkRegistroDaCarteiraNotNull(titulo);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, NN8);
-		checkDigitoDoNossoNumero(titulo);
-		checkTamanhoDigitoDoNossoNumero(titulo, 1);
-		checkCodigoDaAgencia(titulo);
-		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 99999);
-		checkParametroBancario(titulo, POSTO_DA_AGENCIA);
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 99999);
-		checkValor(titulo);
+		TituloValidator.checkCarteiraRegistroNotNull(titulo);
+		TituloValidator.checkNossoNumeroTamanho(titulo, NN8);
+		TituloValidator.checkNossoNumeroDigitoTamanho(titulo, 1);
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 99999);
+		TituloValidator.checkParametroBancarioNotNull(titulo, POSTO_DA_AGENCIA);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 99999);
 	}
 	
 	/**

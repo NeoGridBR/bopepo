@@ -13,7 +13,7 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public abstract class AbstractCLBancoSafraBaseTest<CL extends CampoLivre> extends AbstractCampoLivreBaseTest<CL>{
+public abstract class AbstractCLBancoSafraBaseTest extends AbstractCampoLivreBaseTest {
 	
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteCarteiraNull() {

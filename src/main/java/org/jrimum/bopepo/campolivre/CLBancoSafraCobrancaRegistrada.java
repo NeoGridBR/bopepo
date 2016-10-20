@@ -30,16 +30,17 @@
 
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.CampoLivre;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * <p>
  * O campo livre do Bradesco deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -93,89 +94,32 @@ import org.jrimum.texgit.type.component.FixedField;
  * 
  * @version 0.2
  */
-class CLBancoSafraCobrancaRegistrada extends AbstractCLBancoSafra {
+public class CLBancoSafraCobrancaRegistrada {
 
 	/**
-	 * {@code serialVersionUID = -4532989921797507161L}
-	 */
-	private static final long serialVersionUID = -4532989921797507161L;
-	
-	/**
-	 * Tamanho do número de campos = 7.
-	 */
-	protected static final Integer FIELDS_LENGTH = Integer.valueOf(7);
-	
-	/**
-	 * Tamanho do campo Agência = 4. 
-	 */
-	private static final Integer AGENCIA_LENGTH = Integer.valueOf(4);
-	
-	/**
-	 * Tamanho do campo Dígito da Agência = 1. 
-	 */
-	private static final Integer AGENCIA_DIGITO_LENGTH = Integer.valueOf(1);
-	
-	/**
-	 * Tamanho do campo Conta = 8. 
-	 */
-	private static final Integer CONTA_LENGTH = Integer.valueOf(8);
-	
-	/**
-	 * Tamanho do campo Dígito da Conta = 1. 
-	 */
-	private static final Integer CONTA_DIGITO_LENGTH = Integer.valueOf(1);
-	
-	/**
-	 * Tamanho do campo Nosso Número = 9. 
-	 */
-	private static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(9);
-
-	/**
-	 * Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}
-	 * ) deste campo.
+	 * Cria um campo livre instanciando o número de fields
+	 * ({@code FIELDS_LENGTH} ) deste campo.
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBancoSafraCobrancaRegistrada() {
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
+		TituloValidator.checkAgenciaDigito(titulo);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 999999);
+		TituloValidator.checkContaBancariaDigito(titulo);
+		TituloValidator.checkNossoNumeroTamanho(titulo, 9);
 
-		super(FIELDS_LENGTH);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void checkValues(Titulo titulo){
-		
-		checkAgenciaNotNull(titulo);
-		checkCodigoDaAgencia(titulo);
-		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 9999);
-		checkDigitoDoCodigoDaAgencia(titulo);
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 999999);
-		checkDigitoDoCodigoDoNumeroDaConta(titulo);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, NN9);
-	}
-
-	/**
-	 *  {@inheritDoc}
-	 *  
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void addFields(Titulo titulo) {
-
-		this.add(SISTEMA_CONSTANT_FIELD);
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getContaBancaria().getAgencia().getDigitoVerificador(), AGENCIA_DIGITO_LENGTH));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), CONTA_DIGITO_LENGTH));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH));
-		this.add(new FixedField<Integer>(TipoDeCobranca.DIRETA_BOLETO_EMITIDO_PELO_CLIENTE.codigo(), TIPO_COBRANCA_FIELD_LENGTH));
+		final CampoLivre campoLivre = new CampoLivre(7);
+		campoLivre.addInteger(7, 1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addString(titulo.getContaBancaria().getAgencia().getDigitoVerificador(), 1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 8);
+		campoLivre.addString(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.addString(titulo.getNossoNumero(), 9);
+		// 1 = Bloqueto Emitido pelo Banco. 2 = Eletrônica Emitido pelo Cliente.
+		// 4 = Express Emitido pelo Cliente.
+		campoLivre.addInteger(2, 1);
+		return campoLivre;
 	}
 
 }

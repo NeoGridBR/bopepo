@@ -54,7 +54,7 @@ import org.junit.Test;
  * @version 0.2
  *
  */
-public class TestCLItauPadrao extends AbstractCampoLivreBaseTest<CLItauPadrao> {
+public class TestCLItauPadrao extends AbstractCampoLivreBaseTest {
 	
 	@Before
 	public void setUp(){

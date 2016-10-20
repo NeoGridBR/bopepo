@@ -27,29 +27,25 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
-import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
+import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * 
  * O campo livre do Banco do Brasil com o nosso número de 17 dígitos e convênio
  * de 7 posições deve seguir esta forma:
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: * collapse" bordercolor="#111111" width="60%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: *
+ * collapse" bordercolor="#111111" width="60%" id="campolivre">
  * <tr>
  * <thead>
  * <th>Posição</th>
  * <th>Tamanho</th>
  * <th>Picture</th>
  * <th>Conteúdo (terminologia padrão)</th>
- * <th>Conteúdo (terminologia do banco)</th>
- * </thead>
+ * <th>Conteúdo (terminologia do banco)</th> </thead>
  * </tr>
  * <tr>
  * <td>20-25</td>
@@ -74,8 +70,6 @@ import org.jrimum.utilix.Exceptions;
  * </tr>
  * </table>
  * 
- * 
- * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
@@ -86,52 +80,27 @@ import org.jrimum.utilix.Exceptions;
  * 
  * @version 0.2
  */
-class CLBancoDoBrasilNN17Convenio6 extends AbstractCLBancoDoBrasil{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3035422743112225831L;
+public class CLBancoDoBrasilNN17Convenio6 {
 
 	/**
 	 * 
 	 */
 	private static final int SERVICO = 21;
-	
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 3;
-	
+
 	/**
 	 * <p>
-	 *   Dado um título, cria um campo livre para o padrão do Banco do Brasil
-	 *   que tenha o nosso número de tamanho 17.  
+	 * Dado um título, cria um campo livre para o padrão do Banco do Brasil que
+	 * tenha o nosso número de tamanho 17.
 	 * </p>
-	 * @param titulo título com as informações para geração do campo livre
+	 * 
+	 * @param titulo
+	 *            título com as informações para geração do campo livre
 	 */
-	CLBancoDoBrasilNN17Convenio6(Titulo titulo) {
-		super(FIELDS_LENGTH);
-		
-		ContaBancaria conta = titulo.getContaBancaria();
-		String nossoNumero = titulo.getNossoNumero();
-		
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 6, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<String>(nossoNumero, 17, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(SERVICO, 2));
-		
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final CampoLivre campoLivre = new CampoLivre(3);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
+		campoLivre.addInteger(SERVICO, 2);
+		return campoLivre;
 	}
 }

@@ -2,6 +2,8 @@ package org.jrimum.bopepo.campolivre;
 
 import static org.jrimum.bopepo.parametro.ParametroBancoSantander.IOF_SEGURADORA;
 
+import java.math.BigDecimal;
+
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.domkee.financeiro.banco.ParametrosBancariosMap;
 import org.jrimum.domkee.financeiro.banco.febraban.Carteira;
@@ -21,7 +23,7 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLBancoSantander extends AbstractCampoLivreBaseTest<CLBancoSantander> {
+public class TestCLBancoSantander extends AbstractCampoLivreBaseTest {
 
 	@Before
 	public void setUp(){
@@ -31,7 +33,7 @@ public class TestCLBancoSantander extends AbstractCampoLivreBaseTest<CLBancoSant
 		titulo.getContaBancaria().setCarteira(new Carteira(101, TipoDeCobranca.COM_REGISTRO, "101- Cobrança Simples Rápida COM Registro"));
 		titulo.setNossoNumero("00000000002");
 		titulo.setDigitoDoNossoNumero("7");
-		
+		titulo.setValor(BigDecimal.TEN);
 		createCampoLivreToTest();
 		
 		setCampoLivreEsperadoComoString("9162546900000000000270101");

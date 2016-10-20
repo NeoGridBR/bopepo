@@ -37,32 +37,33 @@ import org.junit.Before;
 
 /**
  * <p>
- * Teste unitário do campo livre do banco do brasil com o nosso número
- * de tamanho igual a 11.
+ * Teste unitário do campo livre do banco do brasil com o nosso número de
+ * tamanho igual a 11.
  * </p>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  */
-public class TestCLBancoDoBrasilNN11 extends AbstractCampoLivreBaseTest<CLBancoDoBrasilNN11> {
+public class TestCLBancoDoBrasilNN11 extends AbstractCampoLivreBaseTest {
 
 	@Before
-	public void setUp(){
-		
+	public void setUp() {
+
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_DO_BRASIL.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(1234, "1"));
 		titulo.getContaBancaria().setCarteira(new Carteira(5));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(6789));
-		titulo.setNossoNumero("12345678901");		
-		
+		titulo.setNossoNumero("12345678901");
+
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("1234567890112340000678905");
 	}
 }

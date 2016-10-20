@@ -31,6 +31,7 @@
 
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
@@ -184,21 +185,13 @@ class CLBancoDoNordesteDoBrasil extends AbstractCLBancoDoNordesteDoBrasil {
 	 */
 	@Override
 	protected void checkValues(Titulo titulo){
-		
-		checkAgenciaNotNull(titulo);
-		checkCodigoDaAgencia(titulo);
-		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 9999);
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 9999999);
-		checkDigitoDoCodigoDoNumeroDaConta(titulo);
-		checkNossoNumero(titulo);
-		checkDigitoDoNossoNumero(titulo);
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
-		checkCodigoDaCarteiraMenorOuIgualQue(titulo, 99);
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 9999999);
+		TituloValidator.checkContaBancariaDigito(titulo);
+		TituloValidator.checkNossoNumeroDigito(titulo);
+		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
 	}
-	
+
 	/**
 	 *  {@inheritDoc}
 	 *  

@@ -51,7 +51,7 @@ import org.junit.Before;
  * @version 0.2
  *
  */
-public class TestCLItauComCarteirasEspeciais extends AbstractCampoLivreBaseTest<CLItauComCarteirasEspeciais> {
+public class TestCLItauComCarteirasEspeciais extends AbstractCampoLivreBaseTest {
 	
 	@Before
 	public void setUp(){

@@ -29,11 +29,9 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
+import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * <p>
@@ -47,8 +45,7 @@ import org.jrimum.utilix.Exceptions;
  * <td>Tamanho</td>
  * <td>Conteúdo</td>
  * </tr>
- * </thead>
- * <tbody>
+ * </thead> <tbody>
  * <tr>
  * <td>01</td>
  * <td>1</td>
@@ -73,54 +70,43 @@ import org.jrimum.utilix.Exceptions;
  * </table>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
- * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a> 
+ * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  */
-class CLCaixaEconomicaFederalSINCO extends AbstractCLCaixaEconomicaFederal {
+public class CLCaixaEconomicaFederalSINCO {
 
-	private static final long serialVersionUID = -7642075752245778160L;
-	
 	/**
-	 * Quantidade de campos. Tamanho da lista de campos.
+	 * Constante "1".
 	 */
-	private static final Integer FIELDS_LENGTH = 4;
+	private static final FixedField<Integer> FIELD_1 = new FixedField<Integer>(1, 1);
+
+	/**
+	 * Constante "9".
+	 */
+	private static final FixedField<Integer> FIELD_9 = new FixedField<Integer>(9, 1);
 
 	/**
 	 * <p>
-	 * Dado um título, cria um campo livre para o padrão do Banco Caixa Econômica
-	 * Federal que tenha o serviço SINCO.
+	 * Dado um título, cria um campo livre para o padrão do Banco Caixa
+	 * Econômica Federal que tenha o serviço SINCO.
 	 * </p>
-	 * @param titulo Título com as informações para geração do campo livre.
+	 * 
+	 * @param titulo
+	 *            Título com as informações para geração do campo livre.
 	 */
-	CLCaixaEconomicaFederalSINCO(Titulo titulo) {
-		super(FIELDS_LENGTH);
-		
-		ContaBancaria conta = titulo.getContaBancaria();
-		
-		String nossoNumero = titulo.getNossoNumero();
-		
-		this.add(new FixedField<Integer>(1, 1));
-		
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 6, Fillers.ZERO_LEFT));
-		
-		this.add(new FixedField<Integer>(9, 1));
-		this.add(new FixedField<String>(nossoNumero, 17));
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final CampoLivre campoLivre = new CampoLivre(4);
+		campoLivre.add(FIELD_1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.add(FIELD_9);
+		campoLivre.addString(titulo.getNossoNumero(), 17);
+		return campoLivre;
 	}
 
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

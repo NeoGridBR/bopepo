@@ -2,26 +2,25 @@ package org.jrimum.bopepo.campolivre;
 
 import static org.jrimum.bopepo.parametro.ParametroBancoSantander.IOF_SEGURADORA;
 
+import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
 import org.jrimum.utilix.Exceptions;
-import org.jrimum.utilix.Objects;
 
 /**
  * <p>
  * O campo livre do Banco Santander deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: * collapse" bordercolor="#111111" width="60%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: *
+ * collapse" bordercolor="#111111" width="60%" id="campolivre">
  * <tr>
  * <thead>
  * <th >Posição</th>
  * <th >Tamanho</th>
  * <th >Picture</th>
- * <th>Conteúdo</th>
- * </thead>
+ * <th>Conteúdo</th> </thead>
  * </tr>
  * <tr>
  * <td >20-20</td>
@@ -45,10 +44,10 @@ import org.jrimum.utilix.Objects;
  * registro para os títulos seja de 400 bytes (CNAB)
  * </p>
  * <ul>
- * <li>Banco 353 (Banco Santander) - Utilizar somente 08 posições do Nosso Numero (07 posições +
- * DV), zerando os 05 primeiros dígitos</li>
- * <li>Banco 008 (Meridional do Brasil S/A) - Utilizar somente 09 posições do Nosso Numero (08 posições +
- * DV), zerando os 04 primeiros dígitos</li>
+ * <li>Banco 353 (Banco Santander) - Utilizar somente 08 posições do Nosso
+ * Numero (07 posições + DV), zerando os 05 primeiros dígitos</li>
+ * <li>Banco 008 (Meridional do Brasil S/A) - Utilizar somente 09 posições do
+ * Nosso Numero (08 posições + DV), zerando os 04 primeiros dígitos</li>
  * </ul>
  * </td>
  * </tr>
@@ -70,33 +69,18 @@ import org.jrimum.utilix.Objects;
  * <td >3</td>
  * <td >9(3)</td>
  * <td >
- *    <ul>
- *       <li>101-Cobrança Simples Rápida COM Registro</li>
- *       <li>102- Cobrança simples – SEM Registro</li>
- *       <li>201- Penhor Rápida com Registro</li>
- *    </ul>
+ * <ul>
+ * <li>101-Cobrança Simples Rápida COM Registro</li>
+ * <li>102- Cobrança simples – SEM Registro</li>
+ * <li>201- Penhor Rápida com Registro</li>
+ * </ul>
  * </td>
  * </tr>
  * </table>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
  */
-class CLBancoSantander extends AbstractCLSantander implements CampoLivre {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -412221524249334574L;
-
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 6;
-
-	/**
-	 * Constante informada no manual.
-	 */
-	private static final Integer CONSTANTE = Integer.valueOf(9);
+public class CLBancoSantander {
 
 	/**
 	 * 101- Cobrança Simples Rápida COM Registro
@@ -113,63 +97,35 @@ class CLBancoSantander extends AbstractCLSantander implements CampoLivre {
 	 */
 	private static final int CARTEIRA_SIMPLES_SEM_REGISTRO = 102;
 
-	CLBancoSantander(Titulo titulo) {
-		super(FIELDS_LENGTH);
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+		final String nossoNumeroComDigito = titulo.getNossoNumero() + titulo.getDigitoDoNossoNumero();
 
-		ContaBancaria conta = titulo.getContaBancaria();
-		StringBuilder nossoNumero = new StringBuilder(titulo.getNossoNumero());
-		nossoNumero.append(titulo.getDigitoDoNossoNumero());
-
-		this.add(new FixedField<Integer>(CONSTANTE, 1));
-		this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 6, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(conta.getNumeroDaConta().getDigitoDaConta(), 1));
-		
-		this.add(new FixedField<String>(nossoNumero.toString(), 13, Fillers.ZERO_LEFT));
+		final CampoLivre campoLivre = new CampoLivre(6);
+		campoLivre.add(new FixedField<Integer>(9, 1));
+		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.add(new FixedField<String>(contaBancaria.getNumeroDaConta().getDigitoDaConta(), 1));
+		campoLivre.addStringZeroLeft(nossoNumeroComDigito, 13);
 
 		// IOF – Seguradoras
-
-		if (titulo.hasParametrosBancarios()
-				&& Objects.isNotNull(titulo.getParametrosBancarios().getValor(
-						IOF_SEGURADORA))) {
-
-			this.add(new FixedField<Integer>(titulo
-					.getParametrosBancarios().<Integer>getValor(IOF_SEGURADORA), 1));
-
+		if (titulo.hasParametrosBancarios() && (titulo.getParametrosBancarios().getValor(IOF_SEGURADORA) != null)) {
+			campoLivre
+					.add(new FixedField<Integer>(titulo.getParametrosBancarios().<Integer>getValor(IOF_SEGURADORA), 1));
 		} else {
-
-			this.add(new FixedField<Integer>(0, 1));
+			campoLivre.add(new FixedField<Integer>(0, 1));
 		}
 
-		// Tipo de Modalidade Carteira
-
-		switch (conta.getCarteira().getCodigo()) {
-
+		final int codigoCarteira = contaBancaria.getCarteira().getCodigo();
+		switch (codigoCarteira) {
 		case CARTEIRA_RAPIDA_COM_REGISTRO:
 		case CARTEIRA_RAPIDA_SEM_REGISTRO:
 		case CARTEIRA_SIMPLES_SEM_REGISTRO:
-
-			this.add(new FixedField<Integer>(conta.getCarteira().getCodigo(), 3,
-					Fillers.ZERO_LEFT));
-
+			campoLivre.addIntegerZeroLeft(codigoCarteira, 3);
 			break;
-
 		default:
-			
-			Exceptions.throwIllegalArgumentException(String.format(
-					"CARTEIRA [%s] NÃO SUPORTADA!", conta.getCarteira()
-							.getCodigo()));
+			Exceptions.throwIllegalArgumentException(String.format("CARTEIRA [%s] NÃO SUPORTADA!", codigoCarteira));
 		}
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+		return campoLivre;
 	}
 
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

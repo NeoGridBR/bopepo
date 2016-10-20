@@ -1,13 +1,11 @@
 package org.jrimum.bopepo.campolivre;
 
 import static java.lang.String.format;
-import static org.jrimum.bopepo.parametro.ParametroCaixaEconomicaFederal.CODIGO_OPERACAO;
 
+import org.jrimum.bopepo.banco.CampoLivre;
+import org.jrimum.bopepo.banco.TituloValidator;
+import org.jrimum.bopepo.parametro.ParametroCaixaEconomicaFederal;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
-import org.jrimum.utilix.Objects;
 
 /**
  * <p>
@@ -77,17 +75,7 @@ import org.jrimum.utilix.Objects;
  * 
  * @version 0.2
  */
-class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomicaFederal {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 5585190685525441426L;
-
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 4;
+public class CLCaixaEconomicaFederalSICOBNN10 {
 
 	/**
 	 * <p>
@@ -97,39 +85,23 @@ class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomica
 	 * 
 	 * @param titulo - Título com as informações para geração do campo livre
 	 */
-	CLCaixaEconomicaFederalSICOBNossoNumero10(Titulo titulo) {
 
-		super(FIELDS_LENGTH);
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkParametroBancarioNotNull(titulo, ParametroCaixaEconomicaFederal.CODIGO_OPERACAO);
 
-		Objects.checkNotNull(titulo.getParametrosBancarios(), "Parâmetros bancários necessários [titulo.getParametrosBancarios()==null]!");
-		checkPadraoNossoNumero(titulo.getNossoNumero());
+		final String nossoNumero = titulo.getNossoNumero();
+		checkNossoNumeroSICOB(nossoNumero);
 
-		// TODO: Testar checkPadraoNossoNumeroPorCodigoDaCarteira;
-		/*
-		Integer codigoDaCarteira = titulo.getContaBancaria().getCarteira().getCodigo(); 
-		if (Objects.isNotNull(codigoDaCarteira)) {
-			checkPadraoNossoNumeroPorCodigoDaCarteira(titulo.getNossoNumero(), codigoDaCarteira);
-		}
-		*/
-
-		this.add(new FixedField<String>(titulo.getNossoNumero(), 10));
-
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-
-		if(titulo.getParametrosBancarios().contemComNome(CODIGO_OPERACAO)){
-			Integer cnpv = titulo.getParametrosBancarios().getValor(CODIGO_OPERACAO);
-
-			Objects.checkNotNull(titulo.getParametrosBancarios(), "Parâmetro bancário código operação inválido [CodigoOperacao==null]!");
-
-			this.add(new FixedField<Integer>(cnpv, 3, Fillers.ZERO_LEFT));
-
-			this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 8, Fillers.ZERO_LEFT));
-		} else {
-			throw new CampoLivreException("Parâmetro bancário código operação (\"CodigoOperacao\") não encontrado!");
-		}
-
+		final CampoLivre campoLivre = new CampoLivre(4);
+		campoLivre.addString(nossoNumero, 10);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		final Integer codigoOperacao = titulo.getParametrosBancarios()
+				.getValor(ParametroCaixaEconomicaFederal.CODIGO_OPERACAO);
+		campoLivre.addIntegerZeroLeft(codigoOperacao, 3);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 8);
+		return campoLivre;
 	}
-	
+
 	/**
 	 * <p>
 	 * Verifica se o nosso número do título começa com 3 (identificador da
@@ -150,23 +122,15 @@ class CLCaixaEconomicaFederalSICOBNossoNumero10 extends AbstractCLCaixaEconomica
 	 * </p>
 	 * 
 	 * @param nn
-	 *            - Nosso Número
+	 *            Nosso Número
 	 */
-	private void checkPadraoNossoNumero(String nn){
-		if(!nn.startsWith("3") && !nn.startsWith("9") && !nn.startsWith("80") && !nn.startsWith("81") && !nn.startsWith("82")){
-			Exceptions.throwIllegalArgumentException(format("Para a cobrança SICOB o nosso número [%s] deve começar com 3 que é o identificador da \"carteira siples\" [3NNNNNNNNN] ou 9 que é o identificador da \"carteira rápida\" [9NNNNNNNNN] ou 80, 81 e 82 para \"carteira sem registro\" [82NNNNNNNN]!", nn));
+	private static void checkNossoNumeroSICOB(final String nossoNumero) {
+		if (!nossoNumero.startsWith("3") && !nossoNumero.startsWith("9") && !nossoNumero.startsWith("80")
+				&& !nossoNumero.startsWith("81") && !nossoNumero.startsWith("82")) {
+			throw new IllegalArgumentException(
+					format("Para a cobrança SICOB o nosso número [%s] deve começar com 3 que é o identificador da \"carteira siples\" [3NNNNNNNNN] ou 9 que é o identificador da \"carteira rápida\" [9NNNNNNNNN] ou 80, 81 e 82 para \"carteira sem registro\" [82NNNNNNNN]!",
+							nossoNumero));
 		}
 	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

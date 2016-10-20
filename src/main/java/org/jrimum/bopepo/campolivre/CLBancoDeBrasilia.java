@@ -29,15 +29,14 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import static java.lang.String.format;
 import static org.jrimum.bopepo.parametro.ParametroBancoDeBrasilia.CHAVE_ASBACE_DIGITO1;
 import static org.jrimum.bopepo.parametro.ParametroBancoDeBrasilia.CHAVE_ASBACE_DIGITO2;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.ParametrosBancariosMap;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Objects;
 import org.jrimum.vallia.digitoverificador.Modulo;
 
 /**
@@ -181,16 +180,6 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 	private static final Integer BANCO_LENGTH = Integer.valueOf(3);
 	
 	/**
-	 * Tipo de cobrança: 1-Sem registro impressão local (mesmo que carteira, modalidade ou categoria). 
-	 */ 
-	private static final Integer CARTEIRA_SEM_REGISTRO = Integer.valueOf(1);;
-	
-	/**
-	 * Tipo de cobrança: 2-Com registro impressão local (mesmo que carteira, modalidade ou categoria). 
-	 */
-	private static final Integer CARTEIRA_COM_REGISTRO = Integer.valueOf(2);
-
-	/**
 	 * Dígito verificador calculado em função da CHAVE ASBACE e necessário para o cálculo do {@link #digitoVerificador2DaChaveASBACE}.
 	 */
 	private Integer digitoVerificador1DaChaveASBACE;
@@ -220,18 +209,10 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 	 */
 	@Override
 	protected void checkValues(Titulo titulo) {
-		
-		checkAgenciaNotNull(titulo);
-		checkCodigoDaAgencia(titulo);
-		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 999);
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 9999999);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, 6);
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
-		checkCarteiraComOuSemRegistro(titulo);
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 999);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 9999999);
+		TituloValidator.checkNossoNumeroTamanho(titulo, 6);
+		TituloValidator.checkCarteiraCodigo(titulo, 1, 2);
 	}
 
 	/**
@@ -313,7 +294,7 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 			}
 		}
 	}
-	
+
 	/**
 	 * Disponibiliza no objeto titulo os dígitos da CHAVE ASBACE = mesmo que o
 	 * campo livre menos os dois ultimos digitos.
@@ -323,7 +304,6 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 	 * @since 0.2
 	 */
 	private void disponibilizeDigitosDaChaveAsbaceNeste(Titulo titulo) {
-		
 		ParametrosBancariosMap parametrosBancarios = titulo.getParametrosBancarios();
 		
 		if(parametrosBancarios == null){
@@ -336,24 +316,5 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 		titulo.setParametrosBancarios(parametrosBancarios);
 	}
 	
-	/**
-	 * <p>
-	 * Verifica se o código da carteira da conta bancária do título não é nulo e
-	 * se é um número > 0, caso contrário lança uma {@code
-	 * IllegalArgumentException}.
-	 * </p>
-	 * 
-	 * @param titulo
-	 * 
-	 * @since 0.2
-	 */
-	private void checkCarteiraComOuSemRegistro(Titulo titulo) {
-		
-		Integer codigoCarteira = titulo.getContaBancaria().getCarteira().getCodigo();
-		
-		final boolean carteiraValida = codigoCarteira.equals(CARTEIRA_SEM_REGISTRO) || codigoCarteira.equals(CARTEIRA_COM_REGISTRO);
-		
-		Objects.checkArgument(carteiraValida, format("Código da carteira deve ser \"1-Sem registro impressão local\" ou  \"2-Com registro impressão local\" e não [%s].", titulo.getContaBancaria().getCarteira().getCodigo()));
-	}
 	
 }

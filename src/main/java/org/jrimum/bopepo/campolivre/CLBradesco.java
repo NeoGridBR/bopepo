@@ -29,17 +29,19 @@
 
 package org.jrimum.bopepo.campolivre;
 
+import org.apache.commons.lang.math.NumberUtils;
+import org.jrimum.bopepo.banco.CampoLivre;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * <p>
  * O campo livre do Bradesco deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -53,8 +55,10 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td >20-23</td>
  * <td >4</td>
  * <td >9(4)</td>
- * <td style="text-align:left;padding-left:10">Agência Cedente (Sem o digito verificador, completar com zeros a esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Código da Agência (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Agência Cedente (Sem o digito
+ * verificador, completar com zeros a esquerda quando necessário)</td>
+ * <td style="text-align:left;padding-left:10">Código da Agência (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td >24-25</td>
@@ -67,15 +71,18 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td >26-36</td>
  * <td >11</td>
  * <td >&nbsp;9(11)</td>
- * <td style="text-align:left;padding-left:10">Número do Nosso Número(Sem o digito verificador)</td>
+ * <td style="text-align:left;padding-left:10">Número do Nosso Número(Sem o
+ * digito verificador)</td>
  * <td style="text-align:left;padding-left:10">Nosso Número (sem dígito)</td>
  * </tr>
  * <tr>
  * <td >37-43</td>
  * <td >7</td>
  * <td >&nbsp;9(7)</td>
- * <td style="text-align:left;padding-left:10">Conta do Cedente (Sem o digito verificador, completar com zeros a esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Conta do Cedente (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Conta do Cedente (Sem o digito
+ * verificador, completar com zeros a esquerda quando necessário)</td>
+ * <td style="text-align:left;padding-left:10">Conta do Cedente (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td >44-44</td>
@@ -100,94 +107,29 @@ import org.jrimum.texgit.type.component.FixedField;
  * 
  * @version 0.2
  */
-class CLBradesco extends AbstractCLBradesco {
-	
-	/**
-	 * {@code serialVersionUID = -1253549781074159862L}
-	 */
-	private static final long serialVersionUID = -1253549781074159862L;
+public class CLBradesco {
 
 	/**
-	 * Número de campos = 5.
-	 */
-	private static final Integer FIELDS_LENGTH = Integer.valueOf(5);
-
-	/**
-	 * Tamanho do campo Agência = 4. 
-	 */
-	private static final Integer AGENCIA_LENGTH = Integer.valueOf(4);
-	
-	/**
-	 * Tamanho do campo Carteira = 2. 
-	 */
-	private static final Integer CARTEIRA_LENGTH = Integer.valueOf(2);
-	
-	/**
-	 * Tamanho do campo Nosso Número = 11. 
-	 */
-	private static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(11);
-	
-	/**
-	 * Tamanho do campo Conta = 7. 
-	 */
-	private static final Integer CONTA_LENGTH = Integer.valueOf(7);
-	
-	/**
-	 * Tamanho do campo Constante = 1. 
-	 */
-	private static final Integer CONSTANT_LENGTH = Integer.valueOf(1);
-	
-	/**
-	 * Valor do campo Constante = 0. 
-	 */
-	private static final Integer CONSTANT_VALUE = Integer.valueOf(0);
-
-	/**
-	 * Constante em forma de campo {@linkplain #CONSTANT_VALUE} e {@linkplain #CONSTANT_LENGTH}.
-	 */
-	private static final FixedField<Integer> CONSTANT_FIELD = new FixedField<Integer>(CONSTANT_VALUE, CONSTANT_LENGTH);
-	
-	/**
-	 * Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}) deste campo.
+	 * Cria um campo livre instanciando o número de fields
+	 * ({@code FIELDS_LENGTH}) deste campo.
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBradesco() {
-		super(FIELDS_LENGTH);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void checkValues(final Titulo titulo){
-		checkAgenciaNotNull(titulo);
-		checkCodigoDaAgencia(titulo);
-		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 9999);
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
-		checkCodigoDaCarteiraMenorOuIgualQue(titulo, 99);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, NN11);
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 9999999);
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
+		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
+		TituloValidator.checkNossoNumeroTamanho(titulo, 11);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 9999999);
+
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+
+		final CampoLivre campoLivre = new CampoLivre(5);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 2);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 11);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addIntegerZeroLeft(NumberUtils.INTEGER_ZERO, 1);
+		return campoLivre;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *  
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void addFields(final Titulo titulo) {
-		final ContaBancaria contaBancaria = titulo.getContaBancaria();
-		this.add(new FixedField<Integer>(contaBancaria.getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(contaBancaria.getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(contaBancaria.getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(CONSTANT_FIELD);
-	}
 }

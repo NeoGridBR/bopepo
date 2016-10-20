@@ -47,7 +47,7 @@ import org.junit.Before;
  * 
  * @version 0.2
  */
-public class TestCLCaixaEconomicaFederalSIGCB extends AbstractCampoLivreBaseTest<CLCaixaEconomicaFederalSIGCB> {
+public class TestCLCaixaEconomicaFederalSIGCB extends AbstractCampoLivreBaseTest {
 	
 	@Before
 	public void setUp(){

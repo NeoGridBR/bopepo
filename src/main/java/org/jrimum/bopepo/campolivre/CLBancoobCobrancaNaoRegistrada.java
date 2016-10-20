@@ -31,6 +31,7 @@ package org.jrimum.bopepo.campolivre;
 import static org.jrimum.bopepo.parametro.ParametroBancoob.MODALIDADE_DE_COBRANCA;
 import static org.jrimum.bopepo.parametro.ParametroBancoob.NUMERO_DA_PARCELA;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
@@ -189,22 +190,12 @@ public class CLBancoobCobrancaNaoRegistrada extends AbstractCLBancoob{
 
 	@Override
 	protected void checkValues(Titulo titulo) {
-		
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
-		checkCodigoDaCarteiraMenorOuIgualQue(titulo, 9);
-		checkAgenciaNotNull(titulo);
-		checkCodigoDaAgencia(titulo);
-		checkCodigoDaAgenciaMenorOuIgualQue(titulo, 9999);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, NN7);
-		checkDigitoDoNossoNumero(titulo);
-		checkTamanhoDigitoDoNossoNumero(titulo, DV_NOSSO_NUMERO_LENGTH);
-		checkNumeroDaContaNotNull(titulo);
-		checkCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 9999999);
-		checkDigitoDoCodigoDoNumeroDaConta(titulo);
-		checkCodigoDoNumeroDaContaMenorOuIgualQue(titulo, 999999);
+		TituloValidator.checkCarteiraCodigo(titulo, 1, 9);
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
+		TituloValidator.checkNossoNumeroTamanho(titulo, NN7);
+		TituloValidator.checkNossoNumeroDigitoTamanho(titulo, DV_NOSSO_NUMERO_LENGTH);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 999999);
+		TituloValidator.checkContaBancariaDigito(titulo);
 	}
 
 	@Override
@@ -216,12 +207,12 @@ public class CLBancoobCobrancaNaoRegistrada extends AbstractCLBancoob{
 		if (titulo.hasParametrosBancarios()) {
 
 			if (titulo.getParametrosBancarios().contemComNome(MODALIDADE_DE_COBRANCA)) {
-				checkParametroBancario(titulo, MODALIDADE_DE_COBRANCA);
+				TituloValidator.checkParametroBancarioNotNull(titulo, MODALIDADE_DE_COBRANCA);
 				codigoDaModalidadeDeCobranca = titulo.getParametrosBancarios().getValor(MODALIDADE_DE_COBRANCA);
 			}
 
 			if (titulo.getParametrosBancarios().contemComNome(NUMERO_DA_PARCELA)) {
-				checkParametroBancario(titulo, NUMERO_DA_PARCELA);
+				TituloValidator.checkParametroBancarioNotNull(titulo, NUMERO_DA_PARCELA);
 				numeroDaParcela = titulo.getParametrosBancarios().getValor(NUMERO_DA_PARCELA);
 			}
 		}		

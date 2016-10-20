@@ -34,8 +34,10 @@ import static org.jrimum.utilix.Objects.isNull;
 import static org.jrimum.utilix.text.DateFormat.DDMMYYYY_B;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jrimum.bopepo.campolivre.CampoLivre;
@@ -74,6 +76,8 @@ public class Boleto {
 	
 	private static Logger log = LoggerFactory.getLogger(Boleto.class);
 
+	private static final int MAX_INSTRUCOES_CAIXA = 8;
+
 	/**
 	 * @see Titulo
 	 */
@@ -109,14 +113,7 @@ public class Boleto {
 	 */
 	private String instrucaoAoSacado;
 	
-	private String instrucao1;
-	private String instrucao2;
-	private String instrucao3;
-	private String instrucao4;
-	private String instrucao5;
-	private String instrucao6;
-	private String instrucao7;
-	private String instrucao8;
+	private List<String> instrucoesAoCaixa = new ArrayList<String>(MAX_INSTRUCOES_CAIXA);
 
 	/**
 	 * @see #setTextosExtras(Map)
@@ -366,115 +363,27 @@ public class Boleto {
 	}
 
 	/**
-	 * @return the instrucao1
+	 * @return the Instruções ao Caixa
 	 */
-	public String getInstrucao1() {
-		return instrucao1;
+	public List<String> getInstrucoesAoCaixa() {
+		return instrucoesAoCaixa;
 	}
 
 	/**
-	 * @param instrucao1 the instrucao1 to set
+	 * @param instrucoes the instrucoes to set
 	 */
-	public void setInstrucao1(String instrucao1) {
-		this.instrucao1 = instrucao1;
+	public void setInstrucoesAoCaixa(List<String> instrucoes) {
+		if( (this.instrucoesAoCaixa.size() + instrucoes.size()) > MAX_INSTRUCOES_CAIXA) {
+			throw new IllegalArgumentException(String.format("O quantidade de instuções ao caixa está limitada a [%s] instruções!", MAX_INSTRUCOES_CAIXA));
+		}
+		this.instrucoesAoCaixa.addAll(instrucoes);
 	}
 
-	/**
-	 * @return the instrucao2
-	 */
-	public String getInstrucao2() {
-		return instrucao2;
-	}
-
-	/**
-	 * @param instrucao2 the instrucao2 to set
-	 */
-	public void setInstrucao2(String instrucao2) {
-		this.instrucao2 = instrucao2;
-	}
-
-	/**
-	 * @return the instrucao3
-	 */
-	public String getInstrucao3() {
-		return instrucao3;
-	}
-
-	/**
-	 * @param instrucao3 the instrucao3 to set
-	 */
-	public void setInstrucao3(String instrucao3) {
-		this.instrucao3 = instrucao3;
-	}
-
-	/**
-	 * @return the instrucao4
-	 */
-	public String getInstrucao4() {
-		return instrucao4;
-	}
-
-	/**
-	 * @param instrucao4 the instrucao4 to set
-	 */
-	public void setInstrucao4(String instrucao4) {
-		this.instrucao4 = instrucao4;
-	}
-
-	/**
-	 * @return the instrucao5
-	 */
-	public String getInstrucao5() {
-		return instrucao5;
-	}
-
-	/**
-	 * @param instrucao5 the instrucao5 to set
-	 */
-	public void setInstrucao5(String instrucao5) {
-		this.instrucao5 = instrucao5;
-	}
-
-	/**
-	 * @return the instrucao6
-	 */
-	public String getInstrucao6() {
-		return instrucao6;
-	}
-
-	/**
-	 * @param instrucao6 the instrucao6 to set
-	 */
-	public void setInstrucao6(String instrucao6) {
-		this.instrucao6 = instrucao6;
-	}
-
-	/**
-	 * @return the instrucao7
-	 */
-	public String getInstrucao7() {
-		return instrucao7;
-	}
-
-	/**
-	 * @param instrucao7 the instrucao7 to set
-	 */
-	public void setInstrucao7(String instrucao7) {
-		this.instrucao7 = instrucao7;
-	}
-
-	/**
-	 * @return the instrucao8
-	 */
-	public String getInstrucao8() {
-		return instrucao8;
-	}
-
-	/**
-	 * @param instrucao8 the instrucao8 to set
-	 */
-	public void setInstrucao8(String instrucao8) {
-		this.instrucao8 = instrucao8;
+	public void addInstrucaoAoCaixa(final String instrucao) {
+		if(this.instrucoesAoCaixa.size() >= MAX_INSTRUCOES_CAIXA) {
+			throw new IllegalArgumentException(String.format("O quantidade de instuções ao caixa está limitada a [%s] instruções!", MAX_INSTRUCOES_CAIXA));
+		}
+		this.instrucoesAoCaixa.add(instrucao);
 	}
 	
 	/**

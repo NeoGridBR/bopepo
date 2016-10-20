@@ -1,5 +1,6 @@
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
 /**
@@ -36,9 +37,7 @@ abstract class AbstractCLBancoRural extends AbstractCampoLivre {
 	}
 
 	protected static CampoLivre create(Titulo titulo) {
-		
-		checkCarteiraNotNull(titulo);
-		checkRegistroDaCarteiraNotNull(titulo);
+		TituloValidator.checkCarteiraRegistroNotNull(titulo);
 		
 		switch(titulo.getContaBancaria().getCarteira().getTipoCobranca()){
 		case SEM_REGISTRO:
@@ -58,8 +57,7 @@ abstract class AbstractCLBancoRural extends AbstractCampoLivre {
 	 * @return campo livre ou null
 	 */
 	private static CampoLivre campoSemRegistro(Titulo titulo) {
-		
-		checkNossoNumero(titulo);
+		TituloValidator.checkNossoNumero(titulo);
 		
 		switch(titulo.getNossoNumero().length()){
 		case NN10:

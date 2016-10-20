@@ -1,5 +1,6 @@
 package org.jrimum.bopepo.campolivre;
 
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.bopepo.parametro.ParametroCECRED;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
@@ -69,14 +70,9 @@ public class CLCecred extends AbstractCLBancoDeBrasilia{
 	 */
 	@Override
 	protected void checkValues(Titulo titulo) {
-
-		checkParametroBancario(titulo, ParametroCECRED.CODIGO_DO_CONVENIO);
-		checkParametroBancarioMenorOuIgualQue(titulo, ParametroCECRED.CODIGO_DO_CONVENIO, 999999);
-		checkNossoNumero(titulo);
-		checkTamanhoDoNossoNumero(titulo, 17);
-		checkCarteiraNotNull(titulo);
-		checkCodigoDaCarteira(titulo);
-		checkCodigoDaCarteiraMenorOuIgualQue(titulo, 99);
+		TituloValidator.checkParametroBancarioMenorOuIgualQue(titulo, ParametroCECRED.CODIGO_DO_CONVENIO, 999999);
+		TituloValidator.checkNossoNumeroTamanho(titulo, 17);
+		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
 	}
 
 	/**

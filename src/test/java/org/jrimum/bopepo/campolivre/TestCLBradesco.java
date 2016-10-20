@@ -29,6 +29,8 @@
 
 package org.jrimum.bopepo.campolivre;
 
+import java.math.BigDecimal;
+
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.domkee.financeiro.banco.febraban.Agencia;
 import org.jrimum.domkee.financeiro.banco.febraban.Carteira;
@@ -51,7 +53,7 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLBradesco extends AbstractCampoLivreBaseTest<CLBradesco> {
+public class TestCLBradesco extends AbstractCampoLivreBaseTest {
 
 	private final int NOSSO_NUMERO_LENGTH = 11;
 
@@ -63,6 +65,7 @@ public class TestCLBradesco extends AbstractCampoLivreBaseTest<CLBradesco> {
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(6789));
 		titulo.getContaBancaria().setCarteira(new Carteira(5));
 		titulo.setNossoNumero("12345678901");
+		titulo.setValor(BigDecimal.TEN);
 
 		createCampoLivreToTest();
 

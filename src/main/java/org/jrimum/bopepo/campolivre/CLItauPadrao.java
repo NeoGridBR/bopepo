@@ -30,12 +30,16 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import java.util.Arrays;
+import static org.jrimum.vallia.digitoverificador.Modulo.MOD10;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
+import org.jrimum.vallia.digitoverificador.Modulo;
 
 /**
  * 
@@ -44,7 +48,7 @@ import org.jrimum.texgit.type.component.FixedField;
  * Campo livre padrão do Banco Itaú
  * </p>
  * 
-  * <p>
+ * <p>
  * <h2>Layout do Banco Itaú para o campo livre PADRÃO</h2>
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
  * collapse" bordercolor="#111111" id="campolivre">
@@ -55,8 +59,7 @@ import org.jrimum.texgit.type.component.FixedField;
  * <th>Picture</th>
  * <th>Conteúdo</th>
  * </tr>
- * </thead>
- * <tbody>
+ * </thead> <tbody>
  * <tr>
  * <td >20 a 22</td>
  * <td >3</td>
@@ -111,186 +114,97 @@ import org.jrimum.texgit.type.component.FixedField;
  * 
  * @version 0.2
  */
-class CLItauPadrao extends AbstractCLItau {
+public class CLItauPadrao {
 
 	/**
-	 * 
+	 * Carteiras "exceção".
 	 */
-	private static final long serialVersionUID = 1544486299245786533L;
-	
-	/**
-	 * Tamanho deste campo. Em outras palavras, é a quantidade de partes que
-	 * compõem este campo livre.
-	 */
-	private static final Integer FIELDS_LENGTH = 7;
+	private static final Set<Integer> CARTEIRAS_ESCRITURAIS = new HashSet<Integer>(8);
+	private static final Set<Integer> CARTEIRAS_MODALIDADE_DIRETA = new HashSet<Integer>(5);
 
-	/**
-	 *  Carteiras "exceção".
-	 */
-	private static final Integer[] CARTEIRAS_ESCRITURAIS = {104, 105, 112, 113, 114, 147, 166, 212};
-	private static final Integer[] CARTEIRAS_MODALIDADE_DIRETA = {126, 131, 146, 150, 168};
+	static {
+		CARTEIRAS_ESCRITURAIS.add(104);
+		CARTEIRAS_ESCRITURAIS.add(105);
+		CARTEIRAS_ESCRITURAIS.add(112);
+		CARTEIRAS_ESCRITURAIS.add(113);
+		CARTEIRAS_ESCRITURAIS.add(114);
+		CARTEIRAS_ESCRITURAIS.add(147);
+		CARTEIRAS_ESCRITURAIS.add(166);
+		CARTEIRAS_ESCRITURAIS.add(212);
 
-	/**
-	 * <p>
-	 *   Dado um título, cria o campo livre padrão do Banco Itaú.
-	 * </p>
-	 * @param titulo título com as informações para geração do campo livre
-	 */
-	protected CLItauPadrao() {
-		super(FIELDS_LENGTH);
+		CARTEIRAS_MODALIDADE_DIRETA.add(126);
+		CARTEIRAS_MODALIDADE_DIRETA.add(131);
+		CARTEIRAS_MODALIDADE_DIRETA.add(146);
+		CARTEIRAS_MODALIDADE_DIRETA.add(150);
+		CARTEIRAS_MODALIDADE_DIRETA.add(168);
 	}
-	
+
 	/**
 	 * <p>
-	 * Calcula o dígito verificador do campo 31 a partir do código da agência, 
-	 * do código da conta, do código da carteira e do nosso número.
-	 * </p>
-	 * <p>
-	 * À exceção, estão as <b>carteiras escriturais 104, 105, 112, 113, 114, 147, 
-	 * 166 e 212</b> e na <b>modalidade direta as  carteiras 126, 131, 146, 150 
-	 * e 168</b>, cuja obtenção está baseada apenas nos dados "CARTEIRA/NOSSO NÚMERO" 
-	 * da operação. Fonte: <a href="http://pt.scribd.com/doc/38486598/Manual-ITAU">
-	 * Manual ITAÚ</a>, mais especificamente nas páginas 19 e 30.
-	 * </p>
-	 * <p>
-	 * Exemplo do cálculo:
-	 * <br />
-	 * <pre>
-	 * AG / CONTA = 0057 / 12345-7 CART / NNº = 110 / 12345678-?
-	 * 
-	 * Sequência para Cálculo 	0 0 5 7 1 2 3 4 5 1 1 0 1 2 3 4 5 6 7 8
-	 * Módulo 10 		1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2
-	 * 			| | | | | | | | | | | | | | | | | | | |___________8 x 2 = 16 (1+6)
-	 * 			| | | | | | | | | | | | | | | | | | | ____________7 x 1 = 7
-	 *			| | | | | | | | | | | | | | | | | | ______________6 x 2 = 12 (1+2)
-	 * 			| | | | | | | | | | | | | | | | | ________________5 x 1 = 5
-	 * 			| | | | | | | | | | | | | | | | | ________________4 x 2 = 8
-	 *			| | | | | | | | | | | | | | | ____________________3 x 1 = 3
-	 * 			| | | | | | | | | | | | | | ______________________2 x 2 = 4
-	 * 			| | | | | | | | | | | | | ________________________1 x 1 = 1
-	 * 			| | | | | | | | | | | | __________________________0 x 2 = 0
-	 * 			| | | | | | | | | | | ____________________________1 x 1 = 1
-	 * 			| | | | | | | | | | ______________________________1 x 2 = 2
-	 * 			| | | | | | | | | ________________________________5 x 1 = 5
-	 * 			| | | | | | | | __________________________________4 x 2 = 8
-	 * 			| | | | | | | ____________________________________3 x 1 = 3
-	 * 			| | | | | | ______________________________________2 x 2 = 4
-	 * 			| | | | | ________________________________________1 x 1 = 1
-	 * 			| | | | __________________________________________7 x 2 = 14 (1+4)
-	 * 			| | | ____________________________________________5 x 1 = 5
-	 * 			| | ______________________________________________0 x 2 = 0
-	 * 			| ________________________________________________0 x 1 = 0
-	 * 
-	 * Total 								            72
-	 * 
-	 * Dividir o resultado da soma por 10 => 72 / 10 = 7, resto = 2
-	 *  
-	 * DAC = 10 - 2 = 8
-	 * Portanto DAC = 8
-	 * </pre>
+	 * Dado um título, cria o campo livre padrão do Banco Itaú.
 	 * </p>
 	 * 
-	 * @param codigoDaAgencia
-	 * @param codigoDaConta
-	 * @param codigoDaCarteira
-	 * @param nossoNumero
-	 * @return Integer dígito
-	 * 
-	 * @since 0.2
+	 * @param titulo
+	 *            título com as informações para geração do campo livre
 	 */
-	private Integer calculeDigitoDaPosicao31(final Integer codigoDaAgencia,
-			final Integer codigoDaConta, final Integer codigoDaCarteira, final String nossoNumero) {
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
 
-		final StringBuilder campo = new StringBuilder();
-		campo.append(Fillers.ZERO_LEFT.fill(codigoDaCarteira.intValue(), 3));
-		campo.append(Fillers.ZERO_LEFT.fill(nossoNumero, 8));
+		final CampoLivre campoLivre = new CampoLivre(7);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 8);
+		campoLivre.addInteger(calculaDigitoCampoLivrePadrao31(titulo), 1);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
+		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.addInteger(calculaDigitoCampoLivrePadrao41(titulo), 1);
+		campoLivre.addString("000", 3);
+		return campoLivre;
+	}
 
-		/*
-		 * Se a carteira em questão não estiver nas lista de exceções então
-		 * acrescenta-se a agência e a conta para compor a base para o cálculo 
-		 * do DAC.
-		 */
-		if (Arrays.binarySearch(CARTEIRAS_MODALIDADE_DIRETA, codigoDaCarteira) < 0
-		    && Arrays.binarySearch(CARTEIRAS_ESCRITURAIS, codigoDaCarteira) < 0) {
-			campo.insert(0, Fillers.ZERO_LEFT.fill(codigoDaConta.intValue(), 5));
-			campo.insert(0, Fillers.ZERO_LEFT.fill(codigoDaAgencia.intValue(), 4));
+	private static Integer calculaDigitoCampoLivrePadrao31(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+		final Integer codigoDaCarteira = contaBancaria.getCarteira().getCodigo();
+
+		final StringBuilder value = new StringBuilder();
+		if (!CARTEIRAS_MODALIDADE_DIRETA.contains(codigoDaCarteira)
+				&& !CARTEIRAS_ESCRITURAIS.contains(codigoDaCarteira)) {
+			value.append(StringUtils.leftPad(contaBancaria.getAgencia().getCodigo().toString(), 4, '0'));
+			value.append(StringUtils.leftPad(contaBancaria.getNumeroDaConta().getCodigoDaConta().toString(), 5, '0'));
 		}
+		value.append(StringUtils.leftPad(codigoDaCarteira.toString(), 3, '0'));
+		value.append(StringUtils.leftPad(titulo.getNossoNumero(), 8, '0'));
 
-		return calculeDigitoVerificador(campo.toString());
+		return calculaDigitoVerificador(value.toString());
 	}
-	
+
+	private static Integer calculaDigitoCampoLivrePadrao41(final Titulo titulo) {
+		final ContaBancaria contaBancaria = titulo.getContaBancaria();
+		final StringBuilder value = new StringBuilder();
+		value.append(StringUtils.leftPad(contaBancaria.getAgencia().getCodigo().toString(), 4, '0'));
+		value.append(StringUtils.leftPad(contaBancaria.getNumeroDaConta().getCodigoDaConta().toString(), 5, '0'));
+		return calculaDigitoVerificador(value.toString());
+	}
+
 	/**
 	 * <p>
-	 * Calcula o dígito verificador do campo 41 a partir do código da agência e 
-	 * do código da conta.
+	 * Método auxiliar para calcular o dígito verificador dos campos 31 e 41. O
+	 * dígito é calculado com base em um campo fornecido pelos métodos que o
+	 * chamam (<code>calculeDigitoDaPosicao31</code> e
+	 * <code>calculeDigitoDaPosicao41</code>)
 	 * </p>
 	 * <p>
-	 * O cálculo é feito da seguinte forma: <br />
-	 * <ol>
-	 * <li>
-	 * Multiplica-se cada algarismo do campo pela sequência de multiplicadores 
-	 * 2, 1, 2, 1, 2, 1..., posicionados da direita para a esquerda;
-	 * </li>
-	 * <li>
-	 * Some individualmente, os algarismos dos resultados dos produtos, obtendo-se o total (N);
-	 * </li>
-	 * <li>
-	 * Divida o total encontrado (N) por 10, e determine o resto da divisão como MOD 10 (N);
-	 * </li>
-	 * <li>
-	 * Encontre o DAC através da seguinte expressão: DAC = 10 – Mod 10 (N)
-	 * <br />
-	 * OBS.: Se o resultado da etapa d for 10, considere o DAC = 0.
-	 * </li>
-	 * </ol>
-	 * 
+	 * O cálculo é feito através do módulo 10.
 	 * </p>
 	 * 
-	 * @param codigoDaAgencia
-	 * @param codigoDaConta
-	 * @return Integer digito
-	 * 
-	 * @since 0.2
+	 * @param campo
+	 * @return Dígito verificador do campo fornecido.
 	 */
-	private Integer calculeDigitoDaPosicao41(final Integer codigoDaAgencia, final Integer codigoDaConta) {
-		final StringBuilder campo = new StringBuilder();
-		campo.append(Fillers.ZERO_LEFT.fill(codigoDaAgencia.intValue(), 4));
-		campo.append(Fillers.ZERO_LEFT.fill(codigoDaConta.intValue(), 5));
-		return calculeDigitoVerificador(campo.toString());
+	private static Integer calculaDigitoVerificador(final String campo) {
+		int restoDivisao = Modulo.calculeMod10(campo, 1, 2);
+		int digito = MOD10 - restoDivisao;
+		if (digito > 9) {
+			digito = 0;
+		}
+		return new Integer(digito);
 	}
-	
-	@Override
-	protected void addFields(final Titulo titulo) {
-		final ContaBancaria conta = titulo.getContaBancaria();
-
-		final Integer codigoDaCarteira = conta.getCarteira().getCodigo();
-		this.add(new FixedField<Integer>(codigoDaCarteira, 3, Fillers.ZERO_LEFT));
-
-		final String nossoNumero = titulo.getNossoNumero();
-		this.add(new FixedField<String>(nossoNumero, 8, Fillers.ZERO_LEFT));
-
-		final Integer numeroDaAgencia = conta.getAgencia().getCodigo();
-		final Integer numeroDaConta = conta.getNumeroDaConta().getCodigoDaConta();
-
-		final Integer digitoDaPosicao31 = calculeDigitoDaPosicao31(
-				numeroDaAgencia, 
-				numeroDaConta, 
-				codigoDaCarteira, 
-				nossoNumero);
-		this.add(new FixedField<Integer>(digitoDaPosicao31, 1));
-
-		this.add(new FixedField<Integer>(numeroDaAgencia, 4, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(numeroDaConta, 5, Fillers.ZERO_LEFT));
-
-		final Integer digitoDaPosicao41 = calculeDigitoDaPosicao41(numeroDaAgencia, numeroDaConta);
-		this.add(new FixedField<Integer>(digitoDaPosicao41, 1));
-
-		this.add(new FixedField<String>("000", 3));
-	}
-
-	@Override
-	protected void checkValues(final Titulo titulo) {
-	}
-
 }
-

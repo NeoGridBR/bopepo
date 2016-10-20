@@ -48,7 +48,7 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLCaixaEconomicaFederalSICOBNossoNumero14 extends AbstractCampoLivreBaseTest<CLCaixaEconomicaFederalSICOBNossoNumero14> {
+public class TestCLCaixaEconomicaFederalSICOBNossoNumero14 extends AbstractCampoLivreBaseTest {
 
 	private static final int NOSSO_NUMERO_LENGTH = 14;
 	
