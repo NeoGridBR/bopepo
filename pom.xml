@@ -185,14 +185,15 @@
 
 	<distributionManagement>
 		<repository>
-			<id>internal.repo</id>
-			<url>http://archiva.neogrid.com/archiva/repository/internal</url>
+		    <id>apps.repo</id>
+		    <name>apps-maven-release</name>
+		    <url>http://repo.neogrid.com/apps-maven-release</url>
 		</repository>
 		<snapshotRepository>
-			<id>snapshots.repo</id>
-			<url>http://archiva.neogrid.com/archiva/repository/snapshots</url>
-			<uniqueVersion>false</uniqueVersion>
+		    <id>apps-snapshot.repo</id>
+		    <name>apps-maven-snapshot</name>
+		    <url>http://repo.neogrid.com/apps-maven-snapshot</url>
 		</snapshotRepository>
-	</distributionManagement>
+    	</distributionManagement>
 
 </project>
