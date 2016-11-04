@@ -36,7 +36,6 @@ import static org.jrimum.bopepo.parametro.ParametroBancoSicredi.POSTO_DA_AGENCIA
 
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
 import org.jrimum.utilix.Objects;
 import org.jrimum.vallia.digitoverificador.Modulo;
@@ -47,7 +46,8 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * O campo livre do banco Sicredi deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -61,13 +61,17 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <td >20-20</td>
  * <td >1</td>
  * <td style="text-align:left;padding-left:10">tipo de cobrança: "1" ou "3"</td>
- * <td style="text-align:left;padding-left:10">Código numérico correspondente ao tipo de cobrança: "1"- Com Registro ou "3"- Sem Registro</td>
+ * <td style="text-align:left;padding-left:10">Código numérico correspondente ao
+ * tipo de cobrança: "1"- Com Registro ou "3"- Sem Registro</td>
  * </tr>
  * <tr>
  * <td >21-21</td>
  * <td >1</td>
- * <td style="text-align:left;padding-left:10">Constante correspondente ao tipo de carteira: "1"- carteira simples. Embora no código fonte do manual mencione outras duas possibilidades "2"-Caucionada ou "3"-Descontada.</td>
- * <td style="text-align:left;padding-left:10">Código númerico correspondente ao tipo de carteira: "1" - carteira simples</td>
+ * <td style="text-align:left;padding-left:10">Constante correspondente ao tipo
+ * de carteira: "1"- carteira simples. Embora no código fonte do manual mencione
+ * outras duas possibilidades "2"-Caucionada ou "3"-Descontada.</td>
+ * <td style="text-align:left;padding-left:10">Código númerico correspondente ao
+ * tipo de carteira: "1" - carteira simples</td>
  * </tr>
  * <tr>
  * <td >22-29</td>
@@ -79,19 +83,24 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <td >30-30</td>
  * <td >1</td>
  * <td style="text-align:left;padding-left:10">DV do Nosso Número (1)</td>
- * <td style="text-align:left;padding-left:10">Dígito Verificador do Nosso Número</td>
+ * <td style="text-align:left;padding-left:10">Dígito Verificador do Nosso
+ * Número</td>
  * </tr>
  * <tr>
  * <td >31-34</td>
  * <td >4</td>
- * <td style="text-align:left;padding-left:10">Cooperativa de crédito / agência cedente</td>
- * <td style="text-align:left;padding-left:10">Cooperativa de crédito / agência cedente</td>
+ * <td style="text-align:left;padding-left:10">Cooperativa de crédito / agência
+ * cedente</td>
+ * <td style="text-align:left;padding-left:10">Cooperativa de crédito / agência
+ * cedente</td>
  * </tr>
  * <tr>
  * <td >35-36</td>
  * <td >2</td>
- * <td style="text-align:left;padding-left:10">Unidade de atendimento / posto da agênica cedente</td>
- * <td style="text-align:left;padding-left:10">Unidade de atendimento / posto da agênica cedente</td>
+ * <td style="text-align:left;padding-left:10">Unidade de atendimento / posto da
+ * agênica cedente</td>
+ * <td style="text-align:left;padding-left:10">Unidade de atendimento / posto da
+ * agênica cedente</td>
  * </tr>
  * <tr>
  * <td >37-41</td>
@@ -102,8 +111,10 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <tr>
  * <td >42-42</td>
  * <td >1</td>
- * <td style="text-align:left;padding-left:10">Filler: 1 (um) quando o campo "valor do documento" diferente de 0 (zero), caso contrário zero.</td>
- * <td style="text-align:left;padding-left:10">1 (um) quando o campo "valor do documento" diferente de 0 (zero), caso contrário zero.</td>
+ * <td style="text-align:left;padding-left:10">Filler: 1 (um) quando o campo
+ * "valor do documento" diferente de 0 (zero), caso contrário zero.</td>
+ * <td style="text-align:left;padding-left:10">1 (um) quando o campo "valor do
+ * documento" diferente de 0 (zero), caso contrário zero.</td>
  * </tr>
  * <tr>
  * <td >43-43</td>
@@ -114,8 +125,12 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <tr>
  * <td >44-44</td>
  * <td >1</td>
- * <td style="text-align:left;padding-left:10">Dígito verificador do campo livre calculado por módulo 11 com aproveitamento total (resto igual a (0) zero ou (1) um o Dígito será (0) zero)</td>
- * <td style="text-align:left;padding-left:10">Dígito verificador do campo livre calculado por módulo 11 com aproveitamento total (resto igual a (0) zero ou (1) um o Dígito será (0) zero)</td>
+ * <td style="text-align:left;padding-left:10">Dígito verificador do campo livre
+ * calculado por módulo 11 com aproveitamento total (resto igual a (0) zero ou
+ * (1) um o Dígito será (0) zero)</td>
+ * <td style="text-align:left;padding-left:10">Dígito verificador do campo livre
+ * calculado por módulo 11 com aproveitamento total (resto igual a (0) zero ou
+ * (1) um o Dígito será (0) zero)</td>
  * </tr>
  * </table>
  * 
@@ -127,23 +142,13 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * 
  * @version 0.2
  */
-class CLSicredi extends AbstractCLSicredi {
-
-	/**
-	 * {@code serialVersionUID = 7697120719706717353L}
-	 */
-	private static final long serialVersionUID = 7697120719706717353L;
-	
-	/**
-	 * Número de campos = 10.
-	 */
-	private static final Integer FIELDS_LENGTH = 10;
+public class CLSicredi {
 
 	/**
 	 * Código númerico correspondente ao tipo de cobrança: "1" - Com Registro.
 	 */
 	private static final String COBRANCA_COM_REGISTRO = "1";
-	
+
 	/**
 	 * Código númerico correspondente ao tipo de cobrança: "3" - Sem Registro.
 	 */
@@ -153,81 +158,55 @@ class CLSicredi extends AbstractCLSicredi {
 	 * Valor constante do campo "Tipo da Carteira": "1" - carteira simples.
 	 */
 	private static final Integer CARTEIRA_SIMPLES_VALUE = Integer.valueOf(1);
-	
+
 	/**
 	 * Segunda posição do campo livre.
 	 */
 	private static final FixedField<Integer> FIELD_CARTEIRA = new FixedField<Integer>(CARTEIRA_SIMPLES_VALUE, 1);
-	
+
 	/**
-	 * Instância de módulo 11 para cálculo do DV do campo livre.   
+	 * Instância de módulo 11 para cálculo do DV do campo livre.
 	 */
 	private static final Modulo modulo11 = new Modulo(TipoDeModulo.MODULO11);
 
 	/**
-	 * Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}) deste campo.
+	 * Cria um campo livre instanciando o número de fields
+	 * ({@code FIELDS_LENGTH}) deste campo.
 	 * 
 	 * @since 0.2
 	 */
-	protected CLSicredi() {
-		
-		super(FIELDS_LENGTH);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void checkValues(Titulo titulo){
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkCarteiraCodigo(titulo);
 		checkCarteiraSimples(titulo);
 		TituloValidator.checkCarteiraRegistroNotNull(titulo);
-		TituloValidator.checkNossoNumeroTamanho(titulo, NN8);
+		TituloValidator.checkNossoNumeroTamanho(titulo, 8);
 		TituloValidator.checkNossoNumeroDigitoTamanho(titulo, 1);
 		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 99999);
 		TituloValidator.checkParametroBancarioNotNull(titulo, POSTO_DA_AGENCIA);
 		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 99999);
-	}
-	
-	/**
-	 *  {@inheritDoc}
-	 *  
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void addFields(Titulo titulo) {
-		
-		if(titulo.getContaBancaria().getCarteira().isComRegistro()){
-			
-			this.add(new FixedField<String>(COBRANCA_COM_REGISTRO, 1));
-			
-		}else{
-			
-			this.add(new FixedField<String>(COBRANCA_SEM_REGISTRO, 1));
-		}
-		
-		this.add(FIELD_CARTEIRA);
-		this.add(new FixedField<String>(titulo.getNossoNumero(), 8, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getDigitoDoNossoNumero(), 1, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getParametrosBancarios().<Integer>getValor(POSTO_DA_AGENCIA), 2, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5, Fillers.ZERO_LEFT));
-		
-		if (titulo.getValor().compareTo(ZERO) == 1) {
-			
-			this.add(new FixedField<String>("1", 1));
-			
-		} else {
-			
-			this.add(new FixedField<String>("0", 1));
-		}
 
-		this.add(new FixedField<String>("0", 1));
-		this.add(new FixedField<Integer>(calculeDigitoVerificador(), 1));
+		final CampoLivre campoLivre = new CampoLivre(10);
+		if (titulo.getContaBancaria().getCarteira().isComRegistro()) {
+			campoLivre.addString(COBRANCA_COM_REGISTRO, 1);
+		} else {
+			campoLivre.addString(COBRANCA_SEM_REGISTRO, 1);
+		}
+		campoLivre.add(FIELD_CARTEIRA);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 8);
+		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addIntegerZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(POSTO_DA_AGENCIA), 2);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
+		if (titulo.getValor().compareTo(ZERO) == 1) {
+			campoLivre.addString("1", 1);
+		} else {
+			campoLivre.addString("0", 1);
+		}
+		campoLivre.addString("0", 1);
+		campoLivre.addInteger(calculeDigitoVerificador(campoLivre.getValue()), 1);
+		return campoLivre;
 	}
-	
+
 	/**
 	 * Verifica se o código da carteira da conta bancária do título é igual 1
 	 * (carteira simples), caso contrário lança uma {@code
@@ -235,12 +214,11 @@ class CLSicredi extends AbstractCLSicredi {
 	 * 
 	 * @param titulo
 	 */
-	private void checkCarteiraSimples(Titulo titulo) {
-		
-		Objects.checkArgument(
-				titulo.getContaBancaria().getCarteira().getCodigo().equals(CARTEIRA_SIMPLES_VALUE),
-				format("Apenas a carteira de código [1] \"carteira simples\" é permitida e não o código [%s]!", titulo.getContaBancaria().getCarteira().getCodigo())
-		);
+	private static void checkCarteiraSimples(Titulo titulo) {
+
+		Objects.checkArgument(titulo.getContaBancaria().getCarteira().getCodigo().equals(CARTEIRA_SIMPLES_VALUE),
+				format("Apenas a carteira de código [1] \"carteira simples\" é permitida e não o código [%s]!",
+						titulo.getContaBancaria().getCarteira().getCodigo()));
 	}
 
 	/**
@@ -252,18 +230,13 @@ class CLSicredi extends AbstractCLSicredi {
 	 * 
 	 * @since 0.2
 	 */
-	private Integer calculeDigitoVerificador() {
-
-		final int resto = modulo11.calcule(writeFields());
-
+	private static Integer calculeDigitoVerificador(final String value) {
+		final int resto = modulo11.calcule(value);
 		if (resto == 0 || resto == 1) {
-
 			return Integer.valueOf(0);
-			
-		} else{
-			
+		} else {
 			return Integer.valueOf(modulo11.valor() - resto);
 		}
 	}
-	
+
 }

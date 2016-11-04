@@ -45,7 +45,7 @@ public class TestBancosSuportados{
 	@Test
 	public void deve_ser_igual_a_quantidade_de_bancos_declarados_no_enum_e_a_quantidade_disponivel_como_suportado() {
 		
-		assertEquals(BancosSuportados.values().length, BancosSuportados.suportados.size());
+		assertEquals(BancosSuportados.values().length, BancosSuportados.BANCOS_SUPORTADOS.size());
 	}
 
 	/**

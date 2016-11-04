@@ -29,43 +29,38 @@
 
 package org.jrimum.bopepo;
 
-import static org.jrimum.utilix.Objects.isNotNull;
-import static org.jrimum.utilix.Objects.isNull;
-import static org.jrimum.utilix.text.DateFormat.DDMMYYYY_B;
-
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.CampoLivreFactory;
 import org.jrimum.bopepo.campolivre.NotSupportedBancoException;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.utilix.Exceptions;
-import org.jrimum.utilix.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * É a representação do documento Boleto que por sua vez, representa títulos 
- * em cobrança.
+ * É a representação do documento Boleto que por sua vez, representa títulos em
+ * cobrança.
  * </p>
  * 
  * <p>
- * A classe encapsula os atributos integrantes e as funcionalidades inerentes 
- * à construção de tal documento.
+ * A classe encapsula os atributos integrantes e as funcionalidades inerentes à
+ * construção de tal documento.
  * </p>
  * 
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
- * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a> 
+ * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * @author <a href="mailto:samuelvalerio@gmail.com">Samuel Valério</a>
  * 
  * @since 0.2
@@ -73,7 +68,7 @@ import org.slf4j.LoggerFactory;
  * @version 0.2
  */
 public class Boleto {
-	
+
 	private static Logger log = LoggerFactory.getLogger(Boleto.class);
 
 	private static final int MAX_INSTRUCOES_CAIXA = 8;
@@ -82,96 +77,56 @@ public class Boleto {
 	 * @see Titulo
 	 */
 	private Titulo titulo;
-	
+
 	/**
 	 * @see #setDataDeProcessamento(Date)
 	 */
 	private Date dataDeProcessamento;
-	
+
 	/**
 	 * @see CodigoDeBarras
 	 */
 	private CodigoDeBarras codigoDeBarras;
-	
+
 	/**
 	 * @see LinhaDigitavel
 	 */
 	private LinhaDigitavel linhaDigitavel;
-	
+
 	/**
 	 * @see CampoLivre
 	 */
 	private CampoLivre campoLivre;
-	
+
 	/**
 	 * @see #setLocalPagamento(String)
 	 */
 	private String localPagamento;
-	
+
 	/**
 	 * @see #setInstrucaoAoSacado(String)
 	 */
 	private String instrucaoAoSacado;
-	
+
 	private List<String> instrucoesAoCaixa = new ArrayList<String>(MAX_INSTRUCOES_CAIXA);
 
 	/**
-	 * @see #setTextosExtras(Map)
-	 */
-	private Map<String, String> textosExtras; 
-	
-	/**
-	 *<p>
-	 * Map com nome do campo e imagem para este campo.
-	 *</p>
-	 */
-	private Map<String, Image> imagensExtras; 
-	
-	/**
-	 * Apenas cria um instâcia do boleto com os dados nulos. 
+	 * Apenas cria um instâcia do boleto com os dados nulos.
 	 */
 	public Boleto() {
 		super();
 	}
-	
+
 	/**
 	 * Cria um boleto pronto para ser gerado.
 	 * 
 	 * @param titulo
-	 * @throws NotSupportedBancoException 
-	 * @throws NotSupportedCampoLivreException 
+	 * @throws NotSupportedBancoException
+	 * @throws NotSupportedCampoLivreException
 	 */
-	public Boleto(Titulo titulo)throws IllegalArgumentException, NotSupportedBancoException, NotSupportedCampoLivreException{
-
-		if(log.isTraceEnabled())
-			log.trace("Instanciando boleto");
-		
-		if(log.isDebugEnabled())
-			log.debug("titulo instance : "+titulo);
-		
-		if(isNotNull(titulo)){
-			
-			this.setTitulo(titulo);
-			this.setCampoLivre(CampoLivreFactory.create(titulo));
-			this.load();
-			
-			if(log.isDebugEnabled()){
-				log.debug("boleto instance : " + this);
-			}
-			
-		}else {
-			
-			if(log.isDebugEnabled()){
-				log.debug("Título Nulo - Valor Não Permitido!");
-			}
-			
-			Exceptions.throwIllegalArgumentException("Título nulo!");
-		}
-		
-		if(log.isDebugEnabled() || log.isTraceEnabled()){
-			log.trace("Boleto Instanciado : "+this);
-		}
-
+	public Boleto(final Titulo titulo)
+			throws IllegalArgumentException, NotSupportedBancoException, NotSupportedCampoLivreException {
+		this(titulo, CampoLivreFactory.create(titulo));
 	}
 
 	/**
@@ -181,76 +136,70 @@ public class Boleto {
 	public Boleto(Titulo titulo, CampoLivre campoLivre) {
 		super();
 
-		if(log.isTraceEnabled())
+		if (log.isTraceEnabled())
 			log.trace("Instanciando boleto");
-		
-		if(log.isDebugEnabled())
-			log.debug("titulo instance : "+titulo);
-		
-		if(log.isDebugEnabled())
-			log.debug("campoLivre instance : "+campoLivre);
-		
-		if(isNotNull(titulo)){
-			
+
+		if (log.isDebugEnabled())
+			log.debug("titulo instance : " + titulo);
+
+		if (log.isDebugEnabled())
+			log.debug("campoLivre instance : " + campoLivre);
+
+		Validate.notNull(titulo, "Título Nulo - Valor Não Permitido!");
+
 			this.setTitulo(titulo);
 			this.setCampoLivre(campoLivre);
 			this.load();
-			
-			if(log.isDebugEnabled())
-				log.debug("boleto instance : "+this);
-			
-		}else {
-			IllegalArgumentException e = new IllegalArgumentException("Título nulo!");
-			log.error("Valor Não Permitido!",e);
-			throw e;
+
+			if (log.isDebugEnabled())
+				log.debug("boleto instance : " + this);
+
+		if (log.isDebugEnabled() || log.isTraceEnabled()) {
+
+			log.trace("Boleto Instanciado : " + this);
 		}
-		
-		if(log.isDebugEnabled() || log.isTraceEnabled()){
-			
-			log.trace("Boleto Instanciado : "+this);
-		}
-		
+
 	}
 
-	private void load(){
-		
+	private void load() {
 		codigoDeBarras = new CodigoDeBarras(titulo, campoLivre);
 		linhaDigitavel = new LinhaDigitavel(codigoDeBarras);
 		dataDeProcessamento = new Date();
-		
-		if(log.isInfoEnabled()){
-			
-			log.info("Data de Processamento do Boleto : "+DDMMYYYY_B.format(dataDeProcessamento));
+		if (log.isInfoEnabled()) {
+			log.info("Data de Processamento do Boleto : " + DateFormatUtils.ISO_DATE_FORMAT.format(dataDeProcessamento));
 		}
 	}
-	
+
 	/**
 	 * @return O campoLivre da isntância.
 	 */
 	public CampoLivre getCampoLivre() {
-		
+
 		return campoLivre;
 	}
 
 	/**
-	 * @param campoLivre the campoLivre to set
+	 * @param campoLivre
+	 *            the campoLivre to set
 	 */
-	private void setCampoLivre(CampoLivre campoLivre) {
-		
-		Objects.checkNotNull(campoLivre);
-		
+	private void setCampoLivre(final CampoLivre campoLivre) {
+
+		Validate.notNull(campoLivre);
+
 		int length = campoLivre.write().length();
-		
+
 		if (length == CampoLivre.STRING_LENGTH) {
 			this.campoLivre = campoLivre;
-			
+
 		} else {
-			
+
 			if (length > CampoLivre.STRING_LENGTH) {
-				Exceptions.throwIllegalArgumentException("O tamanho da String [" + length + "] é maior que o especificado [" + CampoLivre.STRING_LENGTH + "]!");
-				
+				throw new IllegalArgumentException("O tamanho da String [" + length
+						+ "] é maior que o especificado [" + CampoLivre.STRING_LENGTH + "]!");
+
 			} else {
-				Exceptions.throwIllegalArgumentException("O tamanho da String [" + length + "] é menor que o especificado [" + CampoLivre.STRING_LENGTH + "]!");
+				throw new IllegalArgumentException("O tamanho da String [" + length
+						+ "] é menor que o especificado [" + CampoLivre.STRING_LENGTH + "]!");
 			}
 		}
 	}
@@ -263,7 +212,8 @@ public class Boleto {
 	}
 
 	/**
-	 * @param titulo the titulo to set
+	 * @param titulo
+	 *            the titulo to set
 	 */
 	public void setTitulo(Titulo titulo) {
 		this.titulo = titulo;
@@ -283,7 +233,8 @@ public class Boleto {
 	 * Data de emissão do boleto de cobrança.
 	 * </p>
 	 * 
-	 * @param dataDeProcessamento the dataDeProcessamento to set
+	 * @param dataDeProcessamento
+	 *            the dataDeProcessamento to set
 	 */
 	public void setDataDeProcessamento(Date dataDeProcessamento) {
 		this.dataDeProcessamento = dataDeProcessamento;
@@ -297,7 +248,8 @@ public class Boleto {
 	}
 
 	/**
-	 * @param codigoDeBarras the codigoDeBarras to set
+	 * @param codigoDeBarras
+	 *            the codigoDeBarras to set
 	 */
 	public void setCodigoDeBarras(CodigoDeBarras codigoDeBarras) {
 		this.codigoDeBarras = codigoDeBarras;
@@ -311,7 +263,8 @@ public class Boleto {
 	}
 
 	/**
-	 * @param linhaDigitavel the linhaDigitavel to set
+	 * @param linhaDigitavel
+	 *            the linhaDigitavel to set
 	 */
 	public void setLinhaDigitavel(LinhaDigitavel linhaDigitavel) {
 		this.linhaDigitavel = linhaDigitavel;
@@ -331,11 +284,12 @@ public class Boleto {
 	 * Possíveis locais para pagamento.
 	 * </p>
 	 * <p>
-	 * Exemplo: <em>Pagável preferencialmente na Rede X ou em qualquer Banco até 
+	 * Exemplo: <em>Pagável preferencialmente na Rede X ou em qualquer Banco até
 	 * o Vencimento.</em>
 	 * </p>
 	 * 
-	 * @param localPagamento1 the localPagamento1 to set
+	 * @param localPagamento1
+	 *            the localPagamento1 to set
 	 */
 	public void setLocalPagamento(String localPagamento1) {
 		this.localPagamento = localPagamento1;
@@ -352,11 +306,12 @@ public class Boleto {
 
 	/**
 	 * <p>
-	 *  Instrução adicional ao sacado, para visualizar o conceito de negócio de sacado consultar o 
-	 * <a href="http://www.jrimum.org/bopepo">glossário</a>.
+	 * Instrução adicional ao sacado, para visualizar o conceito de negócio de
+	 * sacado consultar o <a href="http://www.jrimum.org/bopepo">glossário</a>.
 	 * </p>
 	 * 
-	 * @param insturcaoAoSacado the insturcaoAoSacado to set
+	 * @param insturcaoAoSacado
+	 *            the insturcaoAoSacado to set
 	 */
 	public void setInstrucaoAoSacado(String insturcaoAoSacado) {
 		this.instrucaoAoSacado = insturcaoAoSacado;
@@ -370,112 +325,27 @@ public class Boleto {
 	}
 
 	/**
-	 * @param instrucoes the instrucoes to set
+	 * @param instrucoes
+	 *            the instrucoes to set
 	 */
 	public void setInstrucoesAoCaixa(List<String> instrucoes) {
-		if( (this.instrucoesAoCaixa.size() + instrucoes.size()) > MAX_INSTRUCOES_CAIXA) {
-			throw new IllegalArgumentException(String.format("O quantidade de instuções ao caixa está limitada a [%s] instruções!", MAX_INSTRUCOES_CAIXA));
+		if ((this.instrucoesAoCaixa.size() + instrucoes.size()) > MAX_INSTRUCOES_CAIXA) {
+			throw new IllegalArgumentException(String.format(
+					"O quantidade de instuções ao caixa está limitada a [%s] instruções!", MAX_INSTRUCOES_CAIXA));
 		}
 		this.instrucoesAoCaixa.addAll(instrucoes);
 	}
 
 	public void addInstrucaoAoCaixa(final String instrucao) {
-		if(this.instrucoesAoCaixa.size() >= MAX_INSTRUCOES_CAIXA) {
-			throw new IllegalArgumentException(String.format("O quantidade de instuções ao caixa está limitada a [%s] instruções!", MAX_INSTRUCOES_CAIXA));
+		if (this.instrucoesAoCaixa.size() >= MAX_INSTRUCOES_CAIXA) {
+			throw new IllegalArgumentException(String.format(
+					"O quantidade de instuções ao caixa está limitada a [%s] instruções!", MAX_INSTRUCOES_CAIXA));
 		}
 		this.instrucoesAoCaixa.add(instrucao);
-	}
-	
-	/**
-	 * Sobrescreve um campo padrão do boleto.
-	 * 
-	 * @param campo
-	 *            Nome do campo no template
-	 * @param conteudo
-	 *            Texto a ser adicionado ao campo no template
-	 */
-	//public void sobrescrevaCampo(BoletoCampo campo, String conteudo){
-	//	addTextosExtras(campo.name(), conteudo);
-	//}
-	
-	
-	/**
-	 * @return Todas os campos de texto usados como extra ou sobrescrita no
-	 *         template.
-	 */
-	public Map<String, String> getTextosExtras() {
-		
-		return this.textosExtras;
-	}
-
-	
-	/**
-	 * Substitui todos os campos extra da instância caso exista.
-	 * 
-	 * @param textosExtras
-	 *            Campos atribuídos
-	 */
-	public void setTextosExtras(Map<String,String> textosExtras) {
-
-		this.textosExtras = textosExtras;
-	}
-	
-	/**
-	 * Adiciona um campo de texto no boleto caso o campo informado tenha o mesmo
-	 * nome no template da instância.
-	 * 
-	 * @param campo
-	 *            Nome do campo no template
-	 * @param conteudo
-	 *            Texto a ser adicionado ao campo no template
-	 */
-	public void addTextosExtras(String campo, String conteudo) {
-		
-		if(isNull(getTextosExtras())) {
-			setTextosExtras(new HashMap<String, String>());
-		}
-		
-		getTextosExtras().put(campo, conteudo);
-	}
-	
-	/**
-	 * @return Todas os campos de imagem usados como extra ou sobrescrita no
-	 *         template.
-	 */
-	public Map<String, Image> getImagensExtras() {
-		return this.imagensExtras;
-	}
-
-	/**
-	 * Substitui todos os campos extra da instância caso exista.
-	 * 
-	 * @param imagensExtras
-	 *            Campos atribuídos
-	 */
-	public void setImagensExtras(Map<String,Image> imagensExtras) {
-		this.imagensExtras = imagensExtras;
-	}
-	
-	/**
-	 * Adiciona um campo de imagem no boleto caso o campo informado tenha o
-	 * mesmo nome no template da instância.
-	 * 
-	 * @param campo
-	 *            Nome do campo no template
-	 * @param conteudo
-	 *            Imagem a ser adicionada ao campo no template
-	 */
-	public void addImagensExtras(String campo, Image conteudo) {
-		
-		if(isNull(getImagensExtras())) {
-			setImagensExtras(new HashMap<String, Image>());
-		}
-		
-		getImagensExtras().put(campo, conteudo);
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toString(this);
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

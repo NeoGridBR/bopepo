@@ -44,6 +44,23 @@ public class TituloValidator {
 
 	/**
 	 * <p>
+	 * Verifica se a data do vencimento do título não é nula, senão
+	 * lança uma {@code IllegalArgumentException}.
+	 * </p>
+	 * 
+	 * @param titulo
+	 * 
+	 * @since 0.2
+	 */
+	public final static void checkTituloDataDoVencimentoNotNull(final Titulo titulo) {
+		checkTituloNotNull(titulo);
+		Validate.notNull(titulo.getDataDoVencimento(),
+				"Data do Vendimento do título não pode ser nula!");
+	}
+
+
+	/**
+	 * <p>
 	 * Verifica se a conta bancária do título não é nula, senão lança uma
 	 * {@code IllegalArgumentException}.
 	 * </p>

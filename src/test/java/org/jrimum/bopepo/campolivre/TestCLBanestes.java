@@ -53,21 +53,21 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLBanestes extends AbstractCampoLivreBaseTest<CLBanestes> {
-	
+public class TestCLBanestes extends AbstractCampoLivreBaseTest {
+
 	@Before
 	public void setUp() {
-		
+
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_DO_ESTADO_DO_ESPIRITO_SANTO.create());
 		titulo.getContaBancaria().setCarteira(new Carteira(4, TipoDeCobranca.COM_REGISTRO));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(7730070));
 		titulo.setNossoNumero("10297");
-		
+
 		createCampoLivreToTest();
 
 		setCampoLivreEsperadoComoString("0001029700007730070402182");
 	}
-	
+
 	/**
 	 * Configura, no título, a carteira utilizada no teste.
 	 * 
@@ -76,53 +76,55 @@ public class TestCLBanestes extends AbstractCampoLivreBaseTest<CLBanestes> {
 	private void setCarteiraDoTitulo(Carteira carteira) {
 		titulo.getContaBancaria().setCarteira(carteira);
 	}
-	
+
 	@Test
 	public void seOWriteRetornaOValorEsperadoParaUmaCarteiraSemRegistro() {
-		
+
 		final Carteira carteira = new Carteira();
 		carteira.setTipoCobranca(TipoDeCobranca.SEM_REGISTRO);
 		setCarteiraDoTitulo(carteira);
-		
+
 		createCampoLivreToTest();
-		
-		assertEquals("Testando um campo livre válido da carteira sem registro.", "0001029700007730070202108", writeCampoLivre());
+
+		assertEquals("Testando um campo livre válido da carteira sem registro.", "0001029700007730070202108",
+				writeCampoLivre());
 	}
-	
+
 	@Test
 	public void seOWriteRetornaOValorEsperadoParaUmaCarteiraCaucionada() {
-		
+
 		setCarteiraDoTitulo(new Carteira(3, TipoDeCobranca.COM_REGISTRO));
 
 		createCampoLivreToTest();
-		
-		assertEquals("Testando um campo livre válido da carteira caucionada.", "0001029700007730070302196", writeCampoLivre());
+
+		assertEquals("Testando um campo livre válido da carteira caucionada.", "0001029700007730070302196",
+				writeCampoLivre());
 	}
-	
-	@Test(expected=CampoLivreException.class)
+
+	@Test(expected = CampoLivreException.class)
 	public void criacaoSemTipoDeCobranca() {
-		
+
 		setCarteiraDoTitulo(new Carteira());
 		CampoLivreFactory.create(titulo);
 	}
-	
-	@Test(expected=CampoLivreException.class)
+
+	@Test(expected = CampoLivreException.class)
 	public void criacaoSemNumeroDaConta() {
 
 		titulo.getContaBancaria().setNumeroDaConta(null);
 		CampoLivreFactory.create(titulo);
 	}
-	
-	@Test(expected=CampoLivreException.class)
+
+	@Test(expected = CampoLivreException.class)
 	public void criacaoSemNossoNumero() {
-		
+
 		titulo.setNossoNumero(null);
 		CampoLivreFactory.create(titulo);
 	}
-	
-	@Test(expected=CampoLivreException.class)
+
+	@Test(expected = CampoLivreException.class)
 	public void criacaoNossoNumeroMaiorQue8Digitos() {
-		
+
 		titulo.setNossoNumero("123456789");
 		CampoLivreFactory.create(titulo);
 	}

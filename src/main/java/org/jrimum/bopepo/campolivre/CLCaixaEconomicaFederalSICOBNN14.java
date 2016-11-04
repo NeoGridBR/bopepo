@@ -31,7 +31,6 @@ package org.jrimum.bopepo.campolivre;
 
 import static java.lang.String.format;
 
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.FixedField;

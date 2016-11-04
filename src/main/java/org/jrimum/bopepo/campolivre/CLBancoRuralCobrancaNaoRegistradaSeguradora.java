@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 import org.jrimum.utilix.text.DecimalFormat;
 
 /**
@@ -17,7 +16,8 @@ import org.jrimum.utilix.text.DecimalFormat;
  * com I.O.S.), deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -76,52 +76,31 @@ import org.jrimum.utilix.text.DecimalFormat;
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
  */
-class CLBancoRuralCobrancaNaoRegistradaSeguradora extends AbstractCLBancoRural{
+public class CLBancoRuralCobrancaNaoRegistradaSeguradora {
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2427800425370567806L;
-
-	/**
-	 * Número de campos.
-	 */
-	private static final Integer FIELDS_LENGTH = Integer.valueOf(6);
-	
-	/**
-	 * Tipo de Cobrança = 4. 
+	 * Tipo de Cobrança = 4.
 	 */
 	private static final Integer TIPO_COBRANCA = Integer.valueOf(4);
-	
+
 	/**
 	 * <p>
-	 * Dado um título, cria um campo livre para cobrança sem registro – apólice de seguro com I.O.S..
+	 * Dado um título, cria um campo livre para cobrança sem registro – apólice
+	 * de seguro com I.O.S..
 	 * </p>
 	 * 
 	 * @param titulo
 	 *            - título com as informações para geração do campo livre
 	 */
-	CLBancoRuralCobrancaNaoRegistradaSeguradora(Titulo titulo) {
-		
-		super(FIELDS_LENGTH);
-		
-		this.add( new FixedField<Integer>( TIPO_COBRANCA , 1 ) );
-		this.add( new FixedField<Integer>( titulo.getContaBancaria().getAgencia().getCodigo(), 3 , Fillers.ZERO_LEFT ) );
-		this.add( new FixedField<Integer>(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3, Fillers.ZERO_LEFT ) );
-		this.add( new FixedField<String>( titulo.getNossoNumero(), 10 , Fillers.ZERO_LEFT ) );
-		this.add( new FixedField<String>( titulo.getDigitoDoNossoNumero(), 1 , Fillers.ZERO_LEFT ) );
-		this.add( new FixedField<BigDecimal>(titulo.getParametrosBancarios().<BigDecimal>getValor(VALOR_IOS), 7, DecimalFormat.NUMBER_DD_BR.copy(), Fillers.ZERO_LEFT));
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final CampoLivre campoLivre = new CampoLivre(6);
+		campoLivre.addInteger(TIPO_COBRANCA, 1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
+		campoLivre.addIntegerZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 10);
+		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.add(new FixedField<BigDecimal>(titulo.getParametrosBancarios().<BigDecimal>getValor(VALOR_IOS), 7, DecimalFormat.NUMBER_DD_BR.copy(), Fillers.ZERO_LEFT));
+		return campoLivre;
 	}
 
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

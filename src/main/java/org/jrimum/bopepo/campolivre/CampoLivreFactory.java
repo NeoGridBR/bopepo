@@ -29,31 +29,33 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import static org.apache.commons.lang.StringUtils.EMPTY;
+import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.containsAny;
 import static org.apache.commons.lang.StringUtils.isNumeric;
 import static org.apache.commons.lang.StringUtils.strip;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.jrimum.bopepo.BancosSuportados;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Objects;
-import org.jrimum.utilix.text.Strings;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
  * Esta classe tem como finalidade encapsular toda a lógica de criação de um
  * campo livre e de fornecer para o pacote
- * <code>org.jrimum.bopepo.campolivre</code> 
- * um único ponto de acesso ao mesmo.
+ * <code>org.jrimum.bopepo.campolivre</code> um único ponto de acesso ao mesmo.
  * </p>
  * 
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
- * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a> 
+ * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
@@ -62,24 +64,68 @@ import org.jrimum.utilix.text.Strings;
 public final class CampoLivreFactory {
 
 	/**
-	 * <p>
-	 * Devolve um <code>CampoLivre</code> de acordo com o Banco contido na conta bancária do título.
-	 * </p> 
-	 * <p>
-	 * Caso exista implementação para o banco o retorno terá uma referência não nula.
-	 * </p>
+	 * Looger.
+	 */
+	private static Logger log = LoggerFactory.getLogger(CampoLivreFactory.class);
+
+	/**
+	 * Cria um campo livre a partir dos dados contidos no título fornecido.
 	 * 
 	 * @param titulo
-	 * 
-	 * @return Uma referência para um CampoLivre.
-	 * @throws NotSupportedBancoException 
-	 * @throws NotSupportedCampoLivreException 
+	 *            com todos os dados para a geração do campo livre
+	 * @return instância de campo livre ou nulo.
+	 * @throws NotSupportedBancoException
+	 *             Caso o banco informado na conta bancária não tenha nenhuma
+	 *             implementação de campo livre.
+	 * @throws NotSupportedCampoLivreException
+	 *             Caso exista implementações de campo livre para o banco
+	 *             informa na conta bancária, mas nenhuma dessas implementações
+	 *             foram adequadas para os dados do título.
+	 * @throws CampoLivreException
+	 *             Caso ocorra algum problema na geração do campo livre.
 	 */
-	public static CampoLivre create(Titulo titulo) throws NotSupportedBancoException, NotSupportedCampoLivreException {
+	public static CampoLivre create(final Titulo titulo)
+			throws NotSupportedBancoException, NotSupportedCampoLivreException {
+		if (log.isTraceEnabled()) {
+			log.trace("Instanciando Campo livre");
+		}
+		if (log.isDebugEnabled()) {
+			log.debug("titulo instance : " + titulo);
+		}
 
-		return AbstractCampoLivre.create(titulo);
+		try {
+			TituloValidator.checkBancoNotNull(titulo);
+			if (log.isDebugEnabled()) {
+				log.debug(format("Campo Livre do Banco: %s", titulo.getContaBancaria().getBanco().getNome()));
+			}
+
+			final String codigoBACENFormatado = titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN()
+					.getCodigoFormatado();
+			if (BancosSuportados.isSuportado(codigoBACENFormatado)) {
+				final BancosSuportados banco = BancosSuportados.BANCOS_SUPORTADOS.get(codigoBACENFormatado);
+				return banco.getBanco().getCampoLivre(titulo);
+			} else {
+				/*
+				 * Se chegar até este ponto, é sinal de que para o banco em
+				 * questão, apesar de estar definido no EnumBancos, não há
+				 * implementações de campo livre, logo considera-se o banco com
+				 * não suportado.
+				 */
+				throw new NotSupportedBancoException();
+			}
+		} catch (final CampoLivreException e) {
+			/*
+			 * Caso seja uma exceção esperada.
+			 */
+			throw e;
+		} catch (final Exception e) {
+			/*
+			 * Encapsula-se qualquer outra exceção.
+			 */
+			throw new CampoLivreException(e);
+		}
 	}
-	
+
 	/**
 	 * Devolve um CampoLivre a partir de uma String.
 	 * 
@@ -90,36 +136,18 @@ public final class CampoLivreFactory {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	public static CampoLivre create(String strCampoLivre) {
-		Objects.checkNotNull(strCampoLivre);
-		
-		strCampoLivre = strip(strCampoLivre);
-		
-		Strings.checkNotBlank(strCampoLivre, "O Campo Livre não deve ser vazio!");
-		 
-		Objects.checkArgument(strCampoLivre.length() == CampoLivre.STRING_LENGTH, "O tamanho do Campo Livre [ " + strCampoLivre + " ] deve ser igual a 25 e não ["+strCampoLivre.length()+"]!");
-		Objects.checkArgument(!containsAny(strCampoLivre, " "), "O Campo Livre [ " + strCampoLivre + " ] não deve conter espaços em branco!");
-		Objects.checkArgument(isNumeric(strCampoLivre),"O Campo Livre [ " + strCampoLivre + " ] deve ser uma String numérica!");
+	public static CampoLivre create(final String value) {
+		final String strCampoLivre = strip(value);
 
-		return valueOf(strCampoLivre);
-	}
+		Validate.notEmpty(strCampoLivre, "O Campo Livre não deve ser vazio!");
 
-	private static CampoLivre valueOf(String strCampoLivre) {
-		 CampoLivre campoLivre = new CampoLivre() {
-			private static final long serialVersionUID = -7592488081807235080L;
+		Validate.isTrue(strCampoLivre.length() == CampoLivre.STRING_LENGTH, "O tamanho do Campo Livre [ "
+				+ strCampoLivre + " ] deve ser igual a 25 e não [" + strCampoLivre.length() + "]!");
+		Validate.isTrue(!containsAny(strCampoLivre, " "), "O Campo Livre [ " + strCampoLivre + " ] não deve conter espaços em branco!");
+		Validate.isTrue(isNumeric(strCampoLivre), "O Campo Livre [ " + strCampoLivre + " ] deve ser uma String numérica!");
 
-			FixedField<String> campo = new FixedField<String>(EMPTY,
-					STRING_LENGTH, Fillers.ZERO_LEFT);
-
-			public void read(String str) {
-				campo.read(str);
-			}
-
-			public String write() {
-				return campo.write();
-			}
-		};
-		campoLivre.read(strCampoLivre);
+		final CampoLivre campoLivre = new CampoLivre(1);
+		campoLivre.addString(strCampoLivre, StringUtils.length(strCampoLivre));
 		return campoLivre;
 	}
 
@@ -128,7 +156,7 @@ public final class CampoLivreFactory {
 	 */
 	@Override
 	public String toString() {
-		return Objects.toString(this);
+		return ToStringBuilder.reflectionToString(this);
 	}
-	
+
 }

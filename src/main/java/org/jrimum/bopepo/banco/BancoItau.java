@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.jrimum.bopepo.campolivre.CLItauComCarteirasEspeciais;
 import org.jrimum.bopepo.campolivre.CLItauPadrao;
+import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
@@ -51,12 +52,12 @@ public class BancoItau extends AbstractBanco {
 		CARTEIRAS_ESPECIAIS.add(198);
 	}
 
-	public BancoItau(final Titulo titulo) {
-		super(titulo);
+	public BancoItau() {
+		super("341", "60701190000104", "BANCO ITAÚ S.A.", Segmento.BANCO_MULTIPLO);
 	}
 
 	@Override
-	public CampoLivre getCampoLivre() throws NotSupportedCampoLivreException {
+	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
 		TituloValidator.checkCarteiraCodigo(titulo);
 		/*
 		 * Se a carteira for especial, a forma de construir o campo livre será

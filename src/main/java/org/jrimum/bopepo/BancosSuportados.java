@@ -32,7 +32,28 @@ package org.jrimum.bopepo;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jrimum.bopepo.banco.Segmento;
+import org.jrimum.bopepo.banco.AbstractBanco;
+import org.jrimum.bopepo.banco.BancoBradesco;
+import org.jrimum.bopepo.banco.BancoCEF;
+import org.jrimum.bopepo.banco.BancoCecred;
+import org.jrimum.bopepo.banco.BancoCitibank;
+import org.jrimum.bopepo.banco.BancoDeBrasilia;
+import org.jrimum.bopepo.banco.BancoDoBrasil;
+import org.jrimum.bopepo.banco.BancoDoNordesteDoBrasil;
+import org.jrimum.bopepo.banco.BancoHSBC;
+import org.jrimum.bopepo.banco.BancoIntermedium;
+import org.jrimum.bopepo.banco.BancoItau;
+import org.jrimum.bopepo.banco.BancoMercantilDoBrasil;
+import org.jrimum.bopepo.banco.BancoReal;
+import org.jrimum.bopepo.banco.BancoRural;
+import org.jrimum.bopepo.banco.BancoSafra;
+import org.jrimum.bopepo.banco.BancoSantander;
+import org.jrimum.bopepo.banco.BancoSicredi;
+import org.jrimum.bopepo.banco.BancoSofisa;
+import org.jrimum.bopepo.banco.Bancoob;
+import org.jrimum.bopepo.banco.Banestes;
+import org.jrimum.bopepo.banco.Banrisul;
+import org.jrimum.bopepo.banco.Unibanco;
 import org.jrimum.domkee.comum.pessoa.id.cprf.CNPJ;
 import org.jrimum.domkee.financeiro.banco.febraban.Banco;
 import org.jrimum.domkee.financeiro.banco.febraban.CodigoDeCompensacaoBACEN;
@@ -45,8 +66,8 @@ import org.jrimum.domkee.financeiro.banco.febraban.CodigoDeCompensacaoBACEN;
  * </p>
  * 
  * <p>
- * Aqui se encontram todos os bancos sob a <a
- * href="http://www.bcb.gov.br/?RELINST">supervisão da BACEN</a> em
+ * Aqui se encontram todos os bancos sob a
+ * <a href="http://www.bcb.gov.br/?RELINST">supervisão da BACEN</a> em
  * funcionamento no país e que possuem pelo menos uma implementação de
  * <code>ICampoLivre</code>.
  * </p>
@@ -93,12 +114,12 @@ import org.jrimum.domkee.financeiro.banco.febraban.CodigoDeCompensacaoBACEN;
  *         Antunes</a> - Colaborador com o banco Intermedium (077)
  * @author <a href="mailto:fernandobgi@gmail.com">Fernando Dias</a> -
  *         Colaborador com o banco Rural (453)
- * @author <a href="mailto:pporto@gmail.com">Paulo Porto</a> - 
- * 		   Colaborador com o Banco do Nordeste do Brasil (004).
- * @author <a href="mailto:fabianojustino@gmail.com">Fabiano Carrijo</a> - 
- * 		   Colaborador com o Banco Citibank (756).
- * @author <a href="mailto:contato@douglasramiro.com.br">Douglas Ramiro</a> - 
- * 		   Colaborador com o Banco de Brasília (070).
+ * @author <a href="mailto:pporto@gmail.com">Paulo Porto</a> - Colaborador com o
+ *         Banco do Nordeste do Brasil (004).
+ * @author <a href="mailto:fabianojustino@gmail.com">Fabiano Carrijo</a> -
+ *         Colaborador com o Banco Citibank (756).
+ * @author <a href="mailto:contato@douglasramiro.com.br">Douglas Ramiro</a> -
+ *         Colaborador com o Banco de Brasília (070).
  * 
  * @see org.jrimum.bopepo.campolivre.CampoLivre
  * @see org.jrimum.domkee.financeiro.banco.Banco
@@ -107,7 +128,7 @@ import org.jrimum.domkee.financeiro.banco.febraban.CodigoDeCompensacaoBACEN;
  * 
  * @version 0.2
  */
-public enum BancosSuportados{
+public enum BancosSuportados {
 
 	/*
 	 * <=====================================================================>
@@ -119,31 +140,32 @@ public enum BancosSuportados{
 
 	/**
 	 * Tipo enumerado que representa o <strong>Banco do Brasil</strong>, código
-	 * de compensação <strong><tt>001</tt></strong> <a
-	 * href="http://www.bb.com.br">site</a>.
+	 * de compensação <strong><tt>001</tt></strong>
+	 * <a href="http://www.bb.com.br">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DO_BRASIL("001", "00000000000191", "BANCO DO BRASIL S.A.", Segmento.BANCO_DO_BRASIL_BANCO_MULTIPLO),
-		
+	BANCO_DO_BRASIL(new BancoDoBrasil()),
+
 	/**
-	 * Tipo enumerado que representa o <strong>Banco do Nordeste do Brasil</strong>, código
-	 * de compensação <strong><tt>004</tt></strong> (<a href="http://www.bnb.gov.br">site</a>).
+	 * Tipo enumerado que representa o <strong>Banco do Nordeste do
+	 * Brasil</strong>, código de compensação <strong><tt>004</tt></strong>
+	 * (<a href="http://www.bnb.gov.br">site</a>).
 	 * 
 	 * @since 0.2-Helio
-	 */	
-	BANCO_DO_NORDESTE_DO_BRASIL("004","07237373000120", "BANCO DO NORDESTE DO BRASIL S.A.", Segmento.BANCO_MULTIPLO),		
-	
+	 */
+	BANCO_DO_NORDESTE_DO_BRASIL(new BancoDoNordesteDoBrasil()),
+
 	/**
-	 * Tipo enumerado que representa o Banestes, <strong>Banco do Estado do Espírito Santo</strong>,
-	 * código de compensação <strong><tt>021</tt></strong>
-	 *  <a href="http://www.banestes.com.br">
+	 * Tipo enumerado que representa o Banestes, <strong>Banco do Estado do
+	 * Espírito Santo</strong>, código de compensação
+	 * <strong><tt>021</tt></strong> <a href="http://www.banestes.com.br">
 	 * site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DO_ESTADO_DO_ESPIRITO_SANTO("021", "28127603000178", "BANCO DO ESTADO DO ESPIRITO SANTO S.A.", Segmento.BANCO_MULTIPLO),
-			
+	BANCO_DO_ESTADO_DO_ESPIRITO_SANTO(new Banestes()),
+
 	/**
 	 * Tipo enumerado que representa o Santander <strong>Banco Santander
 	 * (Brasil) S. A.</strong>, código de compensação <strong><tt>033</tt>
@@ -151,70 +173,73 @@ public enum BancosSuportados{
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_SANTANDER("033", "90400888000142", "BANCO SANTANDER (BRASIL) S. A.", Segmento.BANCO_MULTIPLO),
+	BANCO_SANTANDER(new BancoSantander()),
 
 	/**
-	 * Tipo enumerado que representa o Banrisul, Banco <strong>do Estado do Rio Grande do Sul</strong>,
-	 * código de compensação <strong><tt>041</tt></strong> <a href="http://www.banrisul.com.br/">
+	 * Tipo enumerado que representa o Banrisul, Banco <strong>do Estado do Rio
+	 * Grande do Sul</strong>, código de compensação
+	 * <strong><tt>041</tt></strong> <a href="http://www.banrisul.com.br/">
 	 * site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL("041", "92702067000196", "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.", Segmento.BANCO_MULTIPLO),
-			
-	/**
-	 * Tipo enumerado que representa o Banco <strong>BRB - Banco de Brasília</strong>,
-	 * código de compensação <strong><tt>070</tt></strong> <a
-	 * href="http://www.brb.com.br">site</a>.
-	 * 
-	 * @since 0.2
-	 */
-	BANCO_DE_BRASILIA("070","00000208000100","BRB- Banco de Brasília S.A.", Segmento.BANCO_MULTIPLO),
-	
-	/**
-	 * Tipo enumerado que representa o BANISA, Banco <strong>Intermedium</strong>,
-	 * código de compensação <strong><tt>077</tt></strong> <a href="http://www.bancointermedium.com.br/">
-	 * site</a>.
-	 * 
-	 * @since 0.2
-	 */
-	BANCO_INTEMEDIUM("077", "00416968000101", "BANCO INTERMEDIUM S.A.", Segmento.BANCO_MULTIPLO),
+	BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL(new Banrisul()),
 
 	/**
-	 * Tipo enumerado que representa o CECRED, <strong>Cooperativa Central de Crédito Urbano</strong>,
-	 * código de compensação <strong><tt>085</tt></strong> <a href="http://www.cecred.coop.br/">
+	 * Tipo enumerado que representa o Banco <strong>BRB - Banco de
+	 * Brasília</strong>, código de compensação <strong><tt>070</tt></strong>
+	 * <a href="http://www.brb.com.br">site</a>.
+	 * 
+	 * @since 0.2
+	 */
+	BANCO_DE_BRASILIA(new BancoDeBrasilia()),
+
+	/**
+	 * Tipo enumerado que representa o BANISA, Banco
+	 * <strong>Intermedium</strong>, código de compensação
+	 * <strong><tt>077</tt></strong>
+	 * <a href="http://www.bancointermedium.com.br/"> site</a>.
+	 * 
+	 * @since 0.2
+	 */
+	BANCO_INTEMEDIUM(new BancoIntermedium()),
+
+	/**
+	 * Tipo enumerado que representa o CECRED, <strong>Cooperativa Central de
+	 * Crédito Urbano</strong>, código de compensação
+	 * <strong><tt>085</tt></strong> <a href="http://www.cecred.coop.br/">
 	 * site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	CECRED("085", "05.463.212/0001-29", "COOPERATIVA CENTRAL DE CRÉDITO URBANO - CECRED", Segmento.COOPERATIVA_DE_CREDITO),
-	
+	CECRED(new BancoCecred()),
+
 	/**
-	 * Tipo enumerado que representa o Banco <strong>Caixa Econômica Federal</strong>,
-	 * código de compensação <strong><tt>104</tt></strong> <a
-	 * href="http://www.caixa.gov.br">site</a>.
+	 * Tipo enumerado que representa o Banco <strong>Caixa Econômica
+	 * Federal</strong>, código de compensação <strong><tt>104</tt></strong>
+	 * <a href="http://www.caixa.gov.br">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	CAIXA_ECONOMICA_FEDERAL("104", "00360305000104", "CAIXA ECONOMICA FEDERAL", Segmento.CAIXA_ECONOMICA_FEDERAL),
+	CAIXA_ECONOMICA_FEDERAL(new BancoCEF()),
 
 	/**
 	 * Tipo enumerado que representa o Banco <strong>Bradesco</strong>, código
-	 * de compensação <strong><tt>237</tt></strong> <a
-	 * href="http://www.bradesco.com.br">site</a>.
+	 * de compensação <strong><tt>237</tt></strong>
+	 * <a href="http://www.bradesco.com.br">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_BRADESCO("237", "60746948000112", "BANCO BRADESCO S.A.", Segmento.BANCO_MULTIPLO),
+	BANCO_BRADESCO(new BancoBradesco()),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Itaú</strong>, código de
-	 * compensação <strong><tt>341</tt></strong> <a
-	 * href="http://www.	.com.br">site</a>.
+	 * compensação <strong><tt>341</tt></strong>
+	 * <a href="http://www. .com.br">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_ITAU("341", "60701190000104", "BANCO ITAÚ S.A.", Segmento.BANCO_MULTIPLO),
+	BANCO_ITAU(new BancoItau()),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Banco ABN AMRO Real</strong>
@@ -225,125 +250,127 @@ public enum BancosSuportados{
 	 * foram incorporados ao Banco Real, portanto para gerar boletos bancários
 	 * dos bancos citados utilize este tipo enumerado.
 	 * </p>
+	 * 
 	 * @since 0.2
 	 */
-	BANCO_ABN_AMRO_REAL("356", "33066408000115", "BANCO ABN AMRO REAL S.A.", Segmento.BANCO_MULTIPLO),
+	BANCO_ABN_AMRO_REAL(new BancoReal()),
 
 	/**
-	 * Tipo enumerado que representa o <strong>Banco Mercantil do Brasil</strong>
-	 * (<a href="http://www.mercantildobrasil.com.br">http://www.mercantildobrasil.com.br</a>),
+	 * Tipo enumerado que representa o <strong>Banco Mercantil do
+	 * Brasil</strong> (<a href=
+	 * "http://www.mercantildobrasil.com.br">http://www.mercantildobrasil.com.br</a>),
 	 * código de compensação <strong><tt>389</tt></strong>.
+	 * 
 	 * @since 0.2
 	 */
-	MERCANTIL_DO_BRASIL("389", "17184037000110", "BANCO MERCANTIL DO BRASIL S.A.", Segmento.BANCO_MULTIPLO),
-			
+	MERCANTIL_DO_BRASIL(new BancoMercantilDoBrasil()),
+
 	/**
 	 * Tipo enumerado que representa o <strong>HSBC</strong>, código de
-	 * compensação <strong><tt>399</tt></strong> <a
-	 * href="http://www.hsbc.com.br">site</a>.
+	 * compensação <strong><tt>399</tt></strong>
+	 * <a href="http://www.hsbc.com.br">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	HSBC("399", "01701201000189", "HSBC BANK BRASIL S.A.", Segmento.BANCO_MULTIPLO),
+	HSBC(new BancoHSBC()),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Unibanco</strong>, código de
-	 * compensação <strong><tt>409</tt></strong> <a
-	 * href="http://www.unibanco.com.br">site</a>.
+	 * compensação <strong><tt>409</tt></strong>
+	 * <a href="http://www.unibanco.com.br">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	UNIBANCO("409", "33700394000140", "UNIBANCO-UNIAO DE BANCOS BRASILEIROS S.A.", Segmento.BANCO_MULTIPLO),
+	UNIBANCO(new Unibanco()),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Unibanco</strong>, código de
-	 * compensação <strong><tt>422</tt></strong> <a
-	 * href="http://www.safra.com.br/">site</a>.
+	 * compensação <strong><tt>422</tt></strong>
+	 * <a href="http://www.safra.com.br/">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_SAFRA("422", "58160789000128", "BANCO SAFRA S.A.", Segmento.BANCO_MULTIPLO),
-	
+	BANCO_SAFRA(new BancoSafra()),
+
 	/**
 	 * Tipo enumerado que representa o <strong>Sofisa</strong>, código de
-	 * compensação <strong><tt>637</tt></strong> <a
-	 * href="http://www.sofisa.com.br/">site</a>.
+	 * compensação <strong><tt>637</tt></strong>
+	 * <a href="http://www.sofisa.com.br/">site</a>.
 	 * 
 	 * @since 0.2.5
 	 */
-	BANCO_SOFISA("637", "60889128000180", "Banco Sofisa S.A.", Segmento.BANCO_MULTIPLO),
-	
+	BANCO_SOFISA(new BancoSofisa()),
+
 	/**
 	 * Tipo enumerado que representa o <strong>Citibank</strong>, código de
-	 * compensação <strong><tt>756</tt></strong> <a
-	 * href="http://www.citibank.com.br/">site</a>.
+	 * compensação <strong><tt>756</tt></strong>
+	 * <a href="http://www.citibank.com.br/">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	CITIBANK("745", "33479023000180", "BANCO CITIBANK S.A.", Segmento.BANCO_MULTIPLO),
-	
+	CITIBANK(new BancoCitibank()),
+
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Sicredi</strong>, código de
-	 * compensação <strong><tt>748</tt></strong> <a
-	 * href="http://www.sicredi.com.br/">site</a>.
+	 * compensação <strong><tt>748</tt></strong>
+	 * <a href="http://www.sicredi.com.br/">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_SICREDI("748", "01181521000155", "BANCO COOPERATIVO SICREDI S.A.", Segmento.BANCO_MULTIPLO_COOPERATIVO),
-	
+	BANCO_SICREDI(new BancoSicredi()),
+
 	/**
 	 * Tipo enumerado que representa o <strong>Banco Rural</strong>, código de
-	 * compensação <strong><tt>453</tt></strong> <a
-	 * href="http://www.rural.com.br/">site</a>.
+	 * compensação <strong><tt>453</tt></strong>
+	 * <a href="http://www.rural.com.br/">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCO_RURAL("453", "58160789000128", "BANCO RURAL S.A.", Segmento.BANCO_MULTIPLO),
+	BANCO_RURAL(new BancoRural()),
 
 	/**
 	 * Tipo enumerado que representa o <strong>Bancoob</strong>, código de
-	 * compensação <strong><tt>756</tt></strong> <a
-	 * href="http://www.bancoob.com.br/">site</a>.
+	 * compensação <strong><tt>756</tt></strong>
+	 * <a href="http://www.bancoob.com.br/">site</a>.
 	 * 
 	 * @since 0.2
 	 */
-	BANCOOB("756", "02038232000164", "BANCO COOPERATIVO DO BRASIL S.A. - BANCOOB", Segmento.BANCO_MULTIPLO_COOPERATIVO);
-	
+	BANCOOB(new Bancoob());
+
 	/**
 	 * Singleton <code>Map</code> para pesquisa por bancos suportados no
 	 * componente.
 	 * 
 	 * @since 0.2
 	 */
-	public static final Map<String, BancosSuportados> suportados = new HashMap<String, BancosSuportados>(
+	public static final Map<String, BancosSuportados> BANCOS_SUPORTADOS = new HashMap<String, BancosSuportados>(
 			BancosSuportados.values().length);
 
 	static {
-
-		suportados.put(BANCO_DO_BRASIL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_BRASIL);
-		suportados.put(BANCO_DO_NORDESTE_DO_BRASIL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_NORDESTE_DO_BRASIL);
-		suportados.put(CAIXA_ECONOMICA_FEDERAL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CAIXA_ECONOMICA_FEDERAL);
-		suportados.put(BANCO_BRADESCO.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_BRADESCO);
-		suportados.put(BANCO_ABN_AMRO_REAL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_ABN_AMRO_REAL);
-		suportados.put(UNIBANCO.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), UNIBANCO);
-		suportados.put(HSBC.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), HSBC);
-		suportados.put(BANCO_ITAU.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_ITAU);
-		suportados.put(BANCO_SAFRA.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SAFRA);
-		suportados.put(BANCO_SOFISA.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SOFISA);
-		suportados.put(BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL);
-		suportados.put(MERCANTIL_DO_BRASIL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), MERCANTIL_DO_BRASIL);
-		suportados.put(BANCO_DO_ESTADO_DO_ESPIRITO_SANTO.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_ESTADO_DO_ESPIRITO_SANTO);
-		suportados.put(BANCO_RURAL.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_RURAL);
-		suportados.put(BANCO_SANTANDER.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SANTANDER);
-		suportados.put(BANCO_INTEMEDIUM.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_INTEMEDIUM);
-		suportados.put(BANCO_SICREDI.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SICREDI);
-		suportados.put(BANCOOB.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCOOB);
-		suportados.put(CITIBANK.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CITIBANK);
-		suportados.put(BANCO_DE_BRASILIA.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DE_BRASILIA);
-		suportados.put(CECRED.instituicao.getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CECRED);
+		BANCOS_SUPORTADOS.put(BANCO_DO_BRASIL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_BRASIL);
+		BANCOS_SUPORTADOS.put(BANCO_DO_NORDESTE_DO_BRASIL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_NORDESTE_DO_BRASIL);
+		BANCOS_SUPORTADOS.put(CAIXA_ECONOMICA_FEDERAL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CAIXA_ECONOMICA_FEDERAL);
+		BANCOS_SUPORTADOS.put(BANCO_BRADESCO.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_BRADESCO);
+		BANCOS_SUPORTADOS.put(BANCO_ABN_AMRO_REAL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_ABN_AMRO_REAL);
+		BANCOS_SUPORTADOS.put(UNIBANCO.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), UNIBANCO);
+		BANCOS_SUPORTADOS.put(HSBC.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), HSBC);
+		BANCOS_SUPORTADOS.put(BANCO_ITAU.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_ITAU);
+		BANCOS_SUPORTADOS.put(BANCO_SAFRA.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SAFRA);
+		BANCOS_SUPORTADOS.put(BANCO_SOFISA.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SOFISA);
+		BANCOS_SUPORTADOS.put(BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL);
+		BANCOS_SUPORTADOS.put(MERCANTIL_DO_BRASIL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), MERCANTIL_DO_BRASIL);
+		BANCOS_SUPORTADOS.put(BANCO_DO_ESTADO_DO_ESPIRITO_SANTO.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DO_ESTADO_DO_ESPIRITO_SANTO);
+		BANCOS_SUPORTADOS.put(BANCO_RURAL.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_RURAL);
+		BANCOS_SUPORTADOS.put(BANCO_SANTANDER.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SANTANDER);
+		BANCOS_SUPORTADOS.put(BANCO_INTEMEDIUM.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_INTEMEDIUM);
+		BANCOS_SUPORTADOS.put(BANCO_SICREDI.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_SICREDI);
+		BANCOS_SUPORTADOS.put(BANCOOB.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCOOB);
+		BANCOS_SUPORTADOS.put(CITIBANK.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CITIBANK);
+		BANCOS_SUPORTADOS.put(BANCO_DE_BRASILIA.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), BANCO_DE_BRASILIA);
+		BANCOS_SUPORTADOS.put(CECRED.create().getCodigoDeCompensacaoBACEN().getCodigoFormatado(), CECRED);
 	}
 
-	private final Banco instituicao;
+	private final AbstractBanco banco;
 
 	/**
 	 * <p>
@@ -357,16 +384,15 @@ public enum BancosSuportados{
 	 * @param segmento
 	 * 
 	 * @see java.lang.Enum
-	 * @see <a
-	 *      href="http://java.sun.com/j2se/1.5.0/docs/guide/language/enums.html">Enum
+	 * @see <a href=
+	 *      "http://java.sun.com/j2se/1.5.0/docs/guide/language/enums.html">Enum
 	 *      Guide</a>
 	 * 
 	 * @since 0.2
 	 * 
 	 */
-	private BancosSuportados(final String codigoDeCompensacaoBACEN, final String cnpj,
-			final String instituicao, final Segmento segmento) {
-		this.instituicao = new Banco(new CodigoDeCompensacaoBACEN(codigoDeCompensacaoBACEN), instituicao, new CNPJ(cnpj), segmento.getDescricao());
+	private BancosSuportados(final AbstractBanco banco) {
+		this.banco = banco;
 	}
 
 	/**
@@ -381,7 +407,7 @@ public enum BancosSuportados{
 	 * @since 0.2
 	 */
 	public static boolean isSuportado(String codigoDeCompensacao) {
-		return suportados.containsKey(codigoDeCompensacao);
+		return BANCOS_SUPORTADOS.containsKey(codigoDeCompensacao);
 	}
 
 	/**
@@ -400,14 +426,19 @@ public enum BancosSuportados{
 	 * 
 	 * @return Uma instância do respectivo banco.
 	 * 
-	 * @see org.jrimum.domkee.financeiro.banco.febraban.Banco#Banco(CodigoDeCompensacaoBACEN, String, CNPJ, String)
+	 * @see org.jrimum.domkee.financeiro.banco.febraban.Banco#Banco(CodigoDeCompensacaoBACEN,
+	 *      String, CNPJ, String)
 	 * @see <a href="http://www.bcb.gov.br/?CHEQUESCOMPE">Bancos supervisionados
 	 *      pela BACEN</a>
 	 * 
 	 * @since 0.2
 	 */
 	public Banco create() {
-		return instituicao;
+		return getBanco().getInstituicao();
+	}
+
+	public AbstractBanco getBanco() {
+		return banco;
 	}
 
 }

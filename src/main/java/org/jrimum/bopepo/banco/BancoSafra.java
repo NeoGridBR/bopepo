@@ -2,17 +2,18 @@ package org.jrimum.bopepo.banco;
 
 import org.jrimum.bopepo.campolivre.CLBancoSafraCobrancaNaoRegistrada;
 import org.jrimum.bopepo.campolivre.CLBancoSafraCobrancaRegistrada;
+import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
 public class BancoSafra extends AbstractBanco {
 
-	public BancoSafra(final Titulo titulo) {
-		super(titulo);
+	public BancoSafra() {
+		super("422", "58160789000128", "BANCO SAFRA S.A.", Segmento.BANCO_MULTIPLO);
 	}
 
 	@Override
-	public CampoLivre getCampoLivre() throws NotSupportedCampoLivreException {
+	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
 		TituloValidator.checkCarteiraRegistroNotNull(titulo);
 
 		switch (titulo.getContaBancaria().getCarteira().getTipoCobranca()) {

@@ -32,10 +32,10 @@ package org.jrimum.bopepo.campolivre;
 import static org.jrimum.bopepo.parametro.ParametroBancoDeBrasilia.CHAVE_ASBACE_DIGITO1;
 import static org.jrimum.bopepo.parametro.ParametroBancoDeBrasilia.CHAVE_ASBACE_DIGITO2;
 
+import org.apache.commons.lang.StringUtils;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.ParametrosBancariosMap;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
 import org.jrimum.vallia.digitoverificador.Modulo;
 
@@ -127,125 +127,39 @@ import org.jrimum.vallia.digitoverificador.Modulo;
  * @author gleitao
  *
  */
-public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
+public class CLBancoDeBrasilia {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6099168685425835517L;
-	
-	/**
-	 * Número de campos = 8.
-	 */
-	private static final Integer FIELDS_LENGTH = Integer.valueOf(8);
-
-	/**
-	 * Tamanho do primeiro campo "Campo Zerado [000]" = 3. 
-	 */
-	private static final Integer CAMPO_ZERADO_LENGTH = Integer.valueOf(3);
-	
-	/**
-	 * Valor do campo "Campo Zerado" =  "000". 
-	 */
-	private static final String CAMPO_ZERADO_VALUE = "000";
-
-	/**
-	 * Tamanho do campo Agência = 3. 
-	 */
-	private static final Integer AGENCIA_LENGTH = Integer.valueOf(3);
-
-	/**
-	 * Tamanho do campo Conta = 7. 
-	 */
-	private static final Integer CONTA_LENGTH = Integer.valueOf(7);
-	
-	/**
-	 * Tamanho do campo Nosso Número = 6. 
-	 */
-	private static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(6);
-
-	/**
-	 * Tamanho do campo Carteira = 1. 
-	 */
-	private static final Integer CARTEIRA_LENGTH = Integer.valueOf(1);
-	
-	/**
-	 * Tamanho do campo do dígito da chave ASBACE = 1. 
-	 */
-	private static final Integer DIGITO_CHAVE_ASBACE_LENGTH = Integer.valueOf(1);
-	
-	/**
-	 * Tamanho do campo Banco = 3. 
-	 */
-	private static final Integer BANCO_LENGTH = Integer.valueOf(3);
-	
-	/**
-	 * Dígito verificador calculado em função da CHAVE ASBACE e necessário para o cálculo do {@link #digitoVerificador2DaChaveASBACE}.
-	 */
-	private Integer digitoVerificador1DaChaveASBACE;
-
-	/**
-	 * Dígito verificador calculado em função da CHAVE ASBACE + {@link #digitoVerificador1DaChaveASBACE}.
-	 */
-	private Integer digitoVerificador2DaChaveASBACE;
-	
 	/**
 	 * <p>
-	 *   Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}) deste campo.
+	 * Cria um campo livre instanciando o número de fields
+	 * ({@code FIELDS_LENGTH}) deste campo.
 	 * </p>
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBancoDeBrasilia() {
-		super(FIELDS_LENGTH);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 * 
-	 * @since 0.2
-	 */
-	@Override
-	protected void checkValues(Titulo titulo) {
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 999);
 		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 9999999);
 		TituloValidator.checkNossoNumeroTamanho(titulo, 6);
 		TituloValidator.checkCarteiraCodigo(titulo, 1, 2);
-	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 * 
-	 * @since 0.2
-	 */
-	@Override
-	protected void addFields(Titulo titulo) {
-		
-		this.add(new FixedField<String>(CAMPO_ZERADO_VALUE, CAMPO_ZERADO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo(), BANCO_LENGTH, Fillers.ZERO_LEFT));
-		calculeDigitosNecessariosDaChaveASBACE();
-		this.add(new FixedField<Integer>(this.digitoVerificador1DaChaveASBACE, DIGITO_CHAVE_ASBACE_LENGTH));
-		this.add(new FixedField<Integer>(this.digitoVerificador2DaChaveASBACE, DIGITO_CHAVE_ASBACE_LENGTH));	
-		
-		disponibilizeDigitosDaChaveAsbaceNeste(titulo);
-	}
-	
-	/**
-	 * Calcula os dos dígitos verificadores da CHAVE ASBACE.
-	 * 
-	 * @since 0.2
-	 */
-	private void calculeDigitosNecessariosDaChaveASBACE() {
-		calculeChaveAsbaceDigito1();
-		calculeChaveAsbaceDigito2();
+		final CampoLivre campoLivre = new CampoLivre(8);
+
+		campoLivre.addString("000", 3);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addInteger(titulo.getContaBancaria().getCarteira().getCodigo(), 1);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 6);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo(), 3);
+
+		final String valorParcial = campoLivre.getValue();
+		final Integer[] chaveASBACE = calculeChaveASBACE(valorParcial);
+		campoLivre.add(new FixedField<Integer>(chaveASBACE[0], 1));
+		campoLivre.add(new FixedField<Integer>(chaveASBACE[1], 1));
+
+		disponibilizeDigitosDaChaveAsbaceNeste(titulo, chaveASBACE[0], chaveASBACE[1]);
+
+		return campoLivre;
 	}
 
 	/**
@@ -255,45 +169,31 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 	 * 
 	 * @since 0.2
 	 */
-	private void calculeChaveAsbaceDigito1(){
-		
-		final String chaveAasbace = writeFields();
-		
-		int dig = Modulo.calculeMod10(chaveAasbace, 1, 2);
-		
-		if(dig == 0){
-			this.digitoVerificador1DaChaveASBACE = dig;
-		}else{
-			this.digitoVerificador1DaChaveASBACE = 10 - dig;
+	private static Integer[] calculeChaveASBACE(final String chaveASBACE) {
+		int dv1ChaveASBACE;
+		if(StringUtils.length(chaveASBACE) == 23) {
+			dv1ChaveASBACE = Modulo.calculeMod10(chaveASBACE, 1, 2);
+			if (dv1ChaveASBACE > 0) {
+				dv1ChaveASBACE = 10 - dv1ChaveASBACE;
+			}
+		} else {
+			dv1ChaveASBACE = Integer.parseInt(StringUtils.right(chaveASBACE, 1));
 		}
-	}
 
-	/**
-	 * Calcula o segundo dígito da CHAVE ASBECE, recursivamente dependendo do valor do primeiro DV.
-	 * 
-	 * @since 0.2
-	 */
-	private void calculeChaveAsbaceDigito2(){
-		final String chaveAasbaceComDv1 = writeFields()+this.digitoVerificador1DaChaveASBACE;
-		
-		int digito2 = Modulo.calculeMod11(chaveAasbaceComDv1, 2, 7);
-		
-		if(digito2 == 0){
-			this.digitoVerificador2DaChaveASBACE = digito2;
-		}else{
-			
-			if(digito2 != 1){
-				this.digitoVerificador2DaChaveASBACE = 11 - digito2;
-			}else{
-				
-				int digito1Recalculado = this.digitoVerificador1DaChaveASBACE + 1;
-				
-				this.digitoVerificador1DaChaveASBACE = (digito1Recalculado == 10) ? 0 : digito1Recalculado;
-				
-				calculeChaveAsbaceDigito2();
+		final String chaveASBACEComDv1 = chaveASBACE + dv1ChaveASBACE;
+		int dv2ChaveASBACE = Modulo.calculeMod11(chaveASBACEComDv1, 2, 7);
+		if (dv2ChaveASBACE > 0) {
+			if (dv2ChaveASBACE != 1) {
+				dv2ChaveASBACE = 11 - dv2ChaveASBACE;
+			} else {
+				int digito1Recalculado = dv1ChaveASBACE + 1;
+				return calculeChaveASBACE(chaveASBACE + ((digito1Recalculado == 10) ? 0 : digito1Recalculado));
 			}
 		}
+
+		return new Integer[]{dv1ChaveASBACE, dv2ChaveASBACE};
 	}
+
 
 	/**
 	 * Disponibiliza no objeto titulo os dígitos da CHAVE ASBACE = mesmo que o
@@ -303,18 +203,15 @@ public class CLBancoDeBrasilia extends AbstractCLBancoDeBrasilia{
 	 * 
 	 * @since 0.2
 	 */
-	private void disponibilizeDigitosDaChaveAsbaceNeste(Titulo titulo) {
+	private static void disponibilizeDigitosDaChaveAsbaceNeste(final Titulo titulo,
+			final Integer dv1ChaveASBACE, final Integer dv2ChaveASBACE) {
 		ParametrosBancariosMap parametrosBancarios = titulo.getParametrosBancarios();
-		
-		if(parametrosBancarios == null){
+		if (parametrosBancarios == null) {
 			parametrosBancarios = new ParametrosBancariosMap();
 		}
-		
-		parametrosBancarios.adicione(CHAVE_ASBACE_DIGITO1, this.digitoVerificador1DaChaveASBACE);
-		parametrosBancarios.adicione(CHAVE_ASBACE_DIGITO2, this.digitoVerificador2DaChaveASBACE);
-		
+		parametrosBancarios.adicione(CHAVE_ASBACE_DIGITO1, dv1ChaveASBACE);
+		parametrosBancarios.adicione(CHAVE_ASBACE_DIGITO2, dv2ChaveASBACE);
 		titulo.setParametrosBancarios(parametrosBancarios);
 	}
-	
-	
+
 }

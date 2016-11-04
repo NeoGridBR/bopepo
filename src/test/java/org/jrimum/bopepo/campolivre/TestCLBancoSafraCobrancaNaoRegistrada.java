@@ -27,7 +27,7 @@
  * Criado em: 21/04/2008 - 22:36:47
  * 
  */
-	
+
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.bopepo.BancosSuportados;
@@ -46,7 +46,8 @@ import org.junit.Test;
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
@@ -54,12 +55,11 @@ import org.junit.Test;
  *
  */
 public class TestCLBancoSafraCobrancaNaoRegistrada extends AbstractCLBancoSafraBaseTest {
-	
+
 	private final int NOSSO_NUMERO_LENGTH = 17;
-	
+
 	@Before
-	public void setUp(){
-		
+	public void setUp() {
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_SAFRA.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(1730, "0"));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(12110, "0"));
@@ -70,77 +70,65 @@ public class TestCLBancoSafraCobrancaNaoRegistrada extends AbstractCLBancoSafraB
 
 		setCampoLivreEsperadoComoString("7121100123456789012345674");
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaNulo() {
-
 		testeSeNaoPermiteNumeroDaContaNulo();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaComCodigoZero() {
-
 		testeSeNaoPermiteNumeroDaContaComCodigoZero();
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaComCodigoNegativo() {
-
 		testeSeNaoPermiteNumeroDaContaComCodigoNegativo();
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaComCodigoAcimaDe8Digitos() {
-
 		testeSeNaoPermiteNumeroDaContaComCodigoAcimaDoLimite(123456789);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteDigitoDaContaNulo() {
-		
 		testeSeNaoPermiteDigitoDaContaNulo();
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteDigitoDaContaVazio() {
-		
 		testeSeNaoPermiteDigitoDaContaVazio();
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteDigitoDaContaNegativo() {
-		
 		testeSeNaoPermiteDigitoDaContaNegativo();
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteDigitoDaContaNaoNumerico() {
-		
 		testeSeNaoPermiteDigitoDaContaNaoNumerico();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroNulo() {
-
 		testeSeNaoPermiteNossoNumeroNulo();
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroComBrancos() {
-
 		testeSeNaoPermiteNossoNumeroComBrancos(NOSSO_NUMERO_LENGTH);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroComEspacos() {
-
 		testeSeNaoPermiteNossoNumeroComEspacos(NOSSO_NUMERO_LENGTH);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroComTamanhoDiferenteDe9() {
-
 		testeSeNaoPermiteNossoNumeroComTamanhoDiferenteDoEspecificado(NOSSO_NUMERO_LENGTH - 1);
 	}
-	
+
 }

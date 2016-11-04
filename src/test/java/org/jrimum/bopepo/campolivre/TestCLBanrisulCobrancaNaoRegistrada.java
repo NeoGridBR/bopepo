@@ -40,8 +40,8 @@ import org.junit.Test;
 /**
  * 
  * <p>
- * Valida a implementação do campo livre com cobrança não registrada para o Banco
- * Banrisul.
+ * Valida a implementação do campo livre com cobrança não registrada para o
+ * Banco Banrisul.
  * </p>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
@@ -53,11 +53,11 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLBanrisulCobrancaNaoRegistrada extends AbstractCampoLivreBaseTest<CLBanrisulCobrancaNaoRegistrada> {
+public class TestCLBanrisulCobrancaNaoRegistrada extends AbstractCampoLivreBaseTest {
 
 	@Before
 	public void setUp() {
-		
+
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_DO_ESTADO_DO_RIO_GRANDE_DO_SUL.create());
 		titulo.getContaBancaria().setCarteira(new Carteira(1, TipoDeCobranca.SEM_REGISTRO));
 		titulo.getContaBancaria().setAgencia(new Agencia(1102));
@@ -65,55 +65,55 @@ public class TestCLBanrisulCobrancaNaoRegistrada extends AbstractCampoLivreBaseT
 		titulo.setNossoNumero("22832563");
 
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("2111029000150228325634059");
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoSemTipoDeCobranca() {
-		
+
 		titulo.getContaBancaria().setCarteira(new Carteira(1, null));
 		CampoLivreFactory.create(titulo);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoSemAgencia() {
-		
+
 		titulo.getContaBancaria().setAgencia(null);
 		CampoLivreFactory.create(titulo);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoSemNumeroDaConta() {
-		
+
 		titulo.getContaBancaria().setNumeroDaConta(null);
 		CampoLivreFactory.create(titulo);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoSemNossoNumero() {
-		
+
 		titulo.setNossoNumero(null);
 		CampoLivreFactory.create(titulo);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoAgenciaComCodigoMaiorQue4Digitos() {
-		
+
 		titulo.getContaBancaria().setAgencia(new Agencia(10000, "1"));
 		CampoLivreFactory.create(titulo);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoNumeroDaContaMaiorQue7Digitos() {
-		
+
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(12345678));
 		CampoLivreFactory.create(titulo);
 	}
 
 	@Test(expected = CampoLivreException.class)
 	public void criacaoNossoNumeroMaiorQue8Digitos() {
-		
+
 		titulo.setNossoNumero("123456789");
 		CampoLivreFactory.create(titulo);
 	}

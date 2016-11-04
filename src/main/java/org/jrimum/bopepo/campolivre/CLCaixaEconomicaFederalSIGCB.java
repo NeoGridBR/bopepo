@@ -31,7 +31,6 @@ package org.jrimum.bopepo.campolivre;
 
 import static org.jrimum.vallia.digitoverificador.Modulo.MOD11;
 
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.vallia.digitoverificador.Modulo;
@@ -149,35 +148,8 @@ public class CLCaixaEconomicaFederalSIGCB {
 		campoLivre.addInteger(EMISSAO_CEDENTE, 1);
 		campoLivre.addString(nossoNumero.substring(6, 15), 9);
 
-		// TODO this.add(new
-		// FixedField<Integer>(calculeDigitoVerificador(gereCampoLivre()), 1));
+		campoLivre.addInteger(calculeDigitoVerificador(campoLivre.getValue()), 1);
 		return campoLivre;
-	}
-
-	/**
-	 * Gera o número que serve para calcular o digito verificador do campoLivre,
-	 * que é todo o campo livre menos o dígito verificador.
-	 * 
-	 * <p>
-	 * Os campos utilizados são:
-	 * <ul>
-	 * <li>Código do Cedente: 06 posições</li>
-	 * <li>Dígito Verificador do Código do Cedente: 01 posição</li>
-	 * <li>Nosso Número – Seqüência 1: 03 posições</li>
-	 * <li>Constante 1: 01 posição</li>
-	 * <li>Nosso Número – Seqüência 2: 03 posições</li>
-	 * <li>Constante 2: 01 posição</li>
-	 * <li>Nosso Número – Seqüência 3: 09 posições</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @return String com campos, exceto o dígito verificador.
-	 * 
-	 * @since 0.2
-	 */
-	private String gereCampoLivre() {
-
-		return null; // TODO writeFields();
 	}
 
 	/**

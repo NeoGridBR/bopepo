@@ -30,9 +30,6 @@
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * <p>
@@ -41,11 +38,12 @@ import org.jrimum.utilix.Exceptions;
  * </p>
  * 
  * <p>
- * O campo livre do Barisul para cobrança registrada (Cobrança Normal
- * "com registro" - Sistema BDL/Carteira de Letras) deve seguir esta forma:
+ * O campo livre do Barisul para cobrança registrada (Cobrança Normal "com
+ * registro" - Sistema BDL/Carteira de Letras) deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -126,36 +124,19 @@ import org.jrimum.utilix.Exceptions;
  * 
  * @version 0.2
  */
-class CLBanrisulCobrancaRegistrada extends AbstractCLBanrisul {
+public class CLBanrisulCobrancaRegistrada extends AbstractCLBanrisul {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1577477244182494602L;
-	
-	private static final Integer FIELDS_LENGTH = 7;
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final CampoLivre campoLivre = new CampoLivre(7);
 
-	CLBanrisulCobrancaRegistrada(Titulo titulo) {
-		super(FIELDS_LENGTH);
-
-		this.add(new FixedField<Integer>(1, 1));
-		this.add(new FixedField<String>("1", 1));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(Integer.valueOf(titulo.getNossoNumero()),8, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>("40", 2));
-		this.add(new FixedField<String>(calculaDuploDigito(concateneOsCamposExistentesAteOMomento()),2));
+		campoLivre.addInteger(1, 1);
+		campoLivre.addString("1", 1);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addIntegerZeroLeft(Integer.valueOf(titulo.getNossoNumero()), 8);
+		campoLivre.addString("40", 2);
+		campoLivre.addString(calculaDuploDigito(campoLivre.getValue()), 2);
+		return campoLivre;
 	}
 
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

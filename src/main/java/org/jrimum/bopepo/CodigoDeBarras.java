@@ -27,20 +27,19 @@
  * 
  */
 
-
 package org.jrimum.bopepo;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.BlockOfFields;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Objects;
 import org.jrimum.utilix.text.DecimalFormat;
 import org.jrimum.vallia.digitoverificador.BoletoCodigoDeBarrasDV;
 import org.slf4j.Logger;
@@ -355,6 +354,6 @@ public class CodigoDeBarras extends BlockOfFields{
 
 	@Override
 	public String toString() {
-		return Objects.toString(this);
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

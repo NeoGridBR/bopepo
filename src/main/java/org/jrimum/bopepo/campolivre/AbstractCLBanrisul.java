@@ -29,10 +29,6 @@
  */
 package org.jrimum.bopepo.campolivre;
 
-import org.apache.commons.lang.StringUtils;
-import org.jrimum.bopepo.banco.TituloValidator;
-import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.FixedField;
 import org.jrimum.vallia.digitoverificador.Modulo;
 
 /**
@@ -50,38 +46,7 @@ import org.jrimum.vallia.digitoverificador.Modulo;
  * 
  * @version 0.2
  */
-abstract class AbstractCLBanrisul extends AbstractCampoLivre {
-	
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -259398499475894938L;
-
-	/**
-	 * <p>Cria um campo livre com um determinado número de campos</p>
-	 * 
-	 * @see AbstractCampoLivre
-	 * 
-	 * @param fieldsLength - Número de campos
-	 */
-	protected AbstractCLBanrisul(Integer fieldsLength) {
-		
-		super(fieldsLength);
-	}
-
-	protected static CampoLivre create(Titulo titulo) throws NotSupportedCampoLivreException {
-		TituloValidator.checkCarteiraRegistroNotNull(titulo);
-
-		switch (titulo.getContaBancaria().getCarteira().getTipoCobranca()) {
-
-			case COM_REGISTRO:
-				return new CLBanrisulCobrancaRegistrada(titulo);
-			case SEM_REGISTRO:
-				return new CLBanrisulCobrancaNaoRegistrada(titulo);
-			default:
-				throw new NotSupportedCampoLivreException("Campo livre diponível apenas para carteiras com ou sem cobrança.");
-		}
-	}
+public abstract class AbstractCLBanrisul {
 
 	/**
 	 * <p>
@@ -89,14 +54,14 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 	 * </p>
 	 * 
 	 * 
-	 * @param seisPrimeirosCamposConcatenados
+	 * @param value
 	 * @return duplo dígito
 	 * 
 	 * @since 0.2
 	 */
-	protected String calculaDuploDigito(String seisPrimeirosCamposConcatenados) {
+	protected static String calculaDuploDigito(final String value) {
 		// calcula soma do módulo 10 a partir dos seis primeiros campos concatenados
-		final int somaMod10 = Modulo.calculeSomaSequencialMod10(seisPrimeirosCamposConcatenados, 1, 2);
+		final int somaMod10 = Modulo.calculeSomaSequencialMod10(value, 1, 2);
 		
 		// calcula resto do módulo 10 a partir do resultado da soma
 		final byte restoMod10 = calculeRestoMod10(somaMod10);
@@ -107,7 +72,7 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 		
 		// calcula soma do módulo 10 a partir dos seis primeiros campos concatenados
 		// incluindo o primeiro dígito
-		int somaMod11 = Modulo.calculeSomaSequencialMod11(seisPrimeirosCamposConcatenados + primeiroDV, 2, 7);
+		int somaMod11 = Modulo.calculeSomaSequencialMod11(value + primeiroDV, 2, 7);
 		
 		// calcula o resto do módulo 11 a partir do resultado da soma
 		byte restoMod11 = calculeRestoMod11(somaMod11);
@@ -121,7 +86,7 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 			
 			// calcula a soma do módulo 11 agora com um valor
 			// válido para o DV
-			somaMod11 = Modulo.calculeSomaSequencialMod11(seisPrimeirosCamposConcatenados + primeiroDV, 2, 7);
+			somaMod11 = Modulo.calculeSomaSequencialMod11(value + primeiroDV, 2, 7);
 			
 			// calcula o resto do módulo 11 a partir do resultado da soma
 			restoMod11 = calculeRestoMod11(somaMod11);
@@ -145,7 +110,7 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 	 * 
 	 * @since 0.2
 	 */
-	private byte calculeSegundoDV(byte restoMod11) {
+	private static byte calculeSegundoDV(byte restoMod11) {
 		final byte segundoDV;
 		if (restoMod11 == 0)
 			segundoDV = restoMod11;
@@ -164,7 +129,7 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 	 * 
 	 * @since 0.2
 	 */
-	private byte calculePrimeiroDV(byte restoMod10) {
+	private static byte calculePrimeiroDV(byte restoMod10) {
 		final byte primeiroDV;
 		if (restoMod10 == 0)
 			primeiroDV = 0;
@@ -183,7 +148,7 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 	 * 
 	 * @since 0.2
 	 */
-	private byte calculeRestoMod10(int somaMod10) {
+	private static byte calculeRestoMod10(int somaMod10) {
 		final byte restoMod10;
 		if (somaMod10 < 10)
 			restoMod10 = (byte) somaMod10;
@@ -202,7 +167,7 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 	 * 
 	 * @since 0.2
 	 */
-	private byte encontreValorValidoParaPrimeiroDV(byte primeiroDV) {
+	private static byte encontreValorValidoParaPrimeiroDV(byte primeiroDV) {
 		final byte novoValorDoPrimeiroDV;
 		if (primeiroDV == 9)
 			novoValorDoPrimeiroDV = 0;
@@ -221,24 +186,13 @@ abstract class AbstractCLBanrisul extends AbstractCampoLivre {
 	 * 
 	 * @since 0.2
 	 */
-	private byte calculeRestoMod11(int somaMod11) {
+	private static byte calculeRestoMod11(int somaMod11) {
 		final byte restoMod11;
 		if (somaMod11 < 11)
 			restoMod11 = (byte) somaMod11;
 		else
 			restoMod11 = (byte) (somaMod11 % 11);
 		return restoMod11;
-	}
-
-	protected String concateneOsCamposExistentesAteOMomento() {
-		
-		final StringBuilder camposExistentesAteOMomentoConcatenados = new StringBuilder(StringUtils.EMPTY);
-		
-		for (FixedField<?> field : this) {
-			camposExistentesAteOMomentoConcatenados.append(field.write());
-		}
-		
-		return camposExistentesAteOMomentoConcatenados.toString();
 	}
 
 }

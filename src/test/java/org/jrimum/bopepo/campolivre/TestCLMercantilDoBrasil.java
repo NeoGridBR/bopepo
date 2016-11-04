@@ -47,35 +47,37 @@ import org.junit.Test;
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  * 
  */
-public class TestCLMercantilDoBrasil extends AbstractCampoLivreBaseTest<CLMercantilDoBrasil> {
+public class TestCLMercantilDoBrasil extends AbstractCampoLivreBaseTest {
 
 	@Before
-	public void setUp(){
-		
+	public void setUp() {
+
 		titulo.getContaBancaria().setBanco(BancosSuportados.MERCANTIL_DO_BRASIL.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(1234, "1"));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(123456789));
 		titulo.setNossoNumero("1234567890");
 		titulo.setDigitoDoNossoNumero("5");
-		
+
 		createCampoLivreToTest();
-		
-		setCampoLivreEsperadoComoString("1234123456789051234567892"); //Sem desconto
+
+		setCampoLivreEsperadoComoString("1234123456789051234567892"); // Sem
+																		// desconto
 	}
-	
+
 	@Test
 	public void testWriteComDesconto() {
-		
+
 		titulo.setDesconto(BigDecimal.TEN);
 		createCampoLivreToTest();
-		
+
 		Assert.assertEquals("1234123456789051234567890", writeCampoLivre());
 	}
 }

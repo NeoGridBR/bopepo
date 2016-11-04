@@ -1,19 +1,14 @@
 package org.jrimum.bopepo.campolivre;
 
-import org.apache.commons.lang.StringUtils;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
-import org.jrimum.utilix.Objects;
-import org.jrimum.utilix.text.Strings;
 
 /**
  * 
  * <p>
- * Representação do campo livre usado para boletos com carteiras (<em>cobrança</em>)
- * sem registro.
+ * Representação do campo livre usado para boletos com carteiras
+ * (<em>cobrança</em>) sem registro.
  * </p>
  * 
  * <p>
@@ -26,7 +21,8 @@ import org.jrimum.utilix.text.Strings;
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
  * collapse" bordercolor="#111111" >
  * <tr>
- * <td align="center" bgcolor="#C0C0C0"><strong><font face="Arial">Posição</font></strong></td>
+ * <td align="center" bgcolor="#C0C0C0"><strong><font face=
+ * "Arial">Posição</font></strong></td>
  * <td bgcolor="#C0C0C0"><strong><font face="Arial">Campo Livre No Código De
  * Barras (20 a 44)</font></strong></td>
  * <tr>
@@ -53,9 +49,11 @@ import org.jrimum.utilix.text.Strings;
  * </tr>
  * <tr>
  * <td align="center"><font face="Arial">44</font></td>
- * <td><font face="Arial">Dígito Verificador da Referência do Cliente</font></td>
+ * <td><font face="Arial">Dígito Verificador da Referência do
+ * Cliente</font></td>
  * </tr>
- * </table> </div>
+ * </table>
+ * </div>
  * </p>
  * 
  * 
@@ -66,96 +64,36 @@ import org.jrimum.utilix.text.Strings;
  * @version 0.2
  */
 
-class CLUnibancoCobrancaNaoRegistrada extends AbstractCLUnibanco {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 487906631678160993L;
-
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 6;
+public class CLUnibancoCobrancaNaoRegistrada extends AbstractCLUnibanco {
 
 	private static final Integer CODIGO_TRANSACAO = 5;
 
 	private static final Integer RESERVADO = 0;
-	
+
 	/**
 	 * <p>
-	 *   Dado um título, cria um campo livre para o padrão do Banco Unibanco
-	 *   que tenha o tipo de cobrança não registrada.
+	 * Dado um título, cria um campo livre para o padrão do Banco Unibanco que
+	 * tenha o tipo de cobrança não registrada.
 	 * </p>
-	 * @param titulo título com as informações para geração do campo livre
+	 * 
+	 * @param titulo
+	 *            título com as informações para geração do campo livre
 	 */
-	CLUnibancoCobrancaNaoRegistrada(Titulo titulo) {
-		super(FIELDS_LENGTH);
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final ContaBancaria conta = titulo.getContaBancaria();
 
-		ContaBancaria conta = titulo.getContaBancaria();
-		
-		Objects.checkNotNull(conta,"Conta Bancária NULA!");
-		Objects.checkNotNull(conta.getNumeroDaConta(),"Número da Conta Bancária NULO!");
-		Objects.checkNotNull(conta.getNumeroDaConta().getCodigoDaConta(),"Código da Conta Bancária NULO!");
-		Objects.checkNotNull(conta.getNumeroDaConta().getDigitoDaConta(),"Dígito da Conta Bancária NULO!");
-		Objects.checkNotNull(titulo.getNossoNumero(),"Nosso Número NULO!");
-		
-		this.add(new FixedField<Integer>(CODIGO_TRANSACAO, 1));
+		TituloValidator.checkContaBancariaCodigo(titulo);
+		TituloValidator.checkContaBancariaDigito(titulo);
+		TituloValidator.checkNossoNumero(titulo);
 
-		if(conta.getNumeroDaConta().getCodigoDaConta() > 0){
-			
-			this.add(new FixedField<Integer>(conta.getNumeroDaConta().getCodigoDaConta(), 6, Fillers.ZERO_LEFT));
-			
-		}else{
-			throw new CampoLivreException(new IllegalArgumentException("Conta bancária com valor inválido, a conta deve ser um número inteiro positivo, e não: "+conta.getNumeroDaConta().getCodigoDaConta()));
-		}
-		
-		if(StringUtils.isNumeric(conta.getNumeroDaConta().getDigitoDaConta())){
-			
-			Integer digitoDaConta = Integer.valueOf(conta.getNumeroDaConta().getDigitoDaConta());  
-			
-			if(digitoDaConta >= 0){
-				
-				this.add(new FixedField<Integer>(Integer.valueOf(digitoDaConta), 1));
-			}else{
-				
-				throw new CampoLivreException(new IllegalArgumentException("O dígito da conta deve ser um número inteiro não-negativo, e não: ["+conta.getNumeroDaConta().getDigitoDaConta()+"]"));
-			}
-			
-		}else{
-			
-			throw new CampoLivreException(new IllegalArgumentException("O dígito da conta deve ser numérico, e não: ["+conta.getNumeroDaConta().getDigitoDaConta()+"]"));
-		}
-		
-		this.add(new FixedField<Integer>(RESERVADO, 2, Fillers.ZERO_LEFT));
-		
-		if(StringUtils.isNumeric(titulo.getNossoNumero())){
-			
-			if(Long.valueOf(Strings.removeStartWithZeros(titulo.getNossoNumero()))>0){
-				
-				this.add(new FixedField<String>(titulo.getNossoNumero(), 14,Fillers.ZERO_LEFT));
-				
-			}else{
-				
-				throw new CampoLivreException(new IllegalArgumentException("O campo (nosso número) do título deve ser um número inteiro positivo, e não: ["+titulo.getNossoNumero()+"]"));
-			}
-		}else{
-			
-			throw new CampoLivreException(new IllegalArgumentException("O campo (nosso número) do título deve ser numérico, e não: ["+titulo.getNossoNumero()+"]"));			
-		}
-		
-		this.add(new FixedField<String>(calculeDigitoEmModulo11(titulo.getNossoNumero()), 1));			
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
+		final CampoLivre campoLivre = new CampoLivre(6);
+		campoLivre.addInteger(CODIGO_TRANSACAO, 1);
+		campoLivre.addIntegerZeroLeft(conta.getNumeroDaConta().getCodigoDaConta(), 6);
+		Integer digitoDaConta = Integer.valueOf(conta.getNumeroDaConta().getDigitoDaConta());
+		campoLivre.addInteger(Integer.valueOf(digitoDaConta), 1);
+		campoLivre.addIntegerZeroLeft(RESERVADO, 2);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 14);
+		campoLivre.addString(calculeDigitoEmModulo11(titulo.getNossoNumero()), 1);
+		return campoLivre;
 	}
 }

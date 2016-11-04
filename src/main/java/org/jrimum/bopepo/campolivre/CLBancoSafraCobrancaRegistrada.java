@@ -30,7 +30,6 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 

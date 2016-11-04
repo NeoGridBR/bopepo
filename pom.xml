@@ -60,8 +60,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -119,8 +119,14 @@
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-texgit</artifactId>
 			<version>0.2.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jrimum</groupId>
+					<artifactId>jrimum-utilix</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-utilix</artifactId>
 			<version>0.2.3</version>
@@ -129,7 +135,7 @@
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-vallia</artifactId>
 			<version>0.2.3</version>
-		</dependency>
+		</dependency  -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>

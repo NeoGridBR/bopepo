@@ -28,20 +28,18 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * <p>
  * O campo livre do Banco do Nordeste deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -55,15 +53,19 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td>20-23</td>
  * <td>4</td>
  * <td>9(4)</td>
- * <td style="text-align:left;padding-left:10">Agência Cedente (sem o digito verificador, completar com zeros à esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Código da Agência (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Agência Cedente (sem o digito
+ * verificador, completar com zeros à esquerda quando necessário)</td>
+ * <td style="text-align:left;padding-left:10">Código da Agência (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td>24-30</td>
  * <td>7</td>
  * <td>9(7)</td>
- * <td style="text-align:left;padding-left:10">Conta do Cedente (sem o dígito verificador, completar com zeros à esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Conta do Cedente (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Conta do Cedente (sem o dígito
+ * verificador, completar com zeros à esquerda quando necessário)</td>
+ * <td style="text-align:left;padding-left:10">Conta do Cedente (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td>31-31</td>
@@ -76,21 +78,25 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td>32-38</td>
  * <td>7</td>
  * <td>9(7)</td>
- * <td style="text-align:left;padding-left:10">Nosso Número (sem o dígito verificador, completar com zeros à esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Nosso Número (No. Bancário) (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Nosso Número (sem o dígito
+ * verificador, completar com zeros à esquerda quando necessário)</td>
+ * <td style="text-align:left;padding-left:10">Nosso Número (No. Bancário) (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td>39-39</td>
  * <td>1</td>
  * <td>9(1)</td>
  * <td style="text-align:left;padding-left:10">Dígito do Nosso Número</td>
- * <td style="text-align:left;padding-left:10">Dígito do Nosso Número (No. Bancário)</td>
+ * <td style="text-align:left;padding-left:10">Dígito do Nosso Número (No.
+ * Bancário)</td>
  * </tr>
  * <tr>
  * <td>40-41</td>
  * <td>2</td>
  * <td>9(2)</td>
- * <td style="text-align:left;padding-left:10">Carteira (utilizar o código da carteira)</td>
+ * <td style="text-align:left;padding-left:10">Carteira (utilizar o código da
+ * carteira)</td>
  * <td style="text-align:left;padding-left:10">Carteira (Tipo de Operação)</td>
  * </tr>
  * <tr>
@@ -113,99 +119,73 @@ import org.jrimum.texgit.type.component.FixedField;
  * 
  * @version 0.2
  */
-class CLBancoDoNordesteDoBrasil extends AbstractCLBancoDoNordesteDoBrasil {
-	
-	/**
-	 * {@code serialVersionUID = 5203223333877548162L}
-	 */
-	private static final long serialVersionUID = 5203223333877548162L;
+public class CLBancoDoNordesteDoBrasil {
 
 	/**
-	 * Número de campos = 7.
-	 */
-	private static final Integer FIELDS_LENGTH = Integer.valueOf(7);
-
-	/**
-	 * Tamanho do campo Agência = 4. 
+	 * Tamanho do campo Agência = 4.
 	 */
 	private static final Integer AGENCIA_LENGTH = Integer.valueOf(4);
 
 	/**
-	 * Tamanho do campo Conta = 7. 
+	 * Tamanho do campo Conta = 7.
 	 */
 	private static final Integer CONTA_LENGTH = Integer.valueOf(7);
 
 	/**
-	 * Tamanho do campo Dígito da Conta = 1. 
+	 * Tamanho do campo Dígito da Conta = 1.
 	 */
 	private static final Integer DIGITO_CONTA_LENGTH = Integer.valueOf(1);
-	
 
 	/**
-	 * Tamanho do campo Nosso Número = 7. 
+	 * Tamanho do campo Nosso Número = 7.
 	 */
 	private static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(7);
 
 	/**
-	 * Tamanho do campo Dígito do Nosso Número = 1. 
+	 * Tamanho do campo Dígito do Nosso Número = 1.
 	 */
 	private static final Integer DIGITO_NOSSO_NUMERO_LENGTH = Integer.valueOf(1);
-	
+
 	/**
-	 * Tamanho do campo Carteira = 2. 
+	 * Tamanho do campo Carteira = 2.
 	 */
 	private static final Integer CARTEIRA_LENGTH = Integer.valueOf(2);
-	
-	
+
 	/**
-	 * Tamanho do campo "Campo Zerado" = 3. 
+	 * Tamanho do campo "Campo Zerado" = 3.
 	 */
 	private static final Integer CAMPO_ZERADO_LENGTH = Integer.valueOf(3);
-	
+
 	/**
-	 * Valor do campo "Campo Zerado" =  0. 
+	 * Valor do campo "Campo Zerado" = 0.
 	 */
 	protected static final Integer CAMPO_ZERADO_VALUE = Integer.valueOf(0);
-	
+
 	/**
 	 * <p>
-	 *   Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}) deste campo.
+	 * Cria um campo livre instanciando o número de fields
+	 * ({@code FIELDS_LENGTH}) deste campo.
 	 * </p>
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBancoDoNordesteDoBrasil() {
-		super(FIELDS_LENGTH);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#checkValues(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void checkValues(Titulo titulo){
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
 		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 9999999);
 		TituloValidator.checkContaBancariaDigito(titulo);
 		TituloValidator.checkNossoNumeroDigito(titulo);
 		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
+
+		final CampoLivre campoLivre = new CampoLivre(7);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH);
+		campoLivre.addStringZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DIGITO_CONTA_LENGTH);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
+		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), DIGITO_NOSSO_NUMERO_LENGTH);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
+		campoLivre.addIntegerZeroLeft(CAMPO_ZERADO_VALUE, CAMPO_ZERADO_LENGTH);
+
+		return campoLivre;
 	}
 
-	/**
-	 *  {@inheritDoc}
-	 *  
-	 * @see org.jrimum.bopepo.campolivre.AbstractCampoLivre#addFields(org.jrimum.domkee.financeiro.banco.febraban.Titulo)
-	 */
-	@Override
-	protected void addFields(Titulo titulo) {
-		
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DIGITO_CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getDigitoDoNossoNumero(), DIGITO_NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(CAMPO_ZERADO_VALUE, CAMPO_ZERADO_LENGTH,  Fillers.ZERO_LEFT));		
-	}
 }

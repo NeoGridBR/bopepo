@@ -29,7 +29,6 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.FixedField;
 

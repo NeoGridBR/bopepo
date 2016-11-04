@@ -1,17 +1,18 @@
 package org.jrimum.bopepo.banco;
 
 import org.jrimum.bopepo.campolivre.CLBancoCitibankNN11;
+import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
 public class BancoCitibank extends AbstractBanco {
 
-	public BancoCitibank(final Titulo titulo) {
-		super(titulo);
+	public BancoCitibank() {
+		super("745", "33479023000180", "Banco Citibank S.A.", Segmento.BANCO_MULTIPLO);
 	}
 
 	@Override
-	public CampoLivre getCampoLivre() throws NotSupportedCampoLivreException {
+	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
 		TituloValidator.checkNossoNumero(titulo);
 
 		switch(titulo.getNossoNumero().length()) {

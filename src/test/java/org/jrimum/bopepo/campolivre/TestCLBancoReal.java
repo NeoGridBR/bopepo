@@ -27,7 +27,6 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.bopepo.BancosSuportados;
@@ -43,26 +42,27 @@ import org.junit.Before;
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  *
  */
-public class TestCLBancoReal extends AbstractCampoLivreBaseTest<CLBancoReal> {
-	
+public class TestCLBancoReal extends AbstractCampoLivreBaseTest {
+
 	@Before
-	public void setUp(){
-		
+	public void setUp() {
+
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_ABN_AMRO_REAL.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(1018));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(16324));
 		titulo.setNumeroDoDocumento("1234567890123");
 		titulo.setNossoNumero("1234567890123");
-		
+
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("1018001632491234567890123");
 	}
 

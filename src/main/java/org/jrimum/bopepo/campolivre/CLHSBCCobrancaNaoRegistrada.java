@@ -32,7 +32,6 @@ package org.jrimum.bopepo.campolivre;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.bopepo.parametro.ParametroHSBC;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;

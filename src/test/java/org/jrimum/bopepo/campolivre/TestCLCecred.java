@@ -50,36 +50,36 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLCecred extends AbstractCampoLivreBaseTest<CLCecred> {
+public class TestCLCecred extends AbstractCampoLivreBaseTest {
 
 	private final int NOSSO_NUMERO_LENGTH = 9;
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 
 		titulo.getContaBancaria().setBanco(BancosSuportados.CECRED.create());
 		titulo.getContaBancaria().setCarteira(new Carteira(1));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(12345678));
 		titulo.setNossoNumero("12345678000123456");
 		titulo.setParametrosBancarios(new ParametrosBancariosMap(CODIGO_DO_CONVENIO, 654321));
-		
+
 		createCampoLivreToTest();
 
 		setCampoLivreEsperadoComoString("6543211234567800012345601");
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteParametroBancarioNulo() {
 
 		testeSeNaoPermiteParametroBancarioNulo();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteParametroBancarioPostoDaAgenciaAusente() {
 
 		testeSeNaoPermiteParametroBancarioAusente();
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteParametroBancarioCodigoDoConvenioSemValor() {
 
@@ -88,10 +88,10 @@ public class TestCLCecred extends AbstractCampoLivreBaseTest<CLCecred> {
 
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteParametroBancarioCodigoDoConvenioComValorAcimaDe6Digitos() {
-		
+
 		testeSeNaoPermiteParametroBancarioComValorAcimaDoLimite(CODIGO_DO_CONVENIO, 1234567);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroNulo() {
 

@@ -4,20 +4,16 @@ import static org.jrimum.utilix.text.DateFormat.YYMMDD;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
-import org.jrimum.utilix.Objects;
-import org.jrimum.utilix.text.Strings;
 
 /**
  * 
  * <p>
- * Representação do campo livre usado para boletos com carteiras (<em>cobrança</em>)
- * com registro.
+ * Representação do campo livre usado para boletos com carteiras
+ * (<em>cobrança</em>) com registro.
  * </p>
  * 
  * <p>
@@ -30,7 +26,8 @@ import org.jrimum.utilix.text.Strings;
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
  * collapse" bordercolor="#111111" >
  * <tr>
- * <td align="center" bgcolor="#C0C0C0"><strong><font face="Arial">Posição</font></strong></td>
+ * <td align="center" bgcolor="#C0C0C0"><strong><font face=
+ * "Arial">Posição</font></strong></td>
  * <td bgcolor="#C0C0C0"><strong><font face="Arial">Campo Livre No Código De
  * Barras (20 a 44)</font></strong></td>
  * <tr>
@@ -61,7 +58,8 @@ import org.jrimum.utilix.text.Strings;
  * <td align="center"><font face="Arial">44</font></td>
  * <td><font face="Arial">Super Digito do Nosso Número (*)</font></td>
  * </tr>
- * </table> </div>
+ * </table>
+ * </div>
  * </p>
  * 
  * 
@@ -72,82 +70,36 @@ import org.jrimum.utilix.text.Strings;
  * @version 0.2
  */
 
-class CLUnibancoCobrancaRegistrada extends AbstractCLUnibanco {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2740172688796212239L;
-
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 6;
+public class CLUnibancoCobrancaRegistrada extends AbstractCLUnibanco {
 
 	private static final String CODIGO_TRANSACAO = "04";
-	
+
 	/**
 	 * <p>
-	 *   Dado um título, cria um campo livre para o padrão do Banco Unibanco
-	 *   que tenha o tipo de cobrança registrada.
+	 * Dado um título, cria um campo livre para o padrão do Banco Unibanco que
+	 * tenha o tipo de cobrança registrada.
 	 * </p>
-	 * @param titulo título com as informações para geração do campo livre
+	 * 
+	 * @param titulo
+	 *            título com as informações para geração do campo livre
 	 */
-	CLUnibancoCobrancaRegistrada(Titulo titulo) {
-		super(FIELDS_LENGTH);
-		
-		ContaBancaria conta = titulo.getContaBancaria();
-		
-		Objects.checkNotNull(conta,"Conta Bancária NULA!");
-		Objects.checkNotNull(titulo.getDataDoVencimento(), "Data de vencimento do título NULA!");
-		Objects.checkNotNull(conta.getAgencia().getCodigo(), "Número da Agência Bancária NULO!");
-		Objects.checkNotNull(conta.getAgencia().getDigitoVerificador(),"Dígito da Agência Bancária NULO!");
-		Objects.checkNotNull(titulo.getNossoNumero(),"Nosso Número NULO!");
-		
-		this.add(new FixedField<String>(CODIGO_TRANSACAO, 2));
-		this.add(new FixedField<Date>(titulo.getDataDoVencimento(), 6, YYMMDD.copy()));
-			
-		if(conta.getAgencia().getCodigo() > 0){
-			
-			this.add(new FixedField<Integer>(conta.getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-			
-		}else{
-			
-			throw new CampoLivreException(new IllegalArgumentException("Agência bancária com valor inválido, a agência deve ser um número inteiro positivo, e não: "+conta.getNumeroDaConta().getCodigoDaConta()));
-		}
-		
-		
-		if (StringUtils.isNumeric(conta.getAgencia().getDigitoVerificador())) {
-			
-			Integer digitoDaAgencia = Integer.valueOf(conta.getAgencia().getDigitoVerificador());  
-			
-			if(digitoDaAgencia>=0){
-				
-				this.add(new FixedField<Integer>(Integer.valueOf(digitoDaAgencia), 1));
-			}else{
-				
-				throw new CampoLivreException(new IllegalArgumentException("O dígito da agência deve ser um número interio não-negativo, e não: ["+conta.getAgencia().getDigitoVerificador()+"]"));
-			}
-		}else{
-			
-			throw new CampoLivreException(new IllegalArgumentException("O dígito da agência deve ser numérico, e não: ["+conta.getAgencia().getDigitoVerificador()+"]"));
-		}
-		
-		if(StringUtils.isNumeric(titulo.getNossoNumero())){
-			
-			if(Long.valueOf(Strings.removeStartWithZeros(titulo.getNossoNumero()))>0){
-				
-				this.add(new FixedField<String>(titulo.getNossoNumero(), 11,Fillers.ZERO_LEFT));
-			}else{
-				
-				throw new CampoLivreException(new IllegalArgumentException("O campo (nosso número) do título deve ser um número natural positivo, e não: ["+titulo.getNossoNumero()+"]"));
-			}
-		}else{
-			
-			throw new CampoLivreException(new IllegalArgumentException("O campo (nosso número) do título deve ser numérico, e não: ["+titulo.getNossoNumero()+"]"));
-		}
-		
-		this.add(new FixedField<String>(calculeSuperDigito(titulo.getNossoNumero()), 1));
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		TituloValidator.checkTituloDataDoVencimentoNotNull(titulo);
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
+		TituloValidator.checkAgenciaDigito(titulo);
+		TituloValidator.checkNossoNumero(titulo);
+
+		final ContaBancaria conta = titulo.getContaBancaria();
+
+		final CampoLivre campoLivre = new CampoLivre(6);
+		campoLivre.addString(CODIGO_TRANSACAO, 2);
+		campoLivre.add(new FixedField<Date>(titulo.getDataDoVencimento(), 6, YYMMDD.copy()));
+		campoLivre.addIntegerZeroLeft(conta.getAgencia().getCodigo(), 4);
+		Integer digitoDaAgencia = Integer.valueOf(conta.getAgencia().getDigitoVerificador());
+		campoLivre.addInteger(Integer.valueOf(digitoDaAgencia), 1);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 11);
+		campoLivre.addString(calculeSuperDigito(titulo.getNossoNumero()), 1);
+		return campoLivre;
 	}
 
 	/**
@@ -173,20 +125,8 @@ class CLUnibancoCobrancaRegistrada extends AbstractCLUnibanco {
 	 * 
 	 * @since 0.2
 	 */
-	private String calculeSuperDigito(String nossoNumero) {
-
+	private static String calculeSuperDigito(String nossoNumero) {
 		return calculeDigitoEmModulo11("1" + nossoNumero);
 	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

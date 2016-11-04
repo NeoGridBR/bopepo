@@ -4,17 +4,18 @@ import org.jrimum.bopepo.campolivre.CLBancoDoBrasilNN10;
 import org.jrimum.bopepo.campolivre.CLBancoDoBrasilNN11;
 import org.jrimum.bopepo.campolivre.CLBancoDoBrasilNN17Convenio6;
 import org.jrimum.bopepo.campolivre.CLBancoDoBrasilNN17Convenio7;
+import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
 public class BancoDoBrasil extends AbstractBanco {
 
-	public BancoDoBrasil(final Titulo titulo) {
-		super(titulo);
+	public BancoDoBrasil() {
+		super("001", "00000000000191", "BANCO DO BRASIL S.A.", Segmento.BANCO_DO_BRASIL_BANCO_MULTIPLO);
 	}
 
 	@Override
-	public CampoLivre getCampoLivre() throws NotSupportedCampoLivreException {
+	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
 		TituloValidator.checkNossoNumero(titulo);
 		TituloValidator.checkContaBancariaCodigo(titulo);
 

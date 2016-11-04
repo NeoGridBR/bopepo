@@ -30,13 +30,70 @@
 
 package org.jrimum.bopepo.campolivre;
 
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.bopepo.parametro.ParametroBancoSofisa;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
 public class CLBancoSofisa {
 
+	/**
+	 * /**
+	 * <p>
+	 * O campo livre do Banco Sofisa deve seguir esta forma:
+	 * </p>
+	 * 
+	 * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+	 * collapse" bordercolor="#111111" width="100%" id="campolivre">
+	 * <thead bgcolor="#DEDEDE">
+	 * <tr>
+	 * <th>Posição</th>
+	 * <th>Tamanho</th>
+	 * <th>Picture</th>
+	 * <th>Conteúdo (terminologia padrão)</th>
+	 * <th>Conteúdo (terminologia do banco)</th>
+	 * </tr>
+	 * </thead>
+	 * <tbody>
+	 * <tr>
+	 * <td>20-23</td>
+	 * <td>4</td>
+	 * <td>9(4)</td>
+	 * <td>Agência Cedente (Sem o digito verificador, completar com zeros a esquerda quando necessário)</td>
+	 * <td>Código da Agência (sem dígito)</td>
+	 * </tr>
+	 * <tr>
+	 * <td>24-26</td>
+	 * <td>3</td>
+	 * <td>9(3)</td>
+	 * <td>Código da Carteira</td>
+	 * <td>Código da Carteira</td>
+	 * </tr>
+	 * <tr>
+	 * <td>27-33</td>
+	 * <td>7</td>
+	 * <td>9(7)</td>
+	 * <td>Operação (Número da Operação do Cliente, na agência, completar com zeros a esquerda quando necessário)</td>
+	 * <td>Número da Operação do Cliente</td>
+	 * </tr>
+	 * <tr>
+	 * <td>34-43</td>
+	 * <td>10</td>
+	 * <td>9(10)</td>
+	 * <td>Número do Nosso Número (sem o digito verificador)</td>
+	 * <td>Nosso Número (sem dígito)</td>
+	 * </tr>
+	 * <tr>
+	 * <td>44-44</td>
+	 * <td>1</td>
+	 * <td>9</td>
+	 * <td>Dígito verificador do Nosso Número</td>
+	 * <td>Dígito Nosso Número</td>
+	 * </tr>
+	 * </table>
+	 * 
+	 * @param titulo
+	 * @return
+	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkParametroBancarioNotNull(titulo, ParametroBancoSofisa.CODIGO_DO_CONVENIO);
 

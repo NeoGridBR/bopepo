@@ -35,17 +35,16 @@ import org.jrimum.domkee.financeiro.banco.febraban.TipoDeCobranca;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
 import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 import org.jrimum.vallia.digitoverificador.Modulo;
 import org.jrimum.vallia.digitoverificador.TipoDeModulo;
 
 /**
  * 
  * <p>
- * Representação do campo livre usado para boletos com carteiras (<em>cobrança</em>)
- * sem registro, caucionadas e com registro. O tipo de cobrança de carteira caucionada
- * se enquadra no conceito de cobrança registrada, sendo diferenciada pelo código
- * da carteira.
+ * Representação do campo livre usado para boletos com carteiras
+ * (<em>cobrança</em>) sem registro, caucionadas e com registro. O tipo de
+ * cobrança de carteira caucionada se enquadra no conceito de cobrança
+ * registrada, sendo diferenciada pelo código da carteira.
  * </p>
  * 
  * <p>
@@ -58,7 +57,8 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
  * collapse" bordercolor="#111111" >
  * <tr>
- * <td align="center" bgcolor="#C0C0C0"><strong><font face="Arial">Posição</font></strong></td>
+ * <td align="center" bgcolor="#C0C0C0"><strong><font face=
+ * "Arial">Posição</font></strong></td>
  * <td bgcolor="#C0C0C0"><strong><font face="Arial">Campo Livre No Código De
  * Barras (20 a 44)</font></strong></td>
  * <tr>
@@ -73,7 +73,8 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <tr>
  * <td align="center"><font face="Arial">39 a 39</font></td>
  * 
- * <td><font face="Arial">Produto = 2-Sem registro; 3-Caucionada; 4,5,6 e 7-Cobrança com registro</font></td>
+ * <td><font face="Arial">Produto = 2-Sem registro; 3-Caucionada; 4,5,6 e
+ * 7-Cobrança com registro</font></td>
  * </tr>
  * 
  * <tr>
@@ -86,7 +87,8 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <td><font face="Arial">Duplo Dígito referente às posições 20 a 42</font></td>
  * </tr>
  * 
- * </table> </div>
+ * </table>
+ * </div>
  * </p>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
@@ -98,125 +100,93 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * 
  * @version 0.2
  */
-class CLBanestes extends AbstractCLBanestes {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 476678476727564241L;
-	
-	private static final Integer FIELDS_LENGTH = 5;
+public class CLBanestes {
 
-	public CLBanestes(Titulo titulo) {
-		
-		super(FIELDS_LENGTH);
-		
-		this.add(new FixedField<Integer>(Integer.valueOf(titulo.getNossoNumero()), 8, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 11, Fillers.ZERO_LEFT));
-		
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final CampoLivre campoLivre = new CampoLivre(5);
+
+		campoLivre.addIntegerZeroLeft(Integer.valueOf(titulo.getNossoNumero()), 8);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 11);
+
 		final Integer codigoDaCarteiraDeCobranca = titulo.getContaBancaria().getCarteira().getCodigo();
-		
+
 		if (exists(codigoDaCarteiraDeCobranca)) {
-			this.add(new FixedField<Integer>(codigoDaCarteiraDeCobranca, 1));
-			
+			campoLivre.addInteger(codigoDaCarteiraDeCobranca, 1);
 		} else {
-			
 			final TipoDeCobranca tipoDeCobranca = titulo.getContaBancaria().getCarteira().getTipoCobranca();
-			
 			if (tipoDeCobranca == null) {
 				throw new CampoLivreException("Tipo de cobrança da carteira não foi especificado!");
-			} 
-			
+			}
 			switch (tipoDeCobranca) {
-			
-				case SEM_REGISTRO:
-					this.add(new FixedField<Integer>(2, 1));
+			case SEM_REGISTRO:
+				campoLivre.addInteger(2, 1);
+				break;
+			case COM_REGISTRO:
+				if (codigoDaCarteiraDeCobranca >= 3 && codigoDaCarteiraDeCobranca <= 7) {
+					campoLivre.addInteger(codigoDaCarteiraDeCobranca, 1);
 					break;
-					
-				case COM_REGISTRO:
-					if (codigoDaCarteiraDeCobranca >= 3 && codigoDaCarteiraDeCobranca <= 7) {
-						
-						this.add(new FixedField<Integer>(codigoDaCarteiraDeCobranca, 1));
-						break;
-						
-					} else {
-						throw new CampoLivreException("Código da carteira de cobrança com registro deve ser" +
-							" especificado com 3,4,5,6 ou 7. Valor atual = [" + codigoDaCarteiraDeCobranca + "]");
-					}
-				default:
-					throw new CampoLivreException("Tipo de cobrança [" + tipoDeCobranca  + "] não é suportado!");
-					
+				} else {
+					throw new CampoLivreException("Código da carteira de cobrança com registro deve ser"
+							+ " especificado com 3,4,5,6 ou 7. Valor atual = [" + codigoDaCarteiraDeCobranca + "]");
+				}
+			default:
+				throw new CampoLivreException("Tipo de cobrança [" + tipoDeCobranca + "] não é suportado!");
+
 			}
 		}
-		this.add(new FixedField<Byte>(titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo().byteValue(), 3, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Byte>(calculaDuploDV(), 2, Fillers.ZERO_LEFT));
+		campoLivre.add(new FixedField<Byte>(
+				titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo().byteValue(), 3,
+				Fillers.ZERO_LEFT));
+		campoLivre.add(new FixedField<Byte>(calculaDuploDV(campoLivre.getValue()), 2, Fillers.ZERO_LEFT));
+		return campoLivre;
 	}
-	
+
 	/**
-	 * Calcula duplo dígito verificador da posição 0 à 23 do campo livre (Chave ASBACE)..
+	 * Calcula duplo dígito verificador da posição 0 à 23 do campo livre (Chave
+	 * ASBACE)..
 	 * 
-	 * @return Duplo dígito verificador. 
+	 * @return Duplo dígito verificador.
 	 * 
 	 */
-	private byte calculaDuploDV() {
+	private static byte calculaDuploDV(final String value) {
 		final byte duploDV;
-		
-		String fields = writeFields();
-		
-		byte primeiroDV = calculaPrimeiroDV(fields);
-		
+		byte primeiroDV = calculaPrimeiroDV(value);
 		final byte segundoDV;
-		
+
 		// resto proveniente do módulo 11 com pesos de 2 a 7
-		int restoDoModulo11 = new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(fields + primeiroDV);
-		
+		int restoDoModulo11 = new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(value + primeiroDV);
 		if (restoDoModulo11 == 0) {
 			segundoDV = 0;
-		} else	if (restoDoModulo11 == 1) {
+		} else if (restoDoModulo11 == 1) {
 			if (primeiroDV == 9) {
 				primeiroDV = 0;
 			} else {
 				primeiroDV++;
 			}
-			segundoDV = (byte) new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(fields + primeiroDV);
+			segundoDV = (byte) new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(value + primeiroDV);
 		} else {
 			segundoDV = (byte) (11 - restoDoModulo11);
 		}
-		
-		duploDV = Byte.parseByte(String.valueOf(primeiroDV) + String.valueOf(segundoDV)); 
-		
+		duploDV = Byte.parseByte(String.valueOf(primeiroDV) + String.valueOf(segundoDV));
 		return duploDV;
 	}
 
 	/**
 	 * Calcula o primeiro dígito verificador.
 	 * 
-	 * @param fields 
+	 * @param fields
 	 * 
-	 * @return O primeiro dígito verificador dos dois existentes na chave ASBACE (Campo livre).
+	 * @return O primeiro dígito verificador dos dois existentes na chave ASBACE
+	 *         (Campo livre).
 	 */
-	private byte calculaPrimeiroDV(String fields) {
+	private static byte calculaPrimeiroDV(String fields) {
 		final byte primeiroDV;
-		
 		// resto proveniente do módulo 10
 		byte restoDoModulo10 = (byte) new Modulo(TipoDeModulo.MODULO10).calcule(fields);
-		
 		// se não houver resto, primeiroDV = 0
 		// caso contrário, primeiroDV = 10 - resto
 		primeiroDV = (byte) ((restoDoModulo10 == 0) ? 0 : 10 - restoDoModulo10);
 		return primeiroDV;
-	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
 	}
 
 }

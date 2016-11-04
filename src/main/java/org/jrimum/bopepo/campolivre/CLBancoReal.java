@@ -27,30 +27,30 @@
  * 
  */
 
-
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 import org.jrimum.utilix.text.Strings;
 import org.jrimum.vallia.digitoverificador.Modulo;
 import org.jrimum.vallia.digitoverificador.TipoDeModulo;
 
 /**
- * <p><strong>*** COBRANÇA SEM REGISTRO ***</strong></p>
+ * <p>
+ * <strong>*** COBRANÇA SEM REGISTRO ***</strong>
+ * </p>
  * O campo livre do Banco Real deve seguir esta forma:
  * 
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
  * collapse" bordercolor="#111111" id="campolivre">
- * <tr> <thead>
- * <th >Posição </th>
+ * <tr>
+ * <thead>
+ * <th >Posição</th>
  * <th >Tamanho</th>
  * <th >Picture</th>
  * <th>Conteúdo (terminologia padrão)</th>
- * <th>Conteúdo (terminologia do banco)</th>
- * </thead> </tr>
+ * <th>Conteúdo (terminologia do banco)</th> </thead>
+ * </tr>
  * <tr>
  * <td>20-23</td>
  * <td>4</td>
@@ -61,21 +61,21 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * <tr>
  * <td>24-30</td>
  * <td>7</td>
- * <td>9(7) </td>
+ * <td>9(7)</td>
  * <td>Código da conta (sem dígito)</td>
  * <td>Conta - Número da conta do cedente</td>
  * </tr>
  * <tr>
  * <td>31-31</td>
  * <td>1</td>
- * <td>9(1) </td>
+ * <td>9(1)</td>
  * <td>Dígito verificador</td>
  * <td>Digitão - Dígito de cobrança</td>
  * </tr>
  * <tr>
  * <td>32-44</td>
  * <td>13</td>
- * <td>9(13) </td>
+ * <td>9(13)</td>
  * <td>Número do título(máximo de 13 posições numéricas)</td>
  * <td>Número do banco - Número do título no banco</td>
  * </tr>
@@ -89,50 +89,44 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
  * 
  * @version 0.2
  */
-	
-class CLBancoReal extends AbstractCLBancoReal {
+
+public class CLBancoReal {
+
+	private static final Modulo modulo10 = new Modulo(TipoDeModulo.MODULO10);
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5294809022535972391L;
-	
-	private static final Modulo modulo10 = new Modulo(TipoDeModulo.MODULO10);
-	
-	/**
-	 * Tamanho deste campo.
-	 */
-	private static final Integer FIELDS_LENGTH = 4;
-	
-	/**
 	 * <p>
-	 *   Dado um título, cria um campo livre para o padrão do Banco Real.
+	 * Dado um título, cria um campo livre para o padrão do Banco Real.
 	 * </p>
-	 * @param titulo título com as informações para geração do campo livre
+	 * 
+	 * @param titulo
+	 *            título com as informações para geração do campo livre
 	 */
-	CLBancoReal(Titulo titulo) {
-		
-		super(FIELDS_LENGTH);
-		
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), 4, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(calculeDigitoDaPosicao31(titulo.getNossoNumero(), titulo.getContaBancaria().getAgencia().getCodigo(), titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta()), 1, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(Strings.eliminateSymbols(titulo.getNossoNumero()), 13, Fillers.ZERO_LEFT));
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
+		final CampoLivre campoLivre = new CampoLivre(4);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		final String digitoDaPosicao31 = calculeDigitoDaPosicao31(titulo);
+		campoLivre.addString(digitoDaPosicao31, 1);
+		campoLivre.addStringZeroLeft(Strings.eliminateSymbols(titulo.getNossoNumero()), 13);
+		return campoLivre;
 	}
-	
+
 	/**
 	 * <p>
-	 * Calcula o Dígito da posição <tt>31</tt> deste campo livre (<code>CLBancoReal</code>).
+	 * Calcula o Dígito da posição <tt>31</tt> deste campo livre
+	 * (<code>CLBancoReal</code>).
 	 * </p>
 	 * 
 	 * <p>
 	 * No cálculo do dígito da posição 31 são considerados, para a obtenção do
-	 * dígito, os dados <em><tt>{[NOSSO NÚMERO],[AGÊNCIA],[CONTA]}</tt></em> calculado pelos
-	 * critérios do Módulo 10.
+	 * dígito, os dados <em><tt>{[NOSSO NÚMERO],[AGÊNCIA],[CONTA]}</tt></em>
+	 * calculado pelos critérios do Módulo 10.
 	 * </p>
 	 * <h5>Exemplo:</h5>
 	 * 
-	 * <div align="center"> <table border="1" cellpadding="3" cellspacing="0">
+	 * <div align="center">
+	 * <table border="1" cellpadding="3" cellspacing="0">
 	 * <tr>
 	 * <td>Nosso Número</td>
 	 * <td>1234567890123</td>
@@ -145,7 +139,8 @@ class CLBancoReal extends AbstractCLBancoReal {
 	 * <td>Conta Corrente</td>
 	 * <td>7777777</td>
 	 * </tr>
-	 * </table></div>
+	 * </table>
+	 * </div>
 	 * 
 	 * @param nossoNumero
 	 * @param agencia
@@ -155,40 +150,23 @@ class CLBancoReal extends AbstractCLBancoReal {
 	 * @see org.jrimum.vallia.digitoverificador.Modulo
 	 * 
 	 * @since 0.2
-	 */	
-	private String calculeDigitoDaPosicao31(String nossoNumero,
-			Integer agencia, Integer contaCorrente) {
-
-		StringBuilder formula = new StringBuilder();
+	 */
+	private static String calculeDigitoDaPosicao31(final Titulo titulo) {
+		final StringBuilder formula = new StringBuilder();
 		String dV = null;
 
-		formula.append(Fillers.ZERO_LEFT.fill(nossoNumero, 13));
-		formula.append(Fillers.ZERO_LEFT.fill(agencia, 4));
-		formula.append(Fillers.ZERO_LEFT.fill(contaCorrente, 7));
+		formula.append(Fillers.ZERO_LEFT.fill(titulo.getNossoNumero(), 13));
+		formula.append(Fillers.ZERO_LEFT.fill(titulo.getContaBancaria().getAgencia().getCodigo(), 4));
+		formula.append(Fillers.ZERO_LEFT.fill(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7));
 
 		int restoDivisao = modulo10.calcule(formula.toString());
-
 		int restoSubtracao = (10 - restoDivisao);
-
 		if (restoSubtracao == 10) {
 			dV = "0";
 		} else {
-
 			dV = "" + restoSubtracao;
 		}
-
 		return dV;
 	}
-	
-	@Override
-	protected void addFields(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 
-	@Override
-	protected void checkValues(Titulo titulo) {
-		// TODO IMPLEMENTAR
-		Exceptions.throwUnsupportedOperationException("AINDA NÃO IMPLEMENTADO!");
-	}
 }

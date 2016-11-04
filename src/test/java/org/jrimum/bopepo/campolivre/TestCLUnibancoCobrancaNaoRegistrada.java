@@ -16,14 +16,15 @@ import org.junit.Test;
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  *
  */
-public class TestCLUnibancoCobrancaNaoRegistrada extends AbstractCampoLivreBaseTest<CLUnibancoCobrancaNaoRegistrada> {
+public class TestCLUnibancoCobrancaNaoRegistrada extends AbstractCampoLivreBaseTest {
 
 	/**
 	 * <p>
@@ -66,7 +67,7 @@ public class TestCLUnibancoCobrancaNaoRegistrada extends AbstractCampoLivreBaseT
 	 */
 
 	@Before
-	public void setUp(){
+	public void setUp() {
 
 		titulo.getContaBancaria().setBanco(BancosSuportados.UNIBANCO.create());
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(123456, "1"));
@@ -77,7 +78,7 @@ public class TestCLUnibancoCobrancaNaoRegistrada extends AbstractCampoLivreBaseT
 		titulo.setDigitoDoNossoNumero("7");
 
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("5123456100112233445566777");
 	}
 

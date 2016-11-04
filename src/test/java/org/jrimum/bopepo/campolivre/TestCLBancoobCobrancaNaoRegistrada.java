@@ -47,7 +47,7 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLBancoobCobrancaNaoRegistrada extends AbstractCampoLivreBaseTest<CLBancoobCobrancaNaoRegistrada>{
+public class TestCLBancoobCobrancaNaoRegistrada extends AbstractCampoLivreBaseTest {
 	
 	private final int NOSSO_NUMERO_LENGTH = 7;
 

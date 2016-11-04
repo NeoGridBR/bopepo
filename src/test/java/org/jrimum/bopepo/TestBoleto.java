@@ -34,7 +34,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Image;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,9 +41,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.imageio.ImageIO;
-
 import org.jrimum.bopepo.campolivre.CampoLivre;
+import org.jrimum.bopepo.campolivre.CampoLivreFactory;
 import org.jrimum.bopepo.campolivre.NotSupportedBancoException;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Agencia;
@@ -55,13 +53,12 @@ import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeMoeda;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.utilix.ClassLoaders;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * <p>
- * Teste da classe Boleto 
+ * Teste da classe Boleto
  * </p>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
@@ -72,30 +69,26 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-	
-public class TestBoleto{
+
+public class TestBoleto {
 
 	private Titulo titulo;
-	
 	private Date VENCIMENTO = new GregorianCalendar(2000, Calendar.JULY, 3).getTime();
-	
 	private Boleto boleto;
-
 
 	@Before
 	public void setUp() throws Exception {
-
 		Sacado sacado = new Sacado("Sacado");
 		Cedente cedente = new Cedente("Cedente");
 
 		ContaBancaria contaBancaria = new ContaBancaria();
 		contaBancaria.setBanco(BancosSuportados.BANCO_BRADESCO.create());
-		
+
 		Agencia agencia = new Agencia(1234, "1");
 		contaBancaria.setAgencia(agencia);
-		
+
 		contaBancaria.setCarteira(new Carteira(5));
-		
+
 		NumeroDaConta numeroDaConta = new NumeroDaConta();
 		numeroDaConta.setCodigoDaConta(6789);
 		contaBancaria.setNumeroDaConta(numeroDaConta);
@@ -105,28 +98,27 @@ public class TestBoleto{
 		titulo.setTipoDeMoeda(TipoDeMoeda.REAL);
 		titulo.setValor(BigDecimal.valueOf(100.23));
 		titulo.setDataDoVencimento(VENCIMENTO);
-		
+
 		boleto = new Boleto(titulo);
-		
+
 	}
 
 	/**
 	 * Test method for {@link org.jrimum.bopepo.Boleto#Boleto(Titulo)}.
-	 * @throws NotSupportedBancoException 
-	 * @throws NotSupportedCampoLivreException 
+	 * 
+	 * @throws NotSupportedBancoException
+	 * @throws NotSupportedCampoLivreException
 	 */
 	@Test
 	public void testGetInstance() throws NotSupportedBancoException, NotSupportedCampoLivreException {
-		
 		assertNotNull(boleto);
 		assertNotNull(boleto.getTitulo());
-		
-		try{
+		try {
 			new Boleto(null);
 			assertTrue(false);
 			fail("Teste Falho!");
-			
-		} catch(IllegalArgumentException illegalArgumentException){
+
+		} catch (IllegalArgumentException illegalArgumentException) {
 			assertTrue(true);
 		}
 	}
@@ -136,9 +128,7 @@ public class TestBoleto{
 	 */
 	@Test
 	public void testGetCodigoDeBarra() {
-		
 		assertNotNull(boleto.getCodigoDeBarras());
-		
 	}
 
 	/**
@@ -148,109 +138,39 @@ public class TestBoleto{
 	public void testGetLinhaDigitavel() {
 		assertNotNull(boleto.getLinhaDigitavel());
 	}
-	
+
 	/**
-	 * Test method for {@link org.jrimum.bopepo.Boleto#getDataDeProcessamento()}.
+	 * Test method for
+	 * {@link org.jrimum.bopepo.Boleto#getDataDeProcessamento()}.
 	 */
 	@Test
 	public void testGetDataDeProcessamento() {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date agora = new Date();
-		
 		assertEquals(df.format(agora), df.format(boleto.getDataDeProcessamento()));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetCampoLivreNull() {
-		
 		boleto = new Boleto(titulo, null);
 	}
-	
-	@SuppressWarnings("serial")
+
 	@Test
 	public void testSetCampoLivreTamanhoCorreto() {
-		
-		boleto = new Boleto(titulo, new CampoLivre() {
-
-			public String write() {
-				return "1234567890123456789012345";
-			}
-
-			public void read(String g) {
-			}
-		});
-		
+		boleto = new Boleto(titulo, CampoLivreFactory.create("1234567890123456789012345"));
 		assertNotNull(boleto.getCampoLivre());
 		assertNotNull(boleto.getCampoLivre().write());
 		assertEquals(CampoLivre.STRING_LENGTH.intValue(), boleto.getCampoLivre().write().length());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetCampoLivreTamanhoMaior() {
-		
-		boleto = new Boleto(titulo, new CampoLivre() {
-
-			private static final long serialVersionUID = 1L;
-
-			public String write() {
-				return "1234567890123456789012345000";
-			}
-
-			public void read(String g) {
-			}
-		});
+		boleto = new Boleto(titulo, CampoLivreFactory.create("1234567890123456789012345000"));
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetCampoLivreTamanhoMenor() {
-		
-		boleto = new Boleto(titulo, new CampoLivre() {
-
-			private static final long serialVersionUID = 1L;
-
-			public String write() {
-				return "12345678901234567890";
-			}
-
-			public void read(String g) {
-			}
-		});
+		boleto = new Boleto(titulo, CampoLivreFactory.create("12345678901234567890"));
 	}
 
-	//TODO
-	/*
-	@Test
-	public void deve_sobrescrever_os_campos_texto_padrao_do_boleto() throws Exception {
-		final String campoCendente = "txtFcCedente";
-		final String conteudoOriginal = "Banco dos Desenvolvedores";
-		final String conteudoSobrescrito = "Banco JRimum";
-		boleto.addTextosExtras(campoCendente, conteudoOriginal);
-		assertEquals(boleto.getTextosExtras().get(campoCendente), conteudoOriginal);
-
-		boleto.sobrescrevaCampo(BoletoCampo.txtFcCedente, conteudoSobrescrito);
-
-		assertEquals(boleto.getTextosExtras().get(campoCendente), conteudoSobrescrito);
-	}
-	*/
-
-	@Test
-	public void deve_adicionar_campos_texto_ao_boleto() throws Exception {
-		final String campo = "meuCampo";
-		final String conteudo = "Meu conteudo especial!";
-		
-		boleto.addTextosExtras(campo, conteudo);
-		
-		assertEquals(boleto.getTextosExtras().get(campo), conteudo);
-	}
-
-	@Test
-	public void deve_adicionar_campos_imagem_ao_boleto() throws Exception {
-		final String campo = "meuCampo";
-		final Image conteudo = ImageIO.read(ClassLoaders.getResource("img/001.png"));
-		assertNotNull(conteudo);
-		
-		boleto.addImagensExtras(campo, conteudo);
-		
-		assertEquals(boleto.getImagensExtras().get(campo), conteudo);
-	}
 }

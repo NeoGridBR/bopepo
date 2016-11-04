@@ -15,7 +15,7 @@ import org.junit.Before;
  * @author <a href="mailto:fernandobgi@gmail.com">Fernando Dias</a>
  *  
  */
-public class TestCLBancoIntermedium extends AbstractCampoLivreBaseTest<CLBancoIntermedium> {
+public class TestCLBancoIntermedium extends AbstractCampoLivreBaseTest {
 
 	@Before
 	public void setUp(){

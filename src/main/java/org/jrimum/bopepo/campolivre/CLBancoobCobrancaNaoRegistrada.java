@@ -33,15 +33,14 @@ import static org.jrimum.bopepo.parametro.ParametroBancoob.NUMERO_DA_PARCELA;
 
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * <p>
  * O campo livre do bradesco deve seguir esta forma:
  * </p>
  * 
- * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="campolivre">
+ * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
+ * collapse" bordercolor="#111111" width="100%" id="campolivre">
  * <thead bgcolor="#DEDEDE">
  * <tr>
  * <th>Posição</th>
@@ -62,9 +61,11 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td >21-24</td>
  * <td >4</td>
  * <td >9(4)</td>
- * <td style="text-align:left;padding-left:10">Agência Cedente (Cooperativa) (sem o dígito
- * verificador, completar com zeros a esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Código da Agência (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Agência Cedente (Cooperativa)
+ * (sem o dígito verificador, completar com zeros a esquerda quando
+ * necessário)</td>
+ * <td style="text-align:left;padding-left:10">Código da Agência (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td >25-26</td>
@@ -79,7 +80,8 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td >9(7)</td>
  * <td style="text-align:left;padding-left:10">Código do Cliente (sem o dígito
  * verificador, completar com zeros a esquerda quando necessário)</td>
- * <td style="text-align:left;padding-left:10">Conta do Beneficiário (sem dígito)</td>
+ * <td style="text-align:left;padding-left:10">Conta do Beneficiário (sem
+ * dígito)</td>
  * </tr>
  * <tr>
  * <td >34-40</td>
@@ -93,14 +95,17 @@ import org.jrimum.texgit.type.component.FixedField;
  * <td >41-41</td>
  * <td >1</td>
  * <td >9(1)</td>
- * <td style="text-align:left;padding-left:10">Dígito verificador do Nosso Número</td>
- * <td style="text-align:left;padding-left:10">Dígito verificador do Nosso Número</td>
+ * <td style="text-align:left;padding-left:10">Dígito verificador do Nosso
+ * Número</td>
+ * <td style="text-align:left;padding-left:10">Dígito verificador do Nosso
+ * Número</td>
  * </tr>
  * <tr>
  * <td >42-44</td>
  * <td >3</td>
  * <td >9(3)</td>
- * <td style="text-align:left;padding-left:10">Número da Parcela (completar com zeros a esquerda quando necessário)</td>
+ * <td style="text-align:left;padding-left:10">Número da Parcela (completar com
+ * zeros a esquerda quando necessário)</td>
  * <td style="text-align:left;padding-left:10">Número da Parcela</td>
  * </tr>
  * </table>
@@ -115,115 +120,98 @@ import org.jrimum.texgit.type.component.FixedField;
  * 
  * @version 0.2
  */
-public class CLBancoobCobrancaNaoRegistrada extends AbstractCLBancoob{
+public class CLBancoobCobrancaNaoRegistrada {
 
 	/**
-	 * {@code serialVersionUID = 2864939240695151533L}
-	 */
-	private static final long serialVersionUID = 2864939240695151533L;
-	
-	/**
-	 * Número de campos = 6.
-	 */
-	protected static final Integer FIELDS_LENGTH = 8;
-	
-	/**
-	 * Tamanho do campo Carteira = 1. 
+	 * Tamanho do campo Carteira = 1.
 	 */
 	protected static final Integer CARTEIRA_LENGTH = Integer.valueOf(1);
-	
+
 	/**
-	 * Tamanho do campo Agência = 4. 
+	 * Tamanho do campo Agência = 4.
 	 */
 	protected static final Integer AGENCIA_LENGTH = Integer.valueOf(4);
-	
+
 	/**
 	 * Tamanho do campo código da modalidade de cobrança = 2.
 	 */
 	protected static final Integer MODALIDADE_DE_COBRANCA_LENGTH = Integer.valueOf(2);
-	
+
 	/**
 	 * Valor do código da modalidade de cobrança (01) = SIMPLES.
 	 */
 	protected static final Integer COBRANCA_SIMPLES = Integer.valueOf(1);
-	
+
 	/**
 	 * Tamanho do campo Nosso Número = 7.
 	 */
 	private static final Integer NOSSO_NUMERO_LENGTH = Integer.valueOf(7);
-	
+
 	/**
 	 * Tamanho do campo Dígito Verificador do Nosso Número = 1.
 	 */
 	private static final Integer DV_NOSSO_NUMERO_LENGTH = Integer.valueOf(1);
-	
+
 	/**
-	 * Tamanho do campo Conta = 6. 
+	 * Tamanho do campo Conta = 6.
 	 */
 	private static final Integer CONTA_LENGTH = Integer.valueOf(6);
-	
+
 	/**
 	 * Tamanho do campo Dígito da conta = 1
 	 */
 	private static final Integer DV_CONTA_LENGTH = 1;
-	
+
 	/**
 	 * Valor do número de parcelas = 1.
 	 */
 	private static final Integer UMA_PARCELA = Integer.valueOf(1);
-	
+
 	/**
-	 * Tamanho do campo Conta = 3. 
+	 * Tamanho do campo Conta = 3.
 	 */
 	private static final Integer NUMERO_DA_PARCELA_LENGTH = 3;
 
 	/**
 	 * <p>
-	 *   Cria um campo livre instanciando o número de fields ({@code FIELDS_LENGTH}) deste campo.
+	 * Cria um campo livre instanciando o número de fields
+	 * ({@code FIELDS_LENGTH}) deste campo.
 	 * </p>
 	 * 
 	 * @since 0.2
 	 */
-	protected CLBancoobCobrancaNaoRegistrada() {
-		super(FIELDS_LENGTH);
-	}
-
-	@Override
-	protected void checkValues(Titulo titulo) {
+	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkCarteiraCodigo(titulo, 1, 9);
 		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
-		TituloValidator.checkNossoNumeroTamanho(titulo, NN7);
+		TituloValidator.checkNossoNumeroTamanho(titulo, NOSSO_NUMERO_LENGTH);
 		TituloValidator.checkNossoNumeroDigitoTamanho(titulo, DV_NOSSO_NUMERO_LENGTH);
 		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 999999);
 		TituloValidator.checkContaBancariaDigito(titulo);
-	}
 
-	@Override
-	protected void addFields(Titulo titulo) {
-		
+		final CampoLivre campoLivre = new CampoLivre(8);
+
 		Integer codigoDaModalidadeDeCobranca = COBRANCA_SIMPLES;
 		Integer numeroDaParcela = UMA_PARCELA;
-		
-		if (titulo.hasParametrosBancarios()) {
 
+		if (titulo.hasParametrosBancarios()) {
 			if (titulo.getParametrosBancarios().contemComNome(MODALIDADE_DE_COBRANCA)) {
 				TituloValidator.checkParametroBancarioNotNull(titulo, MODALIDADE_DE_COBRANCA);
 				codigoDaModalidadeDeCobranca = titulo.getParametrosBancarios().getValor(MODALIDADE_DE_COBRANCA);
 			}
-
 			if (titulo.getParametrosBancarios().contemComNome(NUMERO_DA_PARCELA)) {
 				TituloValidator.checkParametroBancarioNotNull(titulo, NUMERO_DA_PARCELA);
 				numeroDaParcela = titulo.getParametrosBancarios().getValor(NUMERO_DA_PARCELA);
 			}
-		}		
+		}
 
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(codigoDaModalidadeDeCobranca, MODALIDADE_DE_COBRANCA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<Integer>(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DV_CONTA_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getNossoNumero(),NOSSO_NUMERO_LENGTH, Fillers.ZERO_LEFT));
-		this.add(new FixedField<String>(titulo.getDigitoDoNossoNumero(),DV_NOSSO_NUMERO_LENGTH));
-		this.add(new FixedField<Integer>(numeroDaParcela, NUMERO_DA_PARCELA_LENGTH, Fillers.ZERO_LEFT));
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH);
+		campoLivre.addIntegerZeroLeft(codigoDaModalidadeDeCobranca, MODALIDADE_DE_COBRANCA_LENGTH);
+		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH);
+		campoLivre.addStringZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DV_CONTA_LENGTH);
+		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
+		campoLivre.addString(titulo.getDigitoDoNossoNumero(), DV_NOSSO_NUMERO_LENGTH);
+		campoLivre.addIntegerZeroLeft(numeroDaParcela, NUMERO_DA_PARCELA_LENGTH);
+		return campoLivre;
 	}
 }

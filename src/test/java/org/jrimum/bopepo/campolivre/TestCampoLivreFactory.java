@@ -53,58 +53,48 @@ public class TestCampoLivreFactory {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteCriacaoComStringNula() {
-		
-		CampoLivreFactory.create((String)null);
+		CampoLivreFactory.create((String) null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteCriacaoComEmptyString() {
-		
 		CampoLivreFactory.create(StringUtils.EMPTY);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteCriacaoComBlankString() {
-		
 		CampoLivreFactory.create("   ");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteCriacaoComStringComWhiteSpaces() {
-		
 		CampoLivreFactory.create("12345678 9012345678 9012345");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteCriacaoComStringComLengthMaiorQue25() {
-		
 		CampoLivreFactory.create("12345678901234567890123456");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteCriacaoComStringComLengthMenorQue25() {
-		
 		CampoLivreFactory.create("123456789012345678901234");
 	}
-	
+
 	@Test
 	public void seCriacaoDoCampoLivreOcorreSemFalha() {
-		
 		assertNotNull(CampoLivreFactory.create(CAMPO_LIVRE_EXEMPLO));
 	}
-	
+
 	@Test
 	public void seTamanhoDoCampoLivreEscritoIgualA25() {
-		
 		assertEquals(25, CampoLivreFactory.create(CAMPO_LIVRE_EXEMPLO).write().length());
 	}
-	
+
 	@Test
 	public void seCampoLivreEscritoEstaCorreto() {
-		
 		CampoLivre campoLivreCriado = CampoLivreFactory.create(CAMPO_LIVRE_EXEMPLO);
-		
 		assertEquals(CAMPO_LIVRE_EXEMPLO, campoLivreCriado.write());
 	}
-	
+
 }

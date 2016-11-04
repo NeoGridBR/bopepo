@@ -6,17 +6,18 @@ import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSICOBNN10;
 import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSICOBNN14;
 import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSIGCB;
 import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSINCO;
+import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
 public class BancoCEF extends AbstractBanco {
 
-	public BancoCEF(final Titulo titulo) {
-		super(titulo);
+	public BancoCEF() {
+		super("104", "00360305000104", "CAIXA ECONOMICA FEDERAL", Segmento.CAIXA_ECONOMICA_FEDERAL);
 	}
 
 	@Override
-	public CampoLivre getCampoLivre() throws NotSupportedCampoLivreException {
+	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
 		TituloValidator.checkNossoNumero(titulo);
 
 		switch (titulo.getNossoNumero().length()) {

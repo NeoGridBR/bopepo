@@ -52,37 +52,32 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLBancoDeBrasilia extends AbstractCampoLivreBaseTest<CLBancoDeBrasilia> {
+public class TestCLBancoDeBrasilia extends AbstractCampoLivreBaseTest {
 
 	private final int NOSSO_NUMERO_LENGTH = 6;
 
 	@Before
 	public void setUp() {
 
-		titulo.getContaBancaria().setBanco(
-				BancosSuportados.BANCO_DE_BRASILIA.create());
-		
+		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_DE_BRASILIA.create());
+
 		titulo.getContaBancaria().setAgencia(new Agencia(58));
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(6002006));
-		titulo.getContaBancaria().setCarteira(new Carteira(1,TipoDeCobranca.SEM_REGISTRO));
+		titulo.getContaBancaria().setCarteira(new Carteira(1, TipoDeCobranca.SEM_REGISTRO));
 		titulo.setNossoNumero("000001");
 
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("0000586002006100000107045");
 		assertEquals(4, titulo.getParametrosBancarios().getValor(CHAVE_ASBACE_DIGITO1));
 		assertEquals(5, titulo.getParametrosBancarios().getValor(CHAVE_ASBACE_DIGITO2));
 	}
-	
+
 	@Test
-	public void seGeraCorretoParaCarteiraComRegistro(){
-		
-		titulo.getContaBancaria().setCarteira(new Carteira(2,TipoDeCobranca.COM_REGISTRO));
-		
+	public void seGeraCorretoParaCarteiraComRegistro() {
+		titulo.getContaBancaria().setCarteira(new Carteira(2, TipoDeCobranca.COM_REGISTRO));
 		createCampoLivreToTest();
-		
 		setCampoLivreEsperadoComoString("0000586002006200000107031");
-		
 		seCampoLivreEscritoEstaCorreto();
 		assertEquals(3, titulo.getParametrosBancarios().getValor(CHAVE_ASBACE_DIGITO1));
 		assertEquals(1, titulo.getParametrosBancarios().getValor(CHAVE_ASBACE_DIGITO2));
@@ -111,7 +106,7 @@ public class TestCLBancoDeBrasilia extends AbstractCampoLivreBaseTest<CLBancoDeB
 
 		testeSeNaoPermiteNumeroDaAgenciaComDigitosAcimaDoLimite(1000);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaNulo() {
 
@@ -135,7 +130,7 @@ public class TestCLBancoDeBrasilia extends AbstractCampoLivreBaseTest<CLBancoDeB
 
 		testeSeNaoPermiteNumeroDaContaComCodigoAcimaDoLimite(12345678);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroNulo() {
 

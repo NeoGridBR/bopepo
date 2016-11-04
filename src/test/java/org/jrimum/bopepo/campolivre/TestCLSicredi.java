@@ -42,7 +42,6 @@ import org.jrimum.domkee.financeiro.banco.febraban.TipoDeCobranca;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * <p>
  * Teste unitário do campo livre do banco SICREDI.
@@ -54,12 +53,12 @@ import org.junit.Test;
  * 
  * @version 0.2
  */
-public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
+public class TestCLSicredi extends AbstractCampoLivreBaseTest {
 
 	private final int NOSSO_NUMERO_LENGTH = 8;
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_SICREDI.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(165));
@@ -69,21 +68,21 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 		titulo.setDigitoDoNossoNumero("1");
 		titulo.setParametrosBancarios(new ParametrosBancariosMap(POSTO_DA_AGENCIA, 2));
 		titulo.setValor(new BigDecimal("150.35"));
-		
+
 		createCampoLivreToTest();
 
 		setCampoLivreEsperadoComoString("3107200003101650200623101");
 	}
-	
+
 	@Test
-	public void seEscritaOndeTituloNaoTemValorEstahCorreta(){
-		
+	public void seEscritaOndeTituloNaoTemValorEstahCorreta() {
+
 		titulo.setValor(new BigDecimal("0.00"));
-		
+
 		createCampoLivreToTest();
 
 		setCampoLivreEsperadoComoString("3107200003101650200623004");
-		
+
 		seCampoLivreEscritoEstaCorreto();
 	}
 
@@ -102,7 +101,7 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 
 		seCampoLivreEscritoEstaCorreto();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteRegistroDaCarteiraNull() {
 
@@ -112,7 +111,7 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 
 		seCampoLivreEscritoEstaCorreto();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNossoNumeroNulo() {
 
@@ -136,7 +135,7 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 
 		testeSeNaoPermiteNossoNumeroComTamanhoDiferenteDoEspecificado(NOSSO_NUMERO_LENGTH - 1);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteDigitoDoNossoNumeroAusente() {
 
@@ -146,7 +145,7 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 
 		seCampoLivreEscritoEstaCorreto();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteDigitoDoNossoNumeroComTamanhoDiferenteDe1() {
 
@@ -156,55 +155,55 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 
 		seCampoLivreEscritoEstaCorreto();
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteAgenciaComCodigoNegativo() {
 
 		testeSeNaoPermiteAgenciaComCodigoNegativo();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteAgenciaComCodigoZero() {
 
 		testeSeNaoPermiteAgenciaComCodigoZero();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteAgenciaNula() {
 
 		testeSeNaoPermiteAgenciaNula();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaAgenciaAcimaDe4Digitos() {
 
 		testeSeNaoPermiteNumeroDaAgenciaComDigitosAcimaDoLimite(10000);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteParametroBancarioNulo() {
 
 		testeSeNaoPermiteParametroBancarioNulo();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteParametroBancarioPostoDaAgenciaAusente() {
 
 		testeSeNaoPermiteParametroBancarioAusente();
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void seNaoPermiteParametroBancarioPostoDaAgenciaSemValor() {
 
 		testeSeNaoPermiteParametroBancarioSemValor(POSTO_DA_AGENCIA);
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaNulo() {
 
 		testeSeNaoPermiteNumeroDaContaNulo();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteNumeroDaContaComCodigoZero() {
 
@@ -222,13 +221,13 @@ public class TestCLSicredi extends AbstractCampoLivreBaseTest<CLSicredi> {
 
 		testeSeNaoPermiteNumeroDaContaComCodigoAcimaDoLimite(123456);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void seNaoPermiteValorDoTituloNulo() {
 
 		testeSeNaoPermiteValorDoTituloNulo();
 	}
-	
+
 	@Test(expected = CampoLivreException.class)
 	public void seNaoPermiteValorDoTituloNegativo() {
 

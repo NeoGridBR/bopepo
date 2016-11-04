@@ -37,7 +37,8 @@ import org.junit.Before;
 
 /**
  * <p>
- * Teste unitário do campo livre do banco caixa econômica federal para o serviço SIGCB.
+ * Teste unitário do campo livre do banco caixa econômica federal para o serviço
+ * SIGCB.
  * </p>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
@@ -48,17 +49,17 @@ import org.junit.Before;
  * @version 0.2
  */
 public class TestCLCaixaEconomicaFederalSIGCB extends AbstractCampoLivreBaseTest {
-	
+
 	@Before
-	public void setUp(){
-		
+	public void setUp() {
+
 		titulo.getContaBancaria().setBanco(BancosSuportados.CAIXA_ECONOMICA_FEDERAL.create());
-		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(5507,"7"));
+		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(5507, "7"));
 		titulo.getContaBancaria().setCarteira(new Carteira(24, TipoDeCobranca.COM_REGISTRO));
 		titulo.setNossoNumero("000000000000019");
-		
+
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("0055077000100040000000190");
 	}
 }

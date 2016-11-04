@@ -15,33 +15,33 @@ import org.junit.Before;
 
 /**
  * <p>
- * Teste unitário do campo livre do Banco Rural - Cobrança não Registrada Seguradora.
+ * Teste unitário do campo livre do Banco Rural - Cobrança não Registrada
+ * Seguradora.
  * </p>
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:fernandobgi@gmail.com">Fernando Dias</a>
- *  
+ * 
  * @since 0.2
  * 
  * @version 0.2
  */
-public class TestCLBancoRuralCobrancaNaoRegistradaSeguradora extends AbstractCampoLivreBaseTest<CLBancoRuralCobrancaNaoRegistradaSeguradora> {
+public class TestCLBancoRuralCobrancaNaoRegistradaSeguradora extends AbstractCampoLivreBaseTest {
 
 	@Before
-	public void setUp(){
-
+	public void setUp() {
 
 		titulo.getContaBancaria().setBanco(BancosSuportados.BANCO_RURAL.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(155, "1"));
-		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(1625462,"9"));
+		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(1625462, "9"));
 		titulo.getContaBancaria().setCarteira(new Carteira(101, TipoDeCobranca.SEM_REGISTRO));
 		titulo.setNossoNumero("0000022569");
 		titulo.setDigitoDoNossoNumero("7");
-		
+
 		ParametrosBancariosMap map = new ParametrosBancariosMap();
 		map.adicione(VALOR_IOS, new BigDecimal("40.77"));
 		map.adicione(CODIGO_REDUZIDO, 1);
-		
+
 		titulo.setParametrosBancarios(map);
 
 		createCampoLivreToTest();

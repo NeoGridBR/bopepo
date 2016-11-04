@@ -33,7 +33,6 @@ package org.jrimum.bopepo.campolivre;
 import static org.jrimum.vallia.digitoverificador.Modulo.MOD10;
 
 import org.apache.commons.lang.StringUtils;
-import org.jrimum.bopepo.banco.CampoLivre;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.vallia.digitoverificador.Modulo;

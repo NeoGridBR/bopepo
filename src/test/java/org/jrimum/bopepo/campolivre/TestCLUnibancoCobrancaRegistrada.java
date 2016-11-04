@@ -27,7 +27,7 @@
  * Criado em: 25/04/2008 - 01:53:23
  * 
  */
-	
+
 package org.jrimum.bopepo.campolivre;
 
 import java.util.Calendar;
@@ -47,14 +47,15 @@ import org.junit.Test;
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
  * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  * 
  */
-public class TestCLUnibancoCobrancaRegistrada extends AbstractCampoLivreBaseTest<CLUnibancoCobrancaRegistrada> {
+public class TestCLUnibancoCobrancaRegistrada extends AbstractCampoLivreBaseTest {
 
 	/**
 	 * <p>
@@ -96,22 +97,21 @@ public class TestCLUnibancoCobrancaRegistrada extends AbstractCampoLivreBaseTest
 	 * @since
 	 */
 	@Before
-	public void setUp(){
-		
+	public void setUp() {
+
 		Calendar cal = Calendar.getInstance();
-		
-		cal.set(2001,Calendar.DECEMBER,31);
-		
+
+		cal.set(2001, Calendar.DECEMBER, 31);
 
 		titulo.getContaBancaria().setBanco(BancosSuportados.UNIBANCO.create());
 		titulo.getContaBancaria().setAgencia(new Agencia(1, "9"));
-		titulo.getContaBancaria().setCarteira(new Carteira(123,TipoDeCobranca.COM_REGISTRO));
+		titulo.getContaBancaria().setCarteira(new Carteira(123, TipoDeCobranca.COM_REGISTRO));
 		titulo.setNumeroDoDocumento("1234567");
 		titulo.setNossoNumero("11223344554");
 		titulo.setDataDoVencimento(cal.getTime());
 
 		createCampoLivreToTest();
-		
+
 		setCampoLivreEsperadoComoString("0401123100019112233445540");
 	}
 
