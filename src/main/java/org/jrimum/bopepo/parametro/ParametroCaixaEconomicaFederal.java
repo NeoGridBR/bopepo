@@ -27,12 +27,10 @@
  * 
  */
 
-
 package org.jrimum.bopepo.parametro;
 
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.domkee.financeiro.banco.ParametroBancario;
-
 
 /**
  * Parâmetros bancários específicos para o
@@ -44,6 +42,6 @@ import org.jrimum.domkee.financeiro.banco.ParametroBancario;
  * 
  * @since 0.2
  */
-public enum ParametroCaixaEconomicaFederal implements ParametroBancario<ParametroCaixaEconomicaFederal>{
-	CODIGO_OPERACAO;
+public enum ParametroCaixaEconomicaFederal implements ParametroBancario<ParametroCaixaEconomicaFederal> {
+	CODIGO_OPERACAO, CODIGO_TIPO_EMISSOR;
 }

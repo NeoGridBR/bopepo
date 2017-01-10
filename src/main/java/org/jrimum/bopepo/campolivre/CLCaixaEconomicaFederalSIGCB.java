@@ -31,6 +31,8 @@ package org.jrimum.bopepo.campolivre;
 
 import static org.jrimum.vallia.digitoverificador.Modulo.MOD11;
 
+import org.jrimum.bopepo.parametro.ParametroCaixaEconomicaFederal;
+import org.jrimum.domkee.financeiro.banco.ParametrosBancariosMap;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.vallia.digitoverificador.Modulo;
@@ -113,11 +115,6 @@ public class CLCaixaEconomicaFederalSIGCB {
 	private static final int COBRANCA_NAO_REGISTRADA = 2;
 
 	/**
-	 * Constante que indica emissão de boleto pelo cedente.
-	 */
-	private static final int EMISSAO_CEDENTE = 4;
-
-	/**
 	 * <p>
 	 * Dado um título, cria um campo livre para o padrão do Banco Caixa
 	 * Econômica Federal que tenha o serviço SIGCB.
@@ -145,7 +142,13 @@ public class CLCaixaEconomicaFederalSIGCB {
 		}
 
 		campoLivre.addString(nossoNumero.substring(3, 6), 3);
-		campoLivre.addInteger(EMISSAO_CEDENTE, 1);
+		final ParametrosBancariosMap parametrosBancariosMap = titulo.getParametrosBancarios();
+		// Indica emissão de boleto pelo cliente.
+		Integer codigoTipoEmissor = 4;
+		if((parametrosBancariosMap != null) && (parametrosBancariosMap.contemComNome(ParametroCaixaEconomicaFederal.CODIGO_TIPO_EMISSOR))) {
+			codigoTipoEmissor = parametrosBancariosMap.getValor(ParametroCaixaEconomicaFederal.CODIGO_TIPO_EMISSOR);
+		}
+		campoLivre.addInteger(codigoTipoEmissor, 1);
 		campoLivre.addString(nossoNumero.substring(6, 15), 9);
 
 		campoLivre.addInteger(calculeDigitoVerificador(campoLivre.getValue()), 1);

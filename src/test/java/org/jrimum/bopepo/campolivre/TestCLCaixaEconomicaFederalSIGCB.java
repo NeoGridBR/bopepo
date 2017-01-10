@@ -30,6 +30,8 @@
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.bopepo.BancosSuportados;
+import org.jrimum.bopepo.parametro.ParametroCaixaEconomicaFederal;
+import org.jrimum.domkee.financeiro.banco.ParametrosBancariosMap;
 import org.jrimum.domkee.financeiro.banco.febraban.Carteira;
 import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeCobranca;
@@ -57,6 +59,8 @@ public class TestCLCaixaEconomicaFederalSIGCB extends AbstractCampoLivreBaseTest
 		titulo.getContaBancaria().setNumeroDaConta(new NumeroDaConta(5507, "7"));
 		titulo.getContaBancaria().setCarteira(new Carteira(24, TipoDeCobranca.COM_REGISTRO));
 		titulo.setNossoNumero("000000000000019");
+		final ParametrosBancariosMap parametrosBancariosMap = new ParametrosBancariosMap(ParametroCaixaEconomicaFederal.CODIGO_TIPO_EMISSOR, 4);
+		titulo.setParametrosBancarios(parametrosBancariosMap);
 
 		createCampoLivreToTest();
 
