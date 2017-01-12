@@ -128,30 +128,30 @@ public class CLCaixaEconomicaFederalSIGCB {
 		final String nossoNumero = titulo.getNossoNumero();
 
 		final CampoLivre campoLivre = new CampoLivre(8);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 6);
 
 		final Integer dVCodigoDoCedente = calculeDigitoVerificador(
 				contaBancaria.getNumeroDaConta().getCodigoDaConta().toString());
-		campoLivre.addInteger(dVCodigoDoCedente, 1);
-		campoLivre.addString(nossoNumero.substring(0, 3), 3);
+		campoLivre.add(dVCodigoDoCedente, 1);
+		campoLivre.add(nossoNumero.substring(0, 3), 3);
 
 		if (contaBancaria.getCarteira().isComRegistro()) {
-			campoLivre.addInteger(COBRANCA_REGISTRADA, 1);
+			campoLivre.add(COBRANCA_REGISTRADA, 1);
 		} else {
-			campoLivre.addInteger(COBRANCA_NAO_REGISTRADA, 1);
+			campoLivre.add(COBRANCA_NAO_REGISTRADA, 1);
 		}
 
-		campoLivre.addString(nossoNumero.substring(3, 6), 3);
+		campoLivre.add(nossoNumero.substring(3, 6), 3);
 		final ParametrosBancariosMap parametrosBancariosMap = titulo.getParametrosBancarios();
 		// Indica emissão de boleto pelo cliente.
 		Integer codigoTipoEmissor = 4;
 		if((parametrosBancariosMap != null) && (parametrosBancariosMap.contemComNome(ParametroCaixaEconomicaFederal.CODIGO_TIPO_EMISSOR))) {
 			codigoTipoEmissor = parametrosBancariosMap.getValor(ParametroCaixaEconomicaFederal.CODIGO_TIPO_EMISSOR);
 		}
-		campoLivre.addInteger(codigoTipoEmissor, 1);
-		campoLivre.addString(nossoNumero.substring(6, 15), 9);
+		campoLivre.add(codigoTipoEmissor, 1);
+		campoLivre.add(nossoNumero.substring(6, 15), 9);
 
-		campoLivre.addInteger(calculeDigitoVerificador(campoLivre.getValue()), 1);
+		campoLivre.add(calculeDigitoVerificador(campoLivre.getValue()), 1);
 		return campoLivre;
 	}
 

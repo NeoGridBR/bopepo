@@ -1,13 +1,8 @@
 package org.jrimum.bopepo.campolivre;
 
-import static org.jrimum.utilix.text.DateFormat.YYMMDD;
-
-import java.util.Date;
-
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * 
@@ -92,13 +87,13 @@ public class CLUnibancoCobrancaRegistrada extends AbstractCLUnibanco {
 		final ContaBancaria conta = titulo.getContaBancaria();
 
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.addString(CODIGO_TRANSACAO, 2);
-		campoLivre.add(new FixedField<Date>(titulo.getDataDoVencimento(), 6, YYMMDD.copy()));
-		campoLivre.addIntegerZeroLeft(conta.getAgencia().getCodigo(), 4);
+		campoLivre.add(CODIGO_TRANSACAO, 2);
+		campoLivre.add(titulo.getDataDoVencimento(), 6);
+		campoLivre.addZeroLeft(conta.getAgencia().getCodigo(), 4);
 		Integer digitoDaAgencia = Integer.valueOf(conta.getAgencia().getDigitoVerificador());
-		campoLivre.addInteger(Integer.valueOf(digitoDaAgencia), 1);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 11);
-		campoLivre.addString(calculeSuperDigito(titulo.getNossoNumero()), 1);
+		campoLivre.add(Integer.valueOf(digitoDaAgencia), 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 11);
+		campoLivre.add(calculeSuperDigito(titulo.getNossoNumero()), 1);
 		return campoLivre;
 	}
 

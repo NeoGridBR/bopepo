@@ -29,9 +29,8 @@
 
 package org.jrimum.bopepo.campolivre;
 
+import org.apache.commons.lang.StringUtils;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.utilix.text.Strings;
 import org.jrimum.vallia.digitoverificador.Modulo;
 import org.jrimum.vallia.digitoverificador.TipoDeModulo;
 
@@ -104,11 +103,11 @@ public class CLBancoReal {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(4);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
 		final String digitoDaPosicao31 = calculeDigitoDaPosicao31(titulo);
-		campoLivre.addString(digitoDaPosicao31, 1);
-		campoLivre.addStringZeroLeft(Strings.eliminateSymbols(titulo.getNossoNumero()), 13);
+		campoLivre.add(digitoDaPosicao31, 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 13);
 		return campoLivre;
 	}
 
@@ -155,9 +154,9 @@ public class CLBancoReal {
 		final StringBuilder formula = new StringBuilder();
 		String dV = null;
 
-		formula.append(Fillers.ZERO_LEFT.fill(titulo.getNossoNumero(), 13));
-		formula.append(Fillers.ZERO_LEFT.fill(titulo.getContaBancaria().getAgencia().getCodigo(), 4));
-		formula.append(Fillers.ZERO_LEFT.fill(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7));
+		formula.append(StringUtils.leftPad(titulo.getNossoNumero(), 13, CampoLivre.ZERO_CHAR));
+		formula.append(StringUtils.leftPad(titulo.getContaBancaria().getAgencia().getCodigo().toString(), 4, CampoLivre.ZERO_CHAR));
+		formula.append(StringUtils.leftPad(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta().toString(), 7, CampoLivre.ZERO_CHAR));
 
 		int restoDivisao = modulo10.calcule(formula.toString());
 		int restoSubtracao = (10 - restoDivisao);

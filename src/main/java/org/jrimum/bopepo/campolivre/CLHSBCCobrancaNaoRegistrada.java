@@ -35,7 +35,6 @@ import java.util.Date;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.bopepo.parametro.ParametroHSBC;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * <p>
@@ -107,11 +106,11 @@ public class CLHSBCCobrancaNaoRegistrada {
 		TituloValidator.checkParametroBancarioNotNull(titulo, ParametroHSBC.IDENTIFICADOR_CNR);
 
 		final CampoLivre campoLivre = new CampoLivre(4);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 13);
-		campoLivre.addStringZeroLeft(getDataVencimento(titulo), 4);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 13);
+		campoLivre.addZeroLeft(getDataVencimento(titulo), 4);
 		// 2 FIXO (Código do Aplicativo CNR - Cob. Não Registrada)
-		campoLivre.addInteger(2, 1);
+		campoLivre.add(2, 1);
 
 		return campoLivre;
 	}
@@ -132,7 +131,7 @@ public class CLHSBCCobrancaNaoRegistrada {
 			return new StringBuilder(String.valueOf(c.get(Calendar.DAY_OF_YEAR)))
 					.append(String.valueOf(c.get(Calendar.YEAR) % 10)).toString();
 		default:
-			return Exceptions.throwIllegalStateException("Tipo de identificador CNR desconhecido!");
+			throw new IllegalStateException("Tipo de identificador CNR desconhecido!");
 		}
 	}
 

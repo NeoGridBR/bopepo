@@ -98,12 +98,13 @@ public class CLBancoSofisa {
 		TituloValidator.checkParametroBancarioNotNull(titulo, ParametroBancoSofisa.CODIGO_DO_CONVENIO);
 
 		final CampoLivre campoLivre = new CampoLivre(5);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 3);
 		final Integer codigoOperacao = titulo.getParametrosBancarios().<Integer>getValor(ParametroBancoSofisa.CODIGO_DO_CONVENIO);
-		campoLivre.addIntegerZeroLeft(codigoOperacao, 7);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 10);
-		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.addZeroLeft(codigoOperacao, 7);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 10);
+		campoLivre.add(titulo.getDigitoDoNossoNumero(), 1);
 		return campoLivre;
 	}
+
 }

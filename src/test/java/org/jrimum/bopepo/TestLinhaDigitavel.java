@@ -27,13 +27,14 @@
  * 
  */
 
-
 package org.jrimum.bopepo;
 
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.CampoLivreFactory;
@@ -45,41 +46,39 @@ import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeMoeda;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.utilix.text.DateFormat;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a> 
+ * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
  *
  */
-public class TestLinhaDigitavel{
+public class TestLinhaDigitavel {
 
 	private CampoLivre clBradesco;
 
 	private Titulo titulo;
-	
+
 	private CodigoDeBarras codigoDeBarras;
-	
+
 	private LinhaDigitavel linhaDigitavel;
-	
-	private Date VENCIMENTO = DateFormat.DDMMYYYY_B.parse("03/07/2000");
+
+	private Date VENCIMENTO = new GregorianCalendar(2000, Calendar.JULY, 3).getTime();
 
 	@Before
 	public void setUp() throws Exception {
+		final Sacado sacado = new Sacado("Sacado");
+		final Cedente cedente = new Cedente("Cedente");
 
-		Sacado sacado = new Sacado("Sacado");
-		Cedente cedente = new Cedente("Cedente");
-
-		ContaBancaria contaBancaria = new ContaBancaria();
+		final ContaBancaria contaBancaria = new ContaBancaria();
 		contaBancaria.setBanco(BancosSuportados.BANCO_BRADESCO.create());
-		
-		Agencia agencia = new Agencia(1234, "1");
+
+		final Agencia agencia = new Agencia(1234, "1");
 		contaBancaria.setAgencia(agencia);
-		
+
 		contaBancaria.setCarteira(new Carteira(5));
-		
-		NumeroDaConta numeroDaConta = new NumeroDaConta();
+
+		final NumeroDaConta numeroDaConta = new NumeroDaConta();
 		numeroDaConta.setCodigoDaConta(6789);
 		contaBancaria.setNumeroDaConta(numeroDaConta);
 
@@ -88,23 +87,21 @@ public class TestLinhaDigitavel{
 		titulo.setTipoDeMoeda(TipoDeMoeda.REAL);
 		titulo.setValor(BigDecimal.valueOf(100.23));
 		titulo.setDataDoVencimento(VENCIMENTO);
-		
+
 		clBradesco = CampoLivreFactory.create(titulo);
-		
+
 		codigoDeBarras = new CodigoDeBarras(titulo, clBradesco);
-		
+
 		linhaDigitavel = new LinhaDigitavel(codigoDeBarras);
 
 	}
-	
+
 	/**
 	 * Test method for {@link org.jrimum.bopepo.LinhaDigitavel#toString()}.
 	 */
 	@Test
 	public void testWrite() {
-		
 		assertEquals("23791.23405 51234.567892 01000.678902 2 10000000010023", linhaDigitavel.write());
-		
 	}
 
 }

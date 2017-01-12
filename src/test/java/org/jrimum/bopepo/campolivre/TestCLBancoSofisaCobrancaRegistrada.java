@@ -77,7 +77,7 @@ public class TestCLBancoSofisaCobrancaRegistrada extends AbstractCLBancoSofisaBa
 		 * [10] Nosso Número
 		 * [01] DV Nosso Número
 		 */
-		setCampoLivreEsperadoComoString("0019121000155400000114531");
+		setCampoLivreEsperadoComoString("0019121000155400000115090");
 	}
 
 	@Test(expected = CampoLivreException.class)

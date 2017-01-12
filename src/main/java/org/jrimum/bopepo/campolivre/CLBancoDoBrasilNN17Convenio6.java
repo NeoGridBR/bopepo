@@ -97,9 +97,10 @@ public class CLBancoDoBrasilNN17Convenio6 {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(3);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
-		campoLivre.addInteger(SERVICO, 2);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 17);
+		campoLivre.add(SERVICO, 2);
 		return campoLivre;
 	}
+
 }

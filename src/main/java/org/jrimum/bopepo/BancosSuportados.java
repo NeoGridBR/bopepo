@@ -54,9 +54,7 @@ import org.jrimum.bopepo.banco.Bancoob;
 import org.jrimum.bopepo.banco.Banestes;
 import org.jrimum.bopepo.banco.Banrisul;
 import org.jrimum.bopepo.banco.Unibanco;
-import org.jrimum.domkee.comum.pessoa.id.cprf.CNPJ;
 import org.jrimum.domkee.financeiro.banco.febraban.Banco;
-import org.jrimum.domkee.financeiro.banco.febraban.CodigoDeCompensacaoBACEN;
 
 /**
  * <p>

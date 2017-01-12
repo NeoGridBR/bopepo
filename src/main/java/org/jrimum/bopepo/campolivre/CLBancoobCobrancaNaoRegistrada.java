@@ -204,14 +204,14 @@ public class CLBancoobCobrancaNaoRegistrada {
 			}
 		}
 
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH);
-		campoLivre.addIntegerZeroLeft(codigoDaModalidadeDeCobranca, MODALIDADE_DE_COBRANCA_LENGTH);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH);
-		campoLivre.addStringZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DV_CONTA_LENGTH);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
-		campoLivre.addString(titulo.getDigitoDoNossoNumero(), DV_NOSSO_NUMERO_LENGTH);
-		campoLivre.addIntegerZeroLeft(numeroDaParcela, NUMERO_DA_PARCELA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH);
+		campoLivre.addZeroLeft(codigoDaModalidadeDeCobranca, MODALIDADE_DE_COBRANCA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DV_CONTA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
+		campoLivre.add(titulo.getDigitoDoNossoNumero(), DV_NOSSO_NUMERO_LENGTH);
+		campoLivre.addZeroLeft(numeroDaParcela, NUMERO_DA_PARCELA_LENGTH);
 		return campoLivre;
 	}
 }

@@ -54,21 +54,21 @@ public class CLBancoCitibankNN11 {
 
 		// Produto
 		final Integer codigoProduto = titulo.getParametrosBancarios().getValor(ParametroCitibank.CODIGO_PRODUTO);
-		campoLivre.addInteger(codigoProduto, 1);
+		campoLivre.add(codigoProduto, 1);
 		// Portifólio
-		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
+		campoLivre.addZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
 
 		final String numeroConta = StringUtils.leftPad(contaBancaria.getNumeroDaConta().getCodigoDaConta().toString(), 9, '0');
 		// Base
-		campoLivre.addString(StringUtils.substring(numeroConta, 1, 7), 6);
+		campoLivre.add(StringUtils.substring(numeroConta, 1, 7), 6);
 		// Sequencia
-		campoLivre.addString(StringUtils.right(numeroConta, 2), 2);
+		campoLivre.add(StringUtils.right(numeroConta, 2), 2);
 		// Dígito
-		campoLivre.addString(contaBancaria.getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.add(contaBancaria.getNumeroDaConta().getDigitoDaConta(), 1);
 		// Nosso Número
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 11);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 11);
 		// Dígito Nosso Número
-		campoLivre.addString(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.add(titulo.getDigitoDoNossoNumero(), 1);
 
 		return campoLivre;
 	}

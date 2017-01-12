@@ -177,13 +177,13 @@ public class CLBancoDoNordesteDoBrasil {
 		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
 
 		final CampoLivre campoLivre = new CampoLivre(7);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH);
-		campoLivre.addStringZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DIGITO_CONTA_LENGTH);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
-		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), DIGITO_NOSSO_NUMERO_LENGTH);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
-		campoLivre.addIntegerZeroLeft(CAMPO_ZERADO_VALUE, CAMPO_ZERADO_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), AGENCIA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), CONTA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), DIGITO_CONTA_LENGTH);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
+		campoLivre.addZeroLeft(titulo.getDigitoDoNossoNumero(), DIGITO_NOSSO_NUMERO_LENGTH);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
+		campoLivre.addZeroLeft(CAMPO_ZERADO_VALUE, CAMPO_ZERADO_LENGTH);
 
 		return campoLivre;
 	}

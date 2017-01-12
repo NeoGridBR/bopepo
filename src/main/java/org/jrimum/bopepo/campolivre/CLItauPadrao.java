@@ -150,13 +150,13 @@ public class CLItauPadrao {
 		final ContaBancaria contaBancaria = titulo.getContaBancaria();
 
 		final CampoLivre campoLivre = new CampoLivre(7);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 8);
-		campoLivre.addInteger(calculaDigitoCampoLivrePadrao31(titulo), 1);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
-		campoLivre.addInteger(calculaDigitoCampoLivrePadrao41(titulo), 1);
-		campoLivre.addString("000", 3);
+		campoLivre.addZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 8);
+		campoLivre.add(calculaDigitoCampoLivrePadrao31(titulo), 1);
+		campoLivre.addZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.add(calculaDigitoCampoLivrePadrao41(titulo), 1);
+		campoLivre.add("000", 3);
 		return campoLivre;
 	}
 

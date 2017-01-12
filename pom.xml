@@ -6,7 +6,7 @@
 	<artifactId>jrimum-bopepo</artifactId>
 	<packaging>jar</packaging>
 	<name>Projeto Bopepo</name>
-	<version>0.2.7-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<description>Projeto open source de componentes de software para o domínio de negócios do Brasil.</description>
 	<url>http://www.jrimum.org/bopepo</url>
 
@@ -114,28 +114,13 @@
 			<groupId>org.jrimum</groupId>
 			<artifactId>jrimum-domkee</artifactId>
 			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jrimum</groupId>
-			<artifactId>jrimum-texgit</artifactId>
-			<version>0.2.3</version>
-			<exclusions>
+			<!-- exclusions>
 				<exclusion>
 					<groupId>org.jrimum</groupId>
 					<artifactId>jrimum-utilix</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions -->
 		</dependency>
-		<!-- dependency>
-			<groupId>org.jrimum</groupId>
-			<artifactId>jrimum-utilix</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jrimum</groupId>
-			<artifactId>jrimum-vallia</artifactId>
-			<version>0.2.3</version>
-		</dependency  -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>

@@ -183,25 +183,7 @@ public class Boleto {
 	 *            the campoLivre to set
 	 */
 	private void setCampoLivre(final CampoLivre campoLivre) {
-
-		Validate.notNull(campoLivre);
-
-		int length = campoLivre.write().length();
-
-		if (length == CampoLivre.STRING_LENGTH) {
-			this.campoLivre = campoLivre;
-
-		} else {
-
-			if (length > CampoLivre.STRING_LENGTH) {
-				throw new IllegalArgumentException("O tamanho da String [" + length
-						+ "] é maior que o especificado [" + CampoLivre.STRING_LENGTH + "]!");
-
-			} else {
-				throw new IllegalArgumentException("O tamanho da String [" + length
-						+ "] é menor que o especificado [" + CampoLivre.STRING_LENGTH + "]!");
-			}
-		}
+		this.campoLivre = campoLivre;
 	}
 
 	/**

@@ -109,14 +109,14 @@ public class CLHSBCCobrancaRegistrada {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 10);
-		campoLivre.addString(titulo.getDigitoDoNossoNumero(), 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 10);
+		campoLivre.add(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
 		// Código da Carteira
-		campoLivre.addString("00", 2);
+		campoLivre.add("00", 2);
 		// Código do Aplicativo
-		campoLivre.addInteger(1, 1);
+		campoLivre.add(1, 1);
 		return campoLivre;
 	}
 }

@@ -29,8 +29,10 @@
 
 package org.jrimum.bopepo.excludes;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.jrimum.bopepo.Boleto;
-import org.jrimum.utilix.text.DateFormat;
 
 /**
  * Criação de dados para testes.
@@ -71,7 +73,8 @@ public class BoletoBuilder {
 
 	private static void setDefaultValues(Boleto boleto) {
 		boleto.setLocalPagamento("Pagável preferencialmente na Rede X ou em qualquer Banco até o Vencimento.");
-		boleto.setInstrucaoAoSacado("Senhor sacado, sabemos sim que o valor cobrado não é o esperado, aproveite o DESCONTÃO!");
+		boleto.setInstrucaoAoSacado(
+				"Senhor sacado, sabemos sim que o valor cobrado não é o esperado, aproveite o DESCONTÃO!");
 		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 1 até Hoje não cobrar nada!");
 		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 2 até Amanhã Não cobre!");
 		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre.");
@@ -80,7 +83,7 @@ public class BoletoBuilder {
 		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00");
 		boleto.addInstrucaoAoCaixa("PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!");
 		boleto.addInstrucaoAoCaixa("APÓS o Vencimento, Pagável Somente na Rede X.");
-		boleto.setDataDeProcessamento(DateFormat.DDMMYYYY_B.parse("14/01/2020"));
+		boleto.setDataDeProcessamento(new GregorianCalendar(2020, Calendar.JANUARY, 14).getTime());
 	}
 
 }

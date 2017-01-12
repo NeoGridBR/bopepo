@@ -36,7 +36,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.ParametrosBancariosMap;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.FixedField;
 import org.jrimum.vallia.digitoverificador.Modulo;
 
 /**
@@ -145,17 +144,17 @@ public class CLBancoDeBrasilia {
 
 		final CampoLivre campoLivre = new CampoLivre(8);
 
-		campoLivre.addString("000", 3);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
-		campoLivre.addInteger(titulo.getContaBancaria().getCarteira().getCodigo(), 1);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 6);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo(), 3);
+		campoLivre.add("000", 3);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.add(titulo.getContaBancaria().getCarteira().getCodigo(), 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 6);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo(), 3);
 
 		final String valorParcial = campoLivre.getValue();
 		final Integer[] chaveASBACE = calculeChaveASBACE(valorParcial);
-		campoLivre.add(new FixedField<Integer>(chaveASBACE[0], 1));
-		campoLivre.add(new FixedField<Integer>(chaveASBACE[1], 1));
+		campoLivre.add(chaveASBACE[0], 1);
+		campoLivre.add(chaveASBACE[1], 1);
 
 		disponibilizeDigitosDaChaveAsbaceNeste(titulo, chaveASBACE[0], chaveASBACE[1]);
 

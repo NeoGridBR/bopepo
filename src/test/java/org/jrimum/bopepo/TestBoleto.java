@@ -160,7 +160,7 @@ public class TestBoleto {
 		boleto = new Boleto(titulo, CampoLivreFactory.create("1234567890123456789012345"));
 		assertNotNull(boleto.getCampoLivre());
 		assertNotNull(boleto.getCampoLivre().write());
-		assertEquals(CampoLivre.STRING_LENGTH.intValue(), boleto.getCampoLivre().write().length());
+		assertEquals(CampoLivre.STRING_LENGTH, boleto.getCampoLivre().write().length());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

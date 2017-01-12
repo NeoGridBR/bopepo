@@ -121,12 +121,12 @@ public class CLItauComCarteirasEspeciais {
 		final ContaBancaria contaBancaria = titulo.getContaBancaria();
 
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 8);
-		campoLivre.addStringZeroLeft(titulo.getNumeroDoDocumento(), 7);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
-		campoLivre.addInteger(calculaDigitoCampoLivreEspecial(titulo), 1);
-		campoLivre.addInteger(0, 1);
+		campoLivre.addZeroLeft(contaBancaria.getCarteira().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 8);
+		campoLivre.addZeroLeft(titulo.getNumeroDoDocumento(), 7);
+		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.add(calculaDigitoCampoLivreEspecial(titulo), 1);
+		campoLivre.add(0, 1);
 		return campoLivre;
 	}
 

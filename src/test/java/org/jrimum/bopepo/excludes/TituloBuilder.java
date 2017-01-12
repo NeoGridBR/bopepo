@@ -31,11 +31,12 @@
 package org.jrimum.bopepo.excludes;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo.Aceite;
-import org.jrimum.utilix.text.DateFormat;
 
 /**
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L.</a>
@@ -43,46 +44,45 @@ import org.jrimum.utilix.text.DateFormat;
 public class TituloBuilder {
 
 	private Titulo titulo;
-	
-	public TituloBuilder(){
+
+	public TituloBuilder() {
 		this.titulo = newDefaultValue();
 	}
-	
-	public static Titulo defaultValue(){
+
+	public static Titulo defaultValue() {
 		return newDefaultValue();
 	}
 
-	public static Titulo defaultValueSacadorAvalista(){
+	public static Titulo defaultValueSacadorAvalista() {
 		return newDefaultValueSacadorAvalista();
 	}
-	
-	public Titulo build(){
+
+	public Titulo build() {
 		return this.titulo;
 	}
-	
+
 	private static Titulo newDefaultValue() {
-		Titulo titulo = new Titulo(ContaBancariaBuilder.defaultValue(),
-				SacadoBuilder.defaultValue(), CedenteBuilder.defaultValue());
+		Titulo titulo = new Titulo(ContaBancariaBuilder.defaultValue(), SacadoBuilder.defaultValue(),
+				CedenteBuilder.defaultValue());
 		setDefaultValues(titulo);
 		return titulo;
 	}
 
 	private static Titulo newDefaultValueSacadorAvalista() {
-		Titulo titulo = new Titulo(ContaBancariaBuilder.defaultValue(),
-				SacadoBuilder.defaultValue(), CedenteBuilder.defaultValue(),
-				SacadorAvalistaBuilder.defaultValue());
+		Titulo titulo = new Titulo(ContaBancariaBuilder.defaultValue(), SacadoBuilder.defaultValue(),
+				CedenteBuilder.defaultValue(), SacadorAvalistaBuilder.defaultValue());
 		setDefaultValues(titulo);
 		return titulo;
 	}
-	
-	private static void setDefaultValues(Titulo titulo){
-		
+
+	private static void setDefaultValues(Titulo titulo) {
+
 		titulo.setNumeroDoDocumento("123456");
 		titulo.setNossoNumero("99345678912");
 		titulo.setDigitoDoNossoNumero("5");
 		titulo.setValor(BigDecimal.valueOf(0.23));
-		titulo.setDataDoDocumento(DateFormat.DDMMYYYY_B.parse("01/01/2020"));
-		titulo.setDataDoVencimento(DateFormat.DDMMYYYY_B.parse("07/09/2020"));		
+		titulo.setDataDoDocumento(new GregorianCalendar(2020, Calendar.JANUARY, 1).getTime());
+		titulo.setDataDoVencimento(new GregorianCalendar(2020, Calendar.SEPTEMBER, 7).getTime());
 		titulo.setTipoDeDocumento(TipoDeTitulo.DM_DUPLICATA_MERCANTIL);
 		titulo.setAceite(Aceite.A);
 		titulo.setDesconto(new BigDecimal(0.05));

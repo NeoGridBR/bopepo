@@ -104,12 +104,12 @@ public class CLBancoSafraCobrancaNaoRegistrada {
 		TituloValidator.checkNossoNumeroTamanho(titulo, 17);
 
 		final CampoLivre campoLivre = new CampoLivre(5);
-		campoLivre.addInteger(7, 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
-		campoLivre.addString(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
+		campoLivre.add(7, 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.add(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 17);
 		// 1 = Bloqueto Emitido pelo Banco. 2 = Eletrônica Emitido pelo Cliente. 4 = Express Emitido pelo Cliente.
-		campoLivre.addInteger(4, 1);
+		campoLivre.add(4, 1);
 		return campoLivre;
 
 	}

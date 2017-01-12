@@ -103,10 +103,10 @@ public class CLBancoDoBrasilNN10 {
 		final ContaBancaria contaBancaria = titulo.getContaBancaria();
 
 		final CampoLivre campoLivre = new CampoLivre(4);
-		campoLivre.addStringZeroLeft("", 6);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 7);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 10);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getCarteira().getCodigo(), 2);
+		campoLivre.addZeroLeft("", 6);
+		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 10);
+		campoLivre.addZeroLeft(contaBancaria.getCarteira().getCodigo(), 2);
 		return campoLivre;
 	}
 }

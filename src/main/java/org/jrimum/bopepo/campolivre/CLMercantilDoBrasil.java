@@ -109,10 +109,10 @@ public class CLMercantilDoBrasil {
 		} else {
 			desconto = 0;
 		}
-		campoLivre.addIntegerZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero() + titulo.getDigitoDoNossoNumero(), 11);
-		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 9);
-		campoLivre.addInteger(desconto, 1);
+		campoLivre.addZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(titulo.getNossoNumero() + titulo.getDigitoDoNossoNumero(), 11);
+		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 9);
+		campoLivre.add(desconto, 1);
 		return campoLivre;
 	}
 

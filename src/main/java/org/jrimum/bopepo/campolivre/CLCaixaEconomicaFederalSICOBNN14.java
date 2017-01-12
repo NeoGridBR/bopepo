@@ -31,10 +31,9 @@ package org.jrimum.bopepo.campolivre;
 
 import static java.lang.String.format;
 
+import org.apache.commons.lang.Validate;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Objects;
 
 /**
  * <p>
@@ -108,20 +107,10 @@ import org.jrimum.utilix.Objects;
 public class CLCaixaEconomicaFederalSICOBNN14 {
 
 	/**
-	 * Constante "7".
-	 */
-	private static final FixedField<Integer> FIELD_7 = new FixedField<Integer>(7, 1);
-
-	/**
 	 * Valor constante do campo "Carteira" = 8 - Carteira Sem Registro
 	 * Eletrônica.
 	 */
 	private static final Integer CARTEIRA_SEM_REGISTRO = Integer.valueOf(8);
-
-	/**
-	 * Código da carteira: sempre 8.
-	 */
-	private static final FixedField<Integer> CARTEIRA_FIELD = new FixedField<Integer>(CARTEIRA_SEM_REGISTRO, 1);
 
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 99999);
@@ -131,11 +120,11 @@ public class CLCaixaEconomicaFederalSICOBNN14 {
 		TituloValidator.checkNossoNumeroTamanho(titulo, 14);
 
 		final CampoLivre campoLivre = new CampoLivre(5);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.add(CARTEIRA_FIELD);
-		campoLivre.add(FIELD_7);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 14);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.add(CARTEIRA_SEM_REGISTRO, 1);
+		campoLivre.add(7, 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 14);
 		return campoLivre;
 	}
 
@@ -156,7 +145,7 @@ public class CLCaixaEconomicaFederalSICOBNN14 {
 	 * @param titulo
 	 */
 	private static void checkCarteiraSemRegistro(Titulo titulo) {
-		Objects.checkArgument(titulo.getContaBancaria().getCarteira().getCodigo().equals(CARTEIRA_SEM_REGISTRO),
+		Validate.isTrue(titulo.getContaBancaria().getCarteira().getCodigo().equals(CARTEIRA_SEM_REGISTRO),
 				format("Apenas a carteira de código [8] \"Carteira Sem Registro Eletrônica\" é permitida e não o código [%s]!",
 						titulo.getContaBancaria().getCarteira().getCodigo()));
 	}

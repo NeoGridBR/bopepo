@@ -4,8 +4,6 @@ import static org.jrimum.bopepo.parametro.ParametroBancoSantander.IOF_SEGURADORA
 
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Exceptions;
 
 /**
  * <p>
@@ -101,17 +99,16 @@ public class CLBancoSantander {
 		final String nossoNumeroComDigito = titulo.getNossoNumero() + titulo.getDigitoDoNossoNumero();
 
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.add(new FixedField<Integer>(9, 1));
-		campoLivre.addIntegerZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 6);
-		campoLivre.add(new FixedField<String>(contaBancaria.getNumeroDaConta().getDigitoDaConta(), 1));
-		campoLivre.addStringZeroLeft(nossoNumeroComDigito, 13);
+		campoLivre.add(9, 1);
+		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.add(contaBancaria.getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.addZeroLeft(nossoNumeroComDigito, 13);
 
 		// IOF – Seguradoras
 		if (titulo.hasParametrosBancarios() && (titulo.getParametrosBancarios().getValor(IOF_SEGURADORA) != null)) {
-			campoLivre
-					.add(new FixedField<Integer>(titulo.getParametrosBancarios().<Integer>getValor(IOF_SEGURADORA), 1));
+			campoLivre.add(titulo.getParametrosBancarios().<Integer>getValor(IOF_SEGURADORA), 1);
 		} else {
-			campoLivre.add(new FixedField<Integer>(0, 1));
+			campoLivre.add(0, 1);
 		}
 
 		final int codigoCarteira = contaBancaria.getCarteira().getCodigo();
@@ -119,10 +116,10 @@ public class CLBancoSantander {
 		case CARTEIRA_RAPIDA_COM_REGISTRO:
 		case CARTEIRA_RAPIDA_SEM_REGISTRO:
 		case CARTEIRA_SIMPLES_SEM_REGISTRO:
-			campoLivre.addIntegerZeroLeft(codigoCarteira, 3);
+			campoLivre.addZeroLeft(codigoCarteira, 3);
 			break;
 		default:
-			Exceptions.throwIllegalArgumentException(String.format("CARTEIRA [%s] NÃO SUPORTADA!", codigoCarteira));
+			throw new IllegalArgumentException(String.format("CARTEIRA [%s] NÃO SUPORTADA!", codigoCarteira));
 		}
 		return campoLivre;
 	}

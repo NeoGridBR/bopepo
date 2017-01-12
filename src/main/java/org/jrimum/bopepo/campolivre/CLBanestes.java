@@ -29,12 +29,9 @@
  */
 package org.jrimum.bopepo.campolivre;
 
-import static org.jrimum.utilix.Objects.exists;
-
+import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeCobranca;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 import org.jrimum.vallia.digitoverificador.Modulo;
 import org.jrimum.vallia.digitoverificador.TipoDeModulo;
 
@@ -103,41 +100,33 @@ import org.jrimum.vallia.digitoverificador.TipoDeModulo;
 public class CLBanestes {
 
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
-		final CampoLivre campoLivre = new CampoLivre(5);
+		TituloValidator.checkNossoNumeroTamanhoMenorOuIgualQue(titulo, 8);
+		TituloValidator.checkCarteiraTipoCobrancaNotNull(titulo);
 
-		campoLivre.addIntegerZeroLeft(Integer.valueOf(titulo.getNossoNumero()), 8);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 11);
+		final CampoLivre campoLivre = new CampoLivre(5);
+		campoLivre.addZeroLeft(Integer.valueOf(titulo.getNossoNumero()), 8);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 11);
 
 		final Integer codigoDaCarteiraDeCobranca = titulo.getContaBancaria().getCarteira().getCodigo();
 
-		if (exists(codigoDaCarteiraDeCobranca)) {
-			campoLivre.addInteger(codigoDaCarteiraDeCobranca, 1);
-		} else {
-			final TipoDeCobranca tipoDeCobranca = titulo.getContaBancaria().getCarteira().getTipoCobranca();
-			if (tipoDeCobranca == null) {
-				throw new CampoLivreException("Tipo de cobrança da carteira não foi especificado!");
-			}
-			switch (tipoDeCobranca) {
-			case SEM_REGISTRO:
-				campoLivre.addInteger(2, 1);
+		final TipoDeCobranca tipoDeCobranca = titulo.getContaBancaria().getCarteira().getTipoCobranca();
+		switch (tipoDeCobranca) {
+		case SEM_REGISTRO:
+			campoLivre.add(2, 1);
+			break;
+		case COM_REGISTRO:
+			if (codigoDaCarteiraDeCobranca >= 3 && codigoDaCarteiraDeCobranca <= 7) {
+				campoLivre.add(codigoDaCarteiraDeCobranca, 1);
 				break;
-			case COM_REGISTRO:
-				if (codigoDaCarteiraDeCobranca >= 3 && codigoDaCarteiraDeCobranca <= 7) {
-					campoLivre.addInteger(codigoDaCarteiraDeCobranca, 1);
-					break;
-				} else {
-					throw new CampoLivreException("Código da carteira de cobrança com registro deve ser"
-							+ " especificado com 3,4,5,6 ou 7. Valor atual = [" + codigoDaCarteiraDeCobranca + "]");
-				}
-			default:
-				throw new CampoLivreException("Tipo de cobrança [" + tipoDeCobranca + "] não é suportado!");
-
+			} else {
+				throw new CampoLivreException("Código da carteira de cobrança com registro deve ser"
+						+ " especificado com 3,4,5,6 ou 7. Valor atual = [" + codigoDaCarteiraDeCobranca + "]");
 			}
+		default:
+			throw new CampoLivreException("Tipo de cobrança [" + tipoDeCobranca + "] não é suportado!");
 		}
-		campoLivre.add(new FixedField<Byte>(
-				titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo().byteValue(), 3,
-				Fillers.ZERO_LEFT));
-		campoLivre.add(new FixedField<Byte>(calculaDuploDV(campoLivre.getValue()), 2, Fillers.ZERO_LEFT));
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getBanco().getCodigoDeCompensacaoBACEN().getCodigo(), 3);
+		campoLivre.addZeroLeft(calculaDuploDV(campoLivre.getValue()), 2);
 		return campoLivre;
 	}
 
@@ -148,10 +137,10 @@ public class CLBanestes {
 	 * @return Duplo dígito verificador.
 	 * 
 	 */
-	private static byte calculaDuploDV(final String value) {
-		final byte duploDV;
+	private static int calculaDuploDV(final String value) {
+		final int duploDV;
 		byte primeiroDV = calculaPrimeiroDV(value);
-		final byte segundoDV;
+		final int segundoDV;
 
 		// resto proveniente do módulo 11 com pesos de 2 a 7
 		int restoDoModulo11 = new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(value + primeiroDV);
@@ -163,9 +152,9 @@ public class CLBanestes {
 			} else {
 				primeiroDV++;
 			}
-			segundoDV = (byte) new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(value + primeiroDV);
+			segundoDV = new Modulo(TipoDeModulo.MODULO11, 7, 2).calcule(value + primeiroDV);
 		} else {
-			segundoDV = (byte) (11 - restoDoModulo11);
+			segundoDV = (11 - restoDoModulo11);
 		}
 		duploDV = Byte.parseByte(String.valueOf(primeiroDV) + String.valueOf(segundoDV));
 		return duploDV;

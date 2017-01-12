@@ -321,7 +321,7 @@ public class TituloValidator {
 	 * 
 	 * @since 0.2
 	 */
-	public final static void checkCarteiraRegistroNotNull(final Titulo titulo) {
+	public final static void checkCarteiraTipoCobrancaNotNull(final Titulo titulo) {
 		checkCarteiraNotNull(titulo);
 		Validate.notNull(titulo.getContaBancaria().getCarteira().getTipoCobranca(),
 				"Tipo de cobrança (COM ou SEM registro) da carteira não pode ser nulo!");
@@ -365,6 +365,27 @@ public class TituloValidator {
 		final boolean expression = StringUtils.length(titulo.getNossoNumero()) == length;
 		Validate.isTrue(expression, format("Tamanho [%s] do nosso número [\"%s\"] diferente do esperado [%s]!",
 				StringUtils.length(titulo.getNossoNumero()), titulo.getNossoNumero(), length));
+	}
+
+	/**
+	 * <p>
+	 * Verifica se o nosso número do título tem o tamanho esperado, caso
+	 * contrário lança uma {@code IllegalArgumentException}.
+	 * </p>
+	 * 
+	 * @param titulo
+	 * @param limite
+	 *            Tamanho máximo permitido
+	 * 
+	 * @since 0.2
+	 */
+	public final static void checkNossoNumeroTamanhoMenorOuIgualQue(final Titulo titulo, final int limite) {
+		checkNossoNumero(titulo);
+		final int nossoNumeroLength = StringUtils.length(titulo.getNossoNumero());
+		final boolean expression = nossoNumeroLength <= limite;
+		Validate.isTrue(expression,
+				format("Tamanho [%s] do Nosso Número [\"%s\"] deve ser menor que ou igual a [%s]!",
+						nossoNumeroLength, titulo.getDigitoDoNossoNumero(), limite));
 	}
 
 	/**

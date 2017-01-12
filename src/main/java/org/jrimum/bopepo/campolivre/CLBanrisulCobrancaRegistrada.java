@@ -129,13 +129,13 @@ public class CLBanrisulCobrancaRegistrada extends AbstractCLBanrisul {
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(7);
 
-		campoLivre.addInteger(1, 1);
-		campoLivre.addString("1", 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
-		campoLivre.addIntegerZeroLeft(Integer.valueOf(titulo.getNossoNumero()), 8);
-		campoLivre.addString("40", 2);
-		campoLivre.addString(calculaDuploDigito(campoLivre.getValue()), 2);
+		campoLivre.add(1, 1);
+		campoLivre.add("1", 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
+		campoLivre.addZeroLeft(Integer.valueOf(titulo.getNossoNumero()), 8);
+		campoLivre.add("40", 2);
+		campoLivre.add(calculaDuploDigito(campoLivre.getValue()), 2);
 		return campoLivre;
 	}
 

@@ -105,12 +105,12 @@ public class CLBancoIntermedium {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.addInteger(CONSTANTE_70, 2);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 11);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
-		campoLivre.addString(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
-		campoLivre.addInteger(CONSTANTE_0, 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.add(CONSTANTE_70, 2);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 11);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.add(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.add(CONSTANTE_0, 1);
 		return campoLivre;
 	}
 

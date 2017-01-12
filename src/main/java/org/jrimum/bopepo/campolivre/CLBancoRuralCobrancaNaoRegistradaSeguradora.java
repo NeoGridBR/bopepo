@@ -6,9 +6,6 @@ import static org.jrimum.bopepo.parametro.ParametroBancoRural.VALOR_IOS;
 import java.math.BigDecimal;
 
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.text.DecimalFormat;
 
 /**
  * <p>
@@ -94,12 +91,12 @@ public class CLBancoRuralCobrancaNaoRegistradaSeguradora {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.addInteger(TIPO_COBRANCA, 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
-		campoLivre.addIntegerZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 10);
-		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
-		campoLivre.add(new FixedField<BigDecimal>(titulo.getParametrosBancarios().<BigDecimal>getValor(VALOR_IOS), 7, DecimalFormat.NUMBER_DD_BR.copy(), Fillers.ZERO_LEFT));
+		campoLivre.add(TIPO_COBRANCA, 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 10);
+		campoLivre.addZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.addZeroLeft(titulo.getParametrosBancarios().<BigDecimal>getValor(VALOR_IOS), 7);
 		return campoLivre;
 	}
 

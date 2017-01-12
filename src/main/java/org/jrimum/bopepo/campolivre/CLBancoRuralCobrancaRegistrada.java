@@ -97,13 +97,13 @@ public class CLBancoRuralCobrancaRegistrada {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(7);
-		campoLivre.addInteger(TIPO_COBRANCA, 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 9);
-		campoLivre.addString(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 7);
-		campoLivre.addString(titulo.getDigitoDoNossoNumero(), 1);
-		campoLivre.addString(ZEROS, 3);
+		campoLivre.add(TIPO_COBRANCA, 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 9);
+		campoLivre.add(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 7);
+		campoLivre.add(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.add(ZEROS, 3);
 		return campoLivre;
 	}
 

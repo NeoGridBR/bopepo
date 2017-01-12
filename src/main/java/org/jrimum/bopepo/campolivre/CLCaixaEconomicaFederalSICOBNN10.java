@@ -92,12 +92,12 @@ public class CLCaixaEconomicaFederalSICOBNN10 {
 		checkNossoNumeroSICOB(nossoNumero);
 
 		final CampoLivre campoLivre = new CampoLivre(4);
-		campoLivre.addString(nossoNumero, 10);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.add(nossoNumero, 10);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
 		final Integer codigoOperacao = titulo.getParametrosBancarios()
 				.getValor(ParametroCaixaEconomicaFederal.CODIGO_OPERACAO);
-		campoLivre.addIntegerZeroLeft(codigoOperacao, 3);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 8);
+		campoLivre.addZeroLeft(codigoOperacao, 3);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 8);
 		return campoLivre;
 	}
 

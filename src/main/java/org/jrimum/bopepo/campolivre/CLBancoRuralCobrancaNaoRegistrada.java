@@ -85,11 +85,11 @@ public class CLBancoRuralCobrancaNaoRegistrada {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(5);
-		campoLivre.addInteger(TIPO_COBRANCA, 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
-		campoLivre.addIntegerZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 15);
-		campoLivre.addString(ZEROS, 3);
+		campoLivre.add(TIPO_COBRANCA, 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
+		campoLivre.addZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 15);
+		campoLivre.add(ZEROS, 3);
 		return campoLivre;
 	}
 

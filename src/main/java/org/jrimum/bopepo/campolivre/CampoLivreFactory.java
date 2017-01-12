@@ -147,7 +147,7 @@ public final class CampoLivreFactory {
 		Validate.isTrue(isNumeric(strCampoLivre), "O Campo Livre [ " + strCampoLivre + " ] deve ser uma String numérica!");
 
 		final CampoLivre campoLivre = new CampoLivre(1);
-		campoLivre.addString(strCampoLivre, StringUtils.length(strCampoLivre));
+		campoLivre.add(strCampoLivre, StringUtils.length(strCampoLivre));
 		return campoLivre;
 	}
 

@@ -19,7 +19,7 @@ public class BancoSofisa extends AbstractBanco {
 		TituloValidator.checkContaBancariaDigito(titulo);
 		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
 		TituloValidator.checkAgenciaDigito(titulo);
-		TituloValidator.checkCarteiraRegistroNotNull(titulo);
+		TituloValidator.checkCarteiraTipoCobrancaNotNull(titulo);
 		TituloValidator.checkNossoNumeroTamanho(titulo, 10);
 
 		calculaDigitoDoNossoNumero(titulo);

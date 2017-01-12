@@ -2,8 +2,6 @@ package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.Fillers;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * 
@@ -53,12 +51,6 @@ import org.jrimum.texgit.type.component.FixedField;
 public class CLBancoDoBrasilNN17Convenio7 {
 
 	/**
-	 * Constante em forma de campo {@link #CONSTANT_VALUE} e
-	 * {@link #CONSTANT_LENGTH}, valor escrito: "000000".
-	 */
-	private static final FixedField<Integer> CONSTANT_FIELD = new FixedField<Integer>(0, 6, Fillers.ZERO_LEFT);
-
-	/**
 	 * <p>
 	 * Cria um campo livre instanciando o número de fields ({@code
 	 * FIELDS_LENGTH}) deste campo.
@@ -71,9 +63,9 @@ public class CLBancoDoBrasilNN17Convenio7 {
 		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
 
 		final CampoLivre campoLivre = new CampoLivre(3);
-		campoLivre.add(CONSTANT_FIELD);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 2);
+		campoLivre.addZero(6);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 17);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 2);
 		return campoLivre;
 	}
 

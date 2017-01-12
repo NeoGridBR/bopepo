@@ -14,7 +14,11 @@ public class Banrisul extends AbstractBanco {
 
 	@Override
 	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
-		TituloValidator.checkCarteiraRegistroNotNull(titulo);
+		TituloValidator.checkCarteiraTipoCobrancaNotNull(titulo);
+		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 9999999);
+
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
+		TituloValidator.checkNossoNumeroTamanhoMenorOuIgualQue(titulo, 8);
 
 		switch (titulo.getContaBancaria().getCarteira().getTipoCobranca()) {
 		case COM_REGISTRO:

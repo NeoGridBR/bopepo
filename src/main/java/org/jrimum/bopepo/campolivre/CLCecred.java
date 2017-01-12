@@ -38,9 +38,9 @@ public class CLCecred {
 		TituloValidator.checkCarteiraCodigo(titulo, 1, 99);
 
 		final CampoLivre campoLivre = new CampoLivre(3);
-		campoLivre.addIntegerZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(ParametroCECRED.CODIGO_DO_CONVENIO), 6);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 17);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 2);
+		campoLivre.addZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(ParametroCECRED.CODIGO_DO_CONVENIO), 6);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 17);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), 2);
 		return campoLivre;
 	}
 

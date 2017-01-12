@@ -27,18 +27,16 @@
  * 
  */
 
-
 package org.jrimum.bopepo;
 
+import java.io.Serializable;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
-import org.jrimum.texgit.type.component.BlockOfFields;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Objects;
-import org.jrimum.utilix.text.Strings;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jrimum.vallia.digitoverificador.BoletoLinhaDigitavelDV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * 
@@ -50,70 +48,73 @@ import org.slf4j.LoggerFactory;
  * <br />
  * 
  * <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:
- * collapse" bordercolor="#111111" width="90%" id="linhaDigitável"> <thead>
+ * collapse" bordercolor="#111111" width="90%" id="linhaDigitável">
+ * <thead>
  * <tr>
- * <th>Posição </th>
+ * <th>Posição</th>
  * <th>Tamanho</th>
  * <th>Conteúdo</th>
  * </tr>
  * </thead>
  * <tr>
- * <td>01-03 </td>
- * <td>3 </td>
- * <td>Identificação do banco </td>
+ * <td>01-03</td>
+ * <td>3</td>
+ * <td>Identificação do banco</td>
  * </tr>
  * <tr>
  * <td>04-04</td>
- * <td>1 </td>
- * <td>Código de moeda (9 – Real) </td>
+ * <td>1</td>
+ * <td>Código de moeda (9 – Real)</td>
  * </tr>
  * <tr>
- * <td>05-09 </td>
- * <td>5 </td>
+ * <td>05-09</td>
+ * <td>5</td>
  * <td>Cinco primeiras posições do campo livre (posições 20 a 24 do código de
  * barras)</td>
  * </tr>
  * <tr>
- * <td>10-10 </td>
- * <td>1 </td>
- * <td>Dígito verificador do primeiro campo </td>
+ * <td>10-10</td>
+ * <td>1</td>
+ * <td>Dígito verificador do primeiro campo</td>
  * </tr>
  * <tr>
- * <td>11-20 </td>
- * <td>10 </td>
+ * <td>11-20</td>
+ * <td>10</td>
  * <td>6ª a 15ª posições do campo livre (posições 25 a 34 do código de barras)
  * </td>
  * </tr>
  * <tr>
- * <td>21-21 </td>
- * <td>1 </td>
- * <td>Dígito verificador do segundo campo </td>
+ * <td>21-21</td>
+ * <td>1</td>
+ * <td>Dígito verificador do segundo campo</td>
  * </tr>
  * <tr>
- * <td>22-31 </td>
- * <td>10 </td>
+ * <td>22-31</td>
+ * <td>10</td>
  * <td>16ª a 25ª posições do campo livre (posições 35 a 44 do código de barras)
  * </td>
  * </tr>
  * <tr>
- * <td>32-32 </td>
- * <td>1 </td>
- * <td>Dígito verificador do terceiro campo </td>
+ * <td>32-32</td>
+ * <td>1</td>
+ * <td>Dígito verificador do terceiro campo</td>
  * </tr>
  * <tr>
- * <td>33-33 </td>
- * <td>1 </td>
- * <td>Dígito verificador geral (posição 5 do código de barras) </td>
+ * <td>33-33</td>
+ * <td>1</td>
+ * <td>Dígito verificador geral (posição 5 do código de barras)</td>
  * </tr>
  * <tr>
- * <td>34-37 </td>
- * <td>4 </td>
- * <td>Posições 34 a 37 – fator de vencimento (posições 6 a 9 do código debarras)</td>
+ * <td>34-37</td>
+ * <td>4</td>
+ * <td>Posições 34 a 37 – fator de vencimento (posições 6 a 9 do código
+ * debarras)</td>
  * </tr>
  * <tr>
- * <td>37-47 </td>
- * <td>10 </td>
- * <td>Posições 38 a 47 – valor nominal do título(posições 10 a 19 do código de barras) </td>
+ * <td>37-47</td>
+ * <td>10</td>
+ * <td>Posições 38 a 47 – valor nominal do título(posições 10 a 19 do código de
+ * barras)</td>
  * </tr>
  * </table>
  * 
@@ -146,8 +147,8 @@ import org.slf4j.LoggerFactory;
  * </li>
  * <li>Os dígitos verificadores referentes aos 1º, 2º e 3º campos não são
  * representados no código de barras;</li>
- * <li>Os dados da linha digitável não se apresentam na mesma ordem do código
- * de barras.</li>
+ * <li>Os dados da linha digitável não se apresentam na mesma ordem do código de
+ * barras.</li>
  * 
  * </ul>
  * 
@@ -155,62 +156,25 @@ import org.slf4j.LoggerFactory;
  * @see org.jrimum.bopepo.CodigoDeBarras
  * 
  * @author <a href="http://gilmatryx.googlepages.com/">Gilmar P.S.L</a>
- * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a> 
+ * @author <a href="mailto:misaelbarreto@gmail.com">Misael Barreto</a>
  * @author <a href="mailto:romulomail@gmail.com">Rômulo Augusto</a>
- * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento Mercantil</a>
+ * @author <a href="http://www.nordestefomento.com.br">Nordeste Fomento
+ *         Mercantil</a>
  * 
  * @since 0.2
  * 
  * @version 0.2
  */
-public class LinhaDigitavel extends BlockOfFields {
-	
-	/**
-	 * 
-	 */
+public class LinhaDigitavel implements Serializable {
+
 	private static final long serialVersionUID = -6089634012523938802L;
-	
+
 	private static Logger log = LoggerFactory.getLogger(LinhaDigitavel.class);
-	
-	/**
-	 * 
-	 */
-	private static final Integer FIELDS_LENGTH = 5;
-	
-	/**
-	 * <p>
-	 * Tamanho dos campos mais os espaços entre eles.
-	 * </p>
-	 */
-	private static final Integer STRING_LENGTH = 54;
 
-	/**
-	 * 
-	 */
-	private FixedField<InnerCampo1> innerCampo1;
-	
-	/**
-	 * 
-	 */
-	private FixedField<InnerCampo2> innerCampo2;
-	
-	/**
-	 * 
-	 */
-	private FixedField<InnerCampo3> innerCampo3;
-	
-	/**
-	 * <p>
-	 * Digito verificador geral.
-	 * </p>
-	 */
-	private FixedField<Integer> campo4;
-	
-	/**
-	 * 
-	 */
-	private FixedField<InnerCampo5> innerCampo5;
+	private static final Pattern LINHA_DIGITAVEL_UNFORMATTER_PATTERN = Pattern.compile("(\\d{5})(\\d{5})(\\d{5})(\\d{6})(\\d{5})(\\d{6})(\\d{1})(\\d{14})");
+	private static final String LINHA_DIGITAVEL_FORMATTER_REPLACEMENT = "$1.$2 $3.$4 $5.$6 $7 $8";
 
+	private final String formattedValue;
 
 	/**
 	 * <p>
@@ -223,317 +187,57 @@ public class LinhaDigitavel extends BlockOfFields {
 	 * 
 	 * @since 0.2
 	 */
-	LinhaDigitavel(CodigoDeBarras codigoDeBarras) {
-		super();
-		setLength(STRING_LENGTH);
-		setSize(FIELDS_LENGTH);
-		
-		if(log.isTraceEnabled())
-			log.trace("Instanciando Linha Digitável");
-		
-		if(log.isDebugEnabled())
-			log.debug("codigoDeBarra instance : "+codigoDeBarras);
-		
-		innerCampo1 = new FixedField<InnerCampo1>(new InnerCampo1(4,11),11);
-		innerCampo2 = new FixedField<InnerCampo2>(new InnerCampo2(2,12),12);
-		innerCampo3 = new FixedField<InnerCampo3>(new InnerCampo3(2,12),12);
-		campo4 = new FixedField<Integer>(new Integer(0),1);
-		innerCampo5 = new FixedField<InnerCampo5>(new InnerCampo5(2,14),14);
-		
-		add(innerCampo1);
-		add(innerCampo2);
-		add(innerCampo3);
-		add(campo4);
-		add(innerCampo5);
-		
-		this.innerCampo1.getValue().load(codigoDeBarras);
-		this.innerCampo2.getValue().load(codigoDeBarras);
-		this.innerCampo3.getValue().load(codigoDeBarras);
-		
-		this.campo4.setValue(codigoDeBarras.getDigitoVerificadorGeral().getValue());
-		
-		if(log.isDebugEnabled())
-			log.debug("InnerCampo 4 da Linha Digitável : "+this.campo4.getValue());
-		
-		this.innerCampo5.getValue().load(codigoDeBarras);
-		
-		if(log.isDebugEnabled() || log.isTraceEnabled())
-			log.debug("linhaDigitavel instanciada : "+this.write());
+	LinhaDigitavel(final CodigoDeBarras codigoDeBarras) {
+		log.trace("Instanciando Linha Digitável");
+		log.debug("codigoDeBarra instance : " + codigoDeBarras);
+
+		final String codigoDeBarrasValue = codigoDeBarras.write();
+		final BoletoLinhaDigitavelDV calculadorDV = new BoletoLinhaDigitavelDV();
+		final StringBuilder linhaDigitavel = new StringBuilder();
+
+		final StringBuilder toCalculateDV1 = new StringBuilder();
+		toCalculateDV1.append(StringUtils.substring(codigoDeBarrasValue, 0, 3));
+		toCalculateDV1.append(StringUtils.substring(codigoDeBarrasValue, 3, 4));
+		toCalculateDV1.append(StringUtils.substring(codigoDeBarrasValue, 19, 24));
+		final int boletoDV1 = calculadorDV.calcule(toCalculateDV1.toString());
+
+		linhaDigitavel.append(toCalculateDV1);
+		linhaDigitavel.append(boletoDV1);
+		log.debug("Linha Digitável com o campo 1: " + linhaDigitavel);
+
+		final String toCalculateDV2 = StringUtils.substring(codigoDeBarrasValue, 24, 34);
+		final int boletoDV2 = calculadorDV.calcule(toCalculateDV2);
+		linhaDigitavel.append(toCalculateDV2);
+		linhaDigitavel.append(boletoDV2);
+		log.debug("Linha Digitável até o campo 2: " + linhaDigitavel);
+
+		final String toCalculateDV3 = StringUtils.substring(codigoDeBarrasValue, 34, 44);
+		final int boletoDV3 = calculadorDV.calcule(toCalculateDV3);
+		linhaDigitavel.append(toCalculateDV3);
+		linhaDigitavel.append(boletoDV3);
+		log.debug("Linha Digitável até o campo 3: " + linhaDigitavel);
+
+		linhaDigitavel.append(codigoDeBarras.getDigitoVerificadorGeral());
+		log.debug("Linha Digitável até campo 4: " + linhaDigitavel);
+
+		linhaDigitavel.append(StringUtils.substring(codigoDeBarrasValue, 5, 9));
+		linhaDigitavel.append(StringUtils.substring(codigoDeBarrasValue, 9, 19));
+		log.debug("Linha Digitável até o campo 5: " + linhaDigitavel);
+
+		this.formattedValue = LINHA_DIGITAVEL_UNFORMATTER_PATTERN.matcher(linhaDigitavel).replaceAll(LINHA_DIGITAVEL_FORMATTER_REPLACEMENT);
+		log.debug("linhaDigitavel instanciada : " + this.formattedValue);
 	}
 
 	/**
-	 * Escreve a linha digitável foramatada (com espaço entre os campos).
-	 * 
-	 * @see org.jrimum.texgit.type.component.BlockOfFields#write()
+	 * Escreve a linha digitável formatada (com espaço entre os campos).
 	 */
-	@Override
-	public String write(){
-		
-		return new StringBuilder(innerCampo1.write()).
-		append(Strings.WHITE_SPACE).
-		append(innerCampo2.write()).
-		append(Strings.WHITE_SPACE).
-		append(innerCampo3.write()).
-		append(Strings.WHITE_SPACE).
-		append(campo4.write()).
-		append(Strings.WHITE_SPACE).
-		append(innerCampo5.write()).toString();
-
-	}
-
-	private abstract class InnerCampo extends BlockOfFields {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 6746400538765124943L;
-		/**
-		 * 
-		 */
-		protected final BoletoLinhaDigitavelDV calculadorDV = new BoletoLinhaDigitavelDV();
-		
-		
-		protected InnerCampo(Integer fieldsLength, Integer stringLength) {
-			super();
-			setLength(stringLength);
-			setSize(fieldsLength);
-		}
-		
-	}
-	
-	private abstract class InnerCampoFormatado extends InnerCampo {
-		
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 3650450185403697045L;
-
-		protected InnerCampoFormatado(final Integer fieldsLength, final Integer stringLength) {
-			super(fieldsLength, stringLength);
-		}
-		
-		/**
-		 * <p>
-		 * 
-		 * Aplicação do seguinte requisito da FEBRABAN: <br />
-		 * Em cada um dos três primeiros campos, após a quinta (5) posição, deve ser
-		 * inserido um ponto “.”, a fim de facilitar a visualização, para a
-		 * digitação, quando necessário.
-		 * 
-		 * </p>
-		 * 
-		 * 
-		 * @see org.jrimum.texgit.type.component.BlockOfFields#write()
-		 */
-		@Override
-		public String write(){
-			
-			StringBuilder lineOfFields = new StringBuilder(StringUtils.EMPTY);
-			
-			for(FixedField<?> field : this){
-				lineOfFields.append(field.write());
-			}
-			
-			lineOfFields.insert(5, ".");
-			
-			return lineOfFields.toString();
-		}
-		
-	}
-	
-	/**
-	 * Componhe o campo 1 da linha digitável com os seguintes dados: <br />
-	 * <ul>
-	 * <li>Identificação do banco</li>
-	 * <li>Código de moeda (9 – Real)</li>
-	 * <li>Cinco primeiras posições do campo livre (posições 20 a 24 do código
-	 * de barras)</li>
-	 * <li>Dígito verificador do primeiro campo</li>
-	 * </ul>
-	 * 
-	 * @param titulo
-	 * @param codigoDeBarra
-	 * @param calculadorDV
-	 */
-	private class InnerCampo1 extends InnerCampoFormatado{
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 2948116051922000890L;
-
-		/**
-		 * @param fieldsLength
-		 * @param stringLength
-		 */
-		private InnerCampo1(Integer fieldsLength, Integer stringLength) {
-			super(fieldsLength, stringLength);
-		}
-		
-		/**
-		 * @param codigoDeBarras
-		 */
-		private void load(CodigoDeBarras codigoDeBarras){
-				
-				if(log.isTraceEnabled())
-					log.trace("Compondo campo 1 da Linha Digitável");
-
-				add(new FixedField<String>(codigoDeBarras.write().substring(0, 3),3));
-				add(new FixedField<String>(codigoDeBarras.write().substring(3, 4),1));
-				add(new FixedField<String>(codigoDeBarras.write().substring(19, 24),5));
-				add(new FixedField<Integer>(calculadorDV.calcule(get(0).write() + get(1).write() + get(2).write()),1));
-				
-				if(log.isDebugEnabled())
-					log.debug("Digito verificador do Field 1 da Linha Digitável : "+get(3).getValue());
-
-				
-				if(log.isDebugEnabled() || log.isTraceEnabled())
-					log.debug("Field 1 da Linha Digitável composto : "+write());
-		}
-		
-	}
-	
-	/**
-	 * Componhe o campo 2 da linha digitável com os seguintes dados: <br />
-	 * <ul>
-	 * <li>6ª a 15ª posições do campo livre (posições 25 a 34 do código de
-	 * barras)</li>
-	 * <li>Dígito verificador do segundo campo</li>
-	 * </ul>
-	 * 
-	 * @param codigoDeBarra
-	 * @param calculadorDV
-	 */
-	private class InnerCampo2 extends InnerCampoFormatado{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -2201847536243988819L;
-
-		/**
-		 * @param fieldsLength
-		 * @param stringLength
-		 */
-		private InnerCampo2(Integer fieldsLength, Integer stringLength) {
-			super(fieldsLength, stringLength);
-		}
-		
-		
-		/**
-		 * @param codigoDeBarras
-		 */
-		private void load(CodigoDeBarras codigoDeBarras){
-			
-			if(log.isTraceEnabled())
-				log.trace("Compondo campo 2 da Linha Digitável");
-			
-			add(new FixedField<String>(codigoDeBarras.write().substring(24, 34),10));				
-			add(new FixedField<Integer>(calculadorDV.calcule(get(0).write()),1));
-			
-			if(log.isDebugEnabled())
-				log.debug("Digito verificador do campo 2 da Linha Digitável : "+get(1).getValue());
-			
-			if(log.isDebugEnabled() || log.isTraceEnabled())
-				log.debug("InnerCampo 2 da Linha Digitável composto : "+write());
-		}
-		
-	}
-	
-	/**
-	 * Componhe o campo 3 da linha digitável com os seguintes dados: <br />
-	 * <ul>
-	 * <li>16ª a 25ª posições do campo livre (posições 35 a 44 do código de
-	 * barras)</li>
-	 * <li>Dígito verificador do terceiro campo</li>
-	 * </ul>
-	 * 
-	 * @param codigoDeBarra
-	 * @param calculadorDV
-	 */
-	private class InnerCampo3 extends InnerCampoFormatado{
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -4248472044788156665L;
-
-		/**
-		 * @param fieldsLength
-		 * @param stringLength
-		 */
-		private InnerCampo3(Integer fieldsLength, Integer stringLength) {
-			super(fieldsLength, stringLength);
-		}
-		
-		/**
-		 * @param codigoDeBarras
-		 */
-		private void load(CodigoDeBarras codigoDeBarras){
-			
-			if(log.isTraceEnabled())
-				log.trace("Compondo campo 3 da Linha Digitável");
-			
-			add(new FixedField<String>(codigoDeBarras.write().substring(34, 44),10));				
-			add(new FixedField<Integer>(calculadorDV.calcule(get(0).write()),1));
-			
-			if(log.isDebugEnabled())
-				log.debug("Digito verificador do campo 3 da Linha Digitável : "+get(1).getValue());
-			
-			if(log.isDebugEnabled() || log.isTraceEnabled())
-				log.debug("InnerCampo 3 da Linha Digitável composto : "+write());
-			
-		}
-		
-	}
-	
-	/**
-	 * Componhe o campo 5 da linha digitável com os seguintes dados: <br />
-	 * <ul>
-	 * <li>Posições 34 a 37 – fator de vencimento (posições 6 a 9 do código de
-	 * barras)</li>
-	 * <li>Posições 38 a 47 – valor nominal do título(posições 10 a 19 do
-	 * código de barras)</li>
-	 * </ul>
-	 * 
-	 * @param codigoDeBarra
-	 */
-	private class InnerCampo5 extends InnerCampo{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -8040082112684009827L;
-
-		/**
-		 * @param fieldsLength
-		 * @param stringLength
-		 */
-		private InnerCampo5(Integer fieldsLength, Integer stringLength) {
-			super(fieldsLength, stringLength);
-		}
-		
-		/**
-		 * @param codigoDeBarras
-		 */
-		private void load(CodigoDeBarras codigoDeBarras){
-			
-			if(log.isTraceEnabled())
-				log.trace("Compondo campo 5 da Linha Digitável");
-			
-			add(new FixedField<String>(codigoDeBarras.write().substring(5, 9),4));
-			add(new FixedField<String>(codigoDeBarras.write().substring(9, 19),10));
-			
-			if(log.isDebugEnabled() || log.isTraceEnabled())
-				log.debug("InnerCampo 5 da Linha Digitável composto : "+write());
-			
-		}
-		
+	public String write() {
+		return this.formattedValue;
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toString(this);
+		return ToStringBuilder.reflectionToString(this);
 	}
+
 }

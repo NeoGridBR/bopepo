@@ -34,10 +34,10 @@ import static java.lang.String.format;
 import static java.math.BigDecimal.ZERO;
 import static org.jrimum.bopepo.parametro.ParametroBancoSicredi.POSTO_DA_AGENCIA;
 
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.math.NumberUtils;
 import org.jrimum.bopepo.banco.TituloValidator;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.FixedField;
-import org.jrimum.utilix.Objects;
 import org.jrimum.vallia.digitoverificador.Modulo;
 import org.jrimum.vallia.digitoverificador.TipoDeModulo;
 
@@ -157,12 +157,7 @@ public class CLSicredi {
 	/**
 	 * Valor constante do campo "Tipo da Carteira": "1" - carteira simples.
 	 */
-	private static final Integer CARTEIRA_SIMPLES_VALUE = Integer.valueOf(1);
-
-	/**
-	 * Segunda posição do campo livre.
-	 */
-	private static final FixedField<Integer> FIELD_CARTEIRA = new FixedField<Integer>(CARTEIRA_SIMPLES_VALUE, 1);
+	private static final Integer CARTEIRA_SIMPLES_VALUE = NumberUtils.INTEGER_ONE;
 
 	/**
 	 * Instância de módulo 11 para cálculo do DV do campo livre.
@@ -178,32 +173,32 @@ public class CLSicredi {
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		TituloValidator.checkCarteiraCodigo(titulo);
 		checkCarteiraSimples(titulo);
-		TituloValidator.checkCarteiraRegistroNotNull(titulo);
+		TituloValidator.checkCarteiraTipoCobrancaNotNull(titulo);
 		TituloValidator.checkNossoNumeroTamanho(titulo, 8);
 		TituloValidator.checkNossoNumeroDigitoTamanho(titulo, 1);
-		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 99999);
+		TituloValidator.checkAgenciaCodigoMenorOuIgualQue(titulo, 9999);
 		TituloValidator.checkParametroBancarioNotNull(titulo, POSTO_DA_AGENCIA);
 		TituloValidator.checkContaBancariaCodigoMenorOuIgualQue(titulo, 99999);
 
 		final CampoLivre campoLivre = new CampoLivre(10);
 		if (titulo.getContaBancaria().getCarteira().isComRegistro()) {
-			campoLivre.addString(COBRANCA_COM_REGISTRO, 1);
+			campoLivre.add(COBRANCA_COM_REGISTRO, 1);
 		} else {
-			campoLivre.addString(COBRANCA_SEM_REGISTRO, 1);
+			campoLivre.add(COBRANCA_SEM_REGISTRO, 1);
 		}
-		campoLivre.add(FIELD_CARTEIRA);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 8);
-		campoLivre.addStringZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
-		campoLivre.addIntegerZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(POSTO_DA_AGENCIA), 2);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
+		campoLivre.add(CARTEIRA_SIMPLES_VALUE, 1);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 8);
+		campoLivre.addZeroLeft(titulo.getDigitoDoNossoNumero(), 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
+		campoLivre.addZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(POSTO_DA_AGENCIA), 2);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 5);
 		if (titulo.getValor().compareTo(ZERO) == 1) {
-			campoLivre.addString("1", 1);
+			campoLivre.add("1", 1);
 		} else {
-			campoLivre.addString("0", 1);
+			campoLivre.add("0", 1);
 		}
-		campoLivre.addString("0", 1);
-		campoLivre.addInteger(calculeDigitoVerificador(campoLivre.getValue()), 1);
+		campoLivre.add("0", 1);
+		campoLivre.add(calculeDigitoVerificador(campoLivre.getValue()), 1);
 		return campoLivre;
 	}
 
@@ -214,9 +209,8 @@ public class CLSicredi {
 	 * 
 	 * @param titulo
 	 */
-	private static void checkCarteiraSimples(Titulo titulo) {
-
-		Objects.checkArgument(titulo.getContaBancaria().getCarteira().getCodigo().equals(CARTEIRA_SIMPLES_VALUE),
+	private static void checkCarteiraSimples(final Titulo titulo) {
+		Validate.isTrue(titulo.getContaBancaria().getCarteira().getCodigo().equals(CARTEIRA_SIMPLES_VALUE),
 				format("Apenas a carteira de código [1] \"carteira simples\" é permitida e não o código [%s]!",
 						titulo.getContaBancaria().getCarteira().getCodigo()));
 	}

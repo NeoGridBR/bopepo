@@ -30,7 +30,6 @@
 package org.jrimum.bopepo.campolivre;
 
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.texgit.type.component.FixedField;
 
 /**
  * <p>
@@ -81,16 +80,6 @@ import org.jrimum.texgit.type.component.FixedField;
 public class CLCaixaEconomicaFederalSINCO {
 
 	/**
-	 * Constante "1".
-	 */
-	private static final FixedField<Integer> FIELD_1 = new FixedField<Integer>(1, 1);
-
-	/**
-	 * Constante "9".
-	 */
-	private static final FixedField<Integer> FIELD_9 = new FixedField<Integer>(9, 1);
-
-	/**
 	 * <p>
 	 * Dado um título, cria um campo livre para o padrão do Banco Caixa
 	 * Econômica Federal que tenha o serviço SINCO.
@@ -101,10 +90,10 @@ public class CLCaixaEconomicaFederalSINCO {
 	 */
 	public static CampoLivre newCampoLivre(final Titulo titulo) {
 		final CampoLivre campoLivre = new CampoLivre(4);
-		campoLivre.add(FIELD_1);
-		campoLivre.addIntegerZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
-		campoLivre.add(FIELD_9);
-		campoLivre.addString(titulo.getNossoNumero(), 17);
+		campoLivre.add(1, 1);
+		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.add(9, 1);
+		campoLivre.add(titulo.getNossoNumero(), 17);
 		return campoLivre;
 	}
 

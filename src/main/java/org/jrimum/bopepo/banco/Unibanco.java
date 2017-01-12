@@ -14,7 +14,7 @@ public class Unibanco extends AbstractBanco {
 
 	@Override
 	public CampoLivre createCampoLivre(final Titulo titulo) throws NotSupportedCampoLivreException {
-		TituloValidator.checkCarteiraRegistroNotNull(titulo);
+		TituloValidator.checkCarteiraTipoCobrancaNotNull(titulo);
 		switch (titulo.getContaBancaria().getCarteira().getTipoCobranca()) {
 		case SEM_REGISTRO:
 			return CLUnibancoCobrancaNaoRegistrada.newCampoLivre(titulo);

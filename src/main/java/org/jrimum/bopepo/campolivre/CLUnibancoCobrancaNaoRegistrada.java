@@ -87,13 +87,14 @@ public class CLUnibancoCobrancaNaoRegistrada extends AbstractCLUnibanco {
 		TituloValidator.checkNossoNumero(titulo);
 
 		final CampoLivre campoLivre = new CampoLivre(6);
-		campoLivre.addInteger(CODIGO_TRANSACAO, 1);
-		campoLivre.addIntegerZeroLeft(conta.getNumeroDaConta().getCodigoDaConta(), 6);
+		campoLivre.add(CODIGO_TRANSACAO, 1);
+		campoLivre.addZeroLeft(conta.getNumeroDaConta().getCodigoDaConta(), 6);
 		Integer digitoDaConta = Integer.valueOf(conta.getNumeroDaConta().getDigitoDaConta());
-		campoLivre.addInteger(Integer.valueOf(digitoDaConta), 1);
-		campoLivre.addIntegerZeroLeft(RESERVADO, 2);
-		campoLivre.addStringZeroLeft(titulo.getNossoNumero(), 14);
-		campoLivre.addString(calculeDigitoEmModulo11(titulo.getNossoNumero()), 1);
+		campoLivre.add(Integer.valueOf(digitoDaConta), 1);
+		campoLivre.addZeroLeft(RESERVADO, 2);
+		campoLivre.addZeroLeft(titulo.getNossoNumero(), 14);
+		campoLivre.add(calculeDigitoEmModulo11(titulo.getNossoNumero()), 1);
 		return campoLivre;
 	}
+
 }
