@@ -23,6 +23,7 @@ public class CampoLivre implements Serializable {
 
 	private static final int DEFAULT_FRACTION_DIGITS = 2;
 	private static final String DEFAULT_DATE_PATTERN = "yyMMdd";
+	private static final String ZERO_STRING = "0";
 
 	private final int length;
 	private final List<String> blocks;
@@ -43,6 +44,9 @@ public class CampoLivre implements Serializable {
 	}
 
 	public void add(final String value, final int length) {
+		if(StringUtils.length(value) != length) {
+			throw new IllegalStateException(format("Tamanho da string [%s] diferente do especificado [%s]!", value, length));
+		}
 		this.add(value);
 	}
 
@@ -76,7 +80,7 @@ public class CampoLivre implements Serializable {
 	}
 
 	public void addZero(final int length) {
-		this.add(StringUtils.repeat("0", length));
+		this.add(StringUtils.repeat(ZERO_STRING, length));
 	}
 
 	/**

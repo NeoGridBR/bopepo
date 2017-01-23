@@ -93,8 +93,6 @@ public class CLBancoIntermedium {
 
 	private static final Integer CONSTANTE_70 = Integer.valueOf(70);
 
-	private static final Integer CONSTANTE_0 = Integer.valueOf(0);
-
 	/**
 	 * <p>
 	 * Dado um título, cria um campo livre para banco Intermedium (077).
@@ -110,7 +108,7 @@ public class CLBancoIntermedium {
 		campoLivre.addZeroLeft(titulo.getNossoNumero(), 11);
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 6);
 		campoLivre.add(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
-		campoLivre.add(CONSTANTE_0, 1);
+		campoLivre.addZero(1);
 		return campoLivre;
 	}
 

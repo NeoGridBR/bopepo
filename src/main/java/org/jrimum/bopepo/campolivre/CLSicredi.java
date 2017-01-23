@@ -195,9 +195,9 @@ public class CLSicredi {
 		if (titulo.getValor().compareTo(ZERO) == 1) {
 			campoLivre.add("1", 1);
 		} else {
-			campoLivre.add("0", 1);
+			campoLivre.addZero(1);
 		}
-		campoLivre.add("0", 1);
+		campoLivre.addZero(1);
 		campoLivre.add(calculeDigitoVerificador(campoLivre.getValue()), 1);
 		return campoLivre;
 	}

@@ -108,7 +108,7 @@ public class CLBancoSantander {
 		if (titulo.hasParametrosBancarios() && (titulo.getParametrosBancarios().getValor(IOF_SEGURADORA) != null)) {
 			campoLivre.add(titulo.getParametrosBancarios().<Integer>getValor(IOF_SEGURADORA), 1);
 		} else {
-			campoLivre.add(0, 1);
+			campoLivre.addZero(1);
 		}
 
 		final int codigoCarteira = contaBancaria.getCarteira().getCodigo();

@@ -13,6 +13,7 @@ import org.jrimum.domkee.financeiro.banco.febraban.Agencia;
 import org.jrimum.domkee.financeiro.banco.febraban.Carteira;
 import org.jrimum.domkee.financeiro.banco.febraban.Cedente;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
+import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeCobranca;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeMoeda;
@@ -32,6 +33,7 @@ public class BancoSofisaBoletoTest {
 
 		final ContaBancaria contaBancaria = new ContaBancaria();
 		contaBancaria.setBanco(BancosSuportados.BANCO_SOFISA.create());
+		contaBancaria.setNumeroDaConta(new NumeroDaConta(1, "0"));
 
 		final Agencia agencia = new Agencia(1, "9");
 		contaBancaria.setAgencia(agencia);

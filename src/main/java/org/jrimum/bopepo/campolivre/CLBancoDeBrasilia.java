@@ -144,7 +144,7 @@ public class CLBancoDeBrasilia {
 
 		final CampoLivre campoLivre = new CampoLivre(8);
 
-		campoLivre.add("000", 3);
+		campoLivre.addZero(3);
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
 		campoLivre.add(titulo.getContaBancaria().getCarteira().getCodigo(), 1);

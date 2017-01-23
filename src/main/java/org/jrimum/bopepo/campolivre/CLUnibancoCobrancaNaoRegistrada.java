@@ -68,8 +68,6 @@ public class CLUnibancoCobrancaNaoRegistrada extends AbstractCLUnibanco {
 
 	private static final Integer CODIGO_TRANSACAO = 5;
 
-	private static final Integer RESERVADO = 0;
-
 	/**
 	 * <p>
 	 * Dado um título, cria um campo livre para o padrão do Banco Unibanco que
@@ -91,7 +89,7 @@ public class CLUnibancoCobrancaNaoRegistrada extends AbstractCLUnibanco {
 		campoLivre.addZeroLeft(conta.getNumeroDaConta().getCodigoDaConta(), 6);
 		Integer digitoDaConta = Integer.valueOf(conta.getNumeroDaConta().getDigitoDaConta());
 		campoLivre.add(Integer.valueOf(digitoDaConta), 1);
-		campoLivre.addZeroLeft(RESERVADO, 2);
+		campoLivre.addZero(2);
 		campoLivre.addZeroLeft(titulo.getNossoNumero(), 14);
 		campoLivre.add(calculeDigitoEmModulo11(titulo.getNossoNumero()), 1);
 		return campoLivre;

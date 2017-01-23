@@ -126,7 +126,7 @@ public class CLItauComCarteirasEspeciais {
 		campoLivre.addZeroLeft(titulo.getNumeroDoDocumento(), 7);
 		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
 		campoLivre.add(calculaDigitoCampoLivreEspecial(titulo), 1);
-		campoLivre.add(0, 1);
+		campoLivre.addZero(1);
 		return campoLivre;
 	}
 

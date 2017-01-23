@@ -82,11 +82,6 @@ public class CLBancoRuralCobrancaRegistrada {
 	private static final Integer TIPO_COBRANCA = Integer.valueOf(0);
 
 	/**
-	 * Constante
-	 */
-	private static final String ZEROS = "000";
-
-	/**
 	 * <p>
 	 * Dado um título, cria um campo livre para cobrança registrada do Banco
 	 * Rural.
@@ -103,7 +98,7 @@ public class CLBancoRuralCobrancaRegistrada {
 		campoLivre.add(titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta(), 1);
 		campoLivre.addZeroLeft(titulo.getNossoNumero(), 7);
 		campoLivre.add(titulo.getDigitoDoNossoNumero(), 1);
-		campoLivre.add(ZEROS, 3);
+		campoLivre.addZero(3);
 		return campoLivre;
 	}
 

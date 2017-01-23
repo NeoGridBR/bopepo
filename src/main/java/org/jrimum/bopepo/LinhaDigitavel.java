@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.validator.routines.checkdigit.CheckDigitException;
+import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.jrimum.vallia.digitoverificador.BoletoLinhaDigitavelDV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,29 +194,48 @@ public class LinhaDigitavel implements Serializable {
 		log.debug("codigoDeBarra instance : " + codigoDeBarras);
 
 		final String codigoDeBarrasValue = codigoDeBarras.write();
-		final BoletoLinhaDigitavelDV calculadorDV = new BoletoLinhaDigitavelDV();
+		// final BoletoLinhaDigitavelDV calculadorDV = new BoletoLinhaDigitavelDV();
+		final LuhnCheckDigit checkDigit = new LuhnCheckDigit();
+
 		final StringBuilder linhaDigitavel = new StringBuilder();
 
 		final StringBuilder toCalculateDV1 = new StringBuilder();
 		toCalculateDV1.append(StringUtils.substring(codigoDeBarrasValue, 0, 3));
 		toCalculateDV1.append(StringUtils.substring(codigoDeBarrasValue, 3, 4));
 		toCalculateDV1.append(StringUtils.substring(codigoDeBarrasValue, 19, 24));
-		final int boletoDV1 = calculadorDV.calcule(toCalculateDV1.toString());
-
 		linhaDigitavel.append(toCalculateDV1);
-		linhaDigitavel.append(boletoDV1);
+
+		// final int boletoDV1 = calculadorDV.calcule(toCalculateDV1.toString());
+		try {
+			final String boletoDV1 = checkDigit.calculate(toCalculateDV1.toString());
+			linhaDigitavel.append(boletoDV1);
+		} catch (CheckDigitException e) {
+			e.printStackTrace();
+		}
 		log.debug("Linha Digitável com o campo 1: " + linhaDigitavel);
 
 		final String toCalculateDV2 = StringUtils.substring(codigoDeBarrasValue, 24, 34);
-		final int boletoDV2 = calculadorDV.calcule(toCalculateDV2);
+
+		//final int boletoDV2 = calculadorDV.calcule(toCalculateDV2);
+
 		linhaDigitavel.append(toCalculateDV2);
-		linhaDigitavel.append(boletoDV2);
+		try {
+			final String boletoDV2 = checkDigit.calculate(toCalculateDV2.toString());
+			linhaDigitavel.append(boletoDV2);
+		} catch (CheckDigitException e) {
+			e.printStackTrace();
+		}
 		log.debug("Linha Digitável até o campo 2: " + linhaDigitavel);
 
 		final String toCalculateDV3 = StringUtils.substring(codigoDeBarrasValue, 34, 44);
-		final int boletoDV3 = calculadorDV.calcule(toCalculateDV3);
+		//final int boletoDV3 = calculadorDV.calcule(toCalculateDV3);
 		linhaDigitavel.append(toCalculateDV3);
-		linhaDigitavel.append(boletoDV3);
+		try {
+			final String boletoDV3 = checkDigit.calculate(toCalculateDV3.toString());
+			linhaDigitavel.append(boletoDV3);
+		} catch (CheckDigitException e) {
+			e.printStackTrace();
+		}
 		log.debug("Linha Digitável até o campo 3: " + linhaDigitavel);
 
 		linhaDigitavel.append(codigoDeBarras.getDigitoVerificadorGeral());

@@ -142,6 +142,7 @@ public class TituloValidator {
 	 * @since 0.2
 	 */
 	public final static void checkContaBancariaDigito(final Titulo titulo) {
+		checkContaBancariaNumeroNotNull(titulo);
 		final String digitoVerificadorConta = titulo.getContaBancaria().getNumeroDaConta().getDigitoDaConta();
 		Validate.notNull(digitoVerificadorConta, "Dígito verificador do número da conta bancária não pode ser nulo!");
 		Validate.notEmpty(digitoVerificadorConta,

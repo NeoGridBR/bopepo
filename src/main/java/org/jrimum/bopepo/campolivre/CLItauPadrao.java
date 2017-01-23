@@ -156,7 +156,7 @@ public class CLItauPadrao {
 		campoLivre.addZeroLeft(contaBancaria.getAgencia().getCodigo(), 4);
 		campoLivre.addZeroLeft(contaBancaria.getNumeroDaConta().getCodigoDaConta(), 5);
 		campoLivre.add(calculaDigitoCampoLivrePadrao41(titulo), 1);
-		campoLivre.add("000", 3);
+		campoLivre.addZero(3);
 		return campoLivre;
 	}
 
