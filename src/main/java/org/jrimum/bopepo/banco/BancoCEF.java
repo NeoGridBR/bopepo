@@ -3,9 +3,7 @@ package org.jrimum.bopepo.banco;
 import static java.lang.String.format;
 
 import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSICOBNN10;
-import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSICOBNN14;
 import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSIGCB;
-import org.jrimum.bopepo.campolivre.CLCaixaEconomicaFederalSINCO;
 import org.jrimum.bopepo.campolivre.CampoLivre;
 import org.jrimum.bopepo.campolivre.NotSupportedCampoLivreException;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
@@ -24,11 +22,17 @@ public class BancoCEF extends AbstractBanco {
 		case 10:
 			return CLCaixaEconomicaFederalSICOBNN10.newCampoLivre(titulo);
 		case 14:
-			return CLCaixaEconomicaFederalSICOBNN14.newCampoLivre(titulo);
+			throw new NotSupportedCampoLivreException(
+				format("Campo Livre para o Nosso Número [%s] de tamanho [%s] não homologado. Apenas títulos com Nosso Número de tamanhos 10 e 15 estão homologados.",
+					titulo.getNossoNumero(), titulo.getNossoNumero().length(), 14));
+			//return CLCaixaEconomicaFederalSICOBNN14.newCampoLivre(titulo);
 		case 15:
 			return CLCaixaEconomicaFederalSIGCB.newCampoLivre(titulo);
 		case 17:
-			return CLCaixaEconomicaFederalSINCO.newCampoLivre(titulo);
+			throw new NotSupportedCampoLivreException(
+				format("Campo Livre para o Nosso Número [%s] de tamanho [%s] não homologado. Apenas títulos com Nosso Número de tamanhos 10 e 15 estão homologados.",
+					titulo.getNossoNumero(), titulo.getNossoNumero().length(), 17));
+			// return CLCaixaEconomicaFederalSINCO.newCampoLivre(titulo);
 		}
 		throw new NotSupportedCampoLivreException(format(
 				"Campo Livre não suportado para o Nosso Número [%s] de tamanho [%s]."

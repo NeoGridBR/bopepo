@@ -157,11 +157,6 @@ public class CLBancoDoNordesteDoBrasil {
 	private static final Integer CAMPO_ZERADO_LENGTH = Integer.valueOf(3);
 
 	/**
-	 * Valor do campo "Campo Zerado" = 0.
-	 */
-	protected static final Integer CAMPO_ZERADO_VALUE = Integer.valueOf(0);
-
-	/**
 	 * <p>
 	 * Cria um campo livre instanciando o número de fields
 	 * ({@code FIELDS_LENGTH}) deste campo.
@@ -183,7 +178,7 @@ public class CLBancoDoNordesteDoBrasil {
 		campoLivre.addZeroLeft(titulo.getNossoNumero(), NOSSO_NUMERO_LENGTH);
 		campoLivre.addZeroLeft(titulo.getDigitoDoNossoNumero(), DIGITO_NOSSO_NUMERO_LENGTH);
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getCarteira().getCodigo(), CARTEIRA_LENGTH);
-		campoLivre.addZeroLeft(CAMPO_ZERADO_VALUE, CAMPO_ZERADO_LENGTH);
+		campoLivre.addZero(CAMPO_ZERADO_LENGTH);
 
 		return campoLivre;
 	}

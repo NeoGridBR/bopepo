@@ -114,7 +114,7 @@ public class CLHSBCCobrancaRegistrada {
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 4);
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getNumeroDaConta().getCodigoDaConta(), 7);
 		// Código da Carteira
-		campoLivre.add("00", 2);
+		campoLivre.addZero(2);
 		// Código do Aplicativo
 		campoLivre.add(1, 1);
 		return campoLivre;

@@ -70,11 +70,6 @@ public class CLBancoRuralCobrancaNaoRegistrada {
 	private static final Integer TIPO_COBRANCA = Integer.valueOf(9);
 
 	/**
-	 * Constante
-	 */
-	private static final String ZEROS = "000";
-
-	/**
 	 * <p>
 	 * Dado um título, cria um campo livre para cobrança não registrada do Banco
 	 * Rural.
@@ -89,7 +84,7 @@ public class CLBancoRuralCobrancaNaoRegistrada {
 		campoLivre.addZeroLeft(titulo.getContaBancaria().getAgencia().getCodigo(), 3);
 		campoLivre.addZeroLeft(titulo.getParametrosBancarios().<Integer>getValor(CODIGO_REDUZIDO), 3);
 		campoLivre.addZeroLeft(titulo.getNossoNumero(), 15);
-		campoLivre.add(ZEROS, 3);
+		campoLivre.addZero(3);
 		return campoLivre;
 	}
 
